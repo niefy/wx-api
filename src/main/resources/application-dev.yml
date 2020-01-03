@@ -1,0 +1,59 @@
+server:
+    baseAddress: https://wx.guosen.com.hk
+    uploadBaseDir: D:/nginx-1.17.5/html
+spring:
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        druid:
+            driver-class-name: com.mysql.cj.jdbc.Driver
+            url: jdbc:mysql://localhost:3306/wx?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+            username: root
+            password: 123456
+            initial-size: 10
+            max-active: 100
+            min-idle: 10
+            max-wait: 60000
+            pool-prepared-statements: true
+            max-pool-prepared-statement-per-connection-size: 20
+            time-between-eviction-runs-millis: 60000
+            min-evictable-idle-time-millis: 300000
+            #Oracle需要打开注释
+            #validation-query: SELECT 1 FROM DUAL
+            test-while-idle: true
+            test-on-borrow: false
+            test-on-return: false
+            stat-view-servlet:
+                enabled: false
+#                url-pattern: /druid/*
+#                login-username: admin
+#                login-password: admin
+            filter:
+                stat:
+                    log-slow-sql: true
+                    slow-sql-millis: 1000
+                    merge-sql: false
+                wall:
+                    config:
+                        multi-statement-allow: true
+## 微信公众号配置
+wx:
+    mp:
+        configs:
+            -   appid: wx7b6ca33b71fbbf27
+                secret: d4624c36b6795d1d99dcf0547af5443d
+                token: my_weixin_token_
+                aesKey:
+    pay:
+        appId:  #微信公众号或者小程序等的appid
+        mchId:  #微信支付商户号
+        mchKey:  #微信支付商户密钥
+        subAppId: #服务商模式下的子商户公众账号ID
+        subMchId: #服务商模式下的子商户号
+        keyPath: classpath:/cert/wx-pay-cert.p12 # p12证书的位置，可以指定绝对路径，也可以指定类路径（以classpath:开头）
+        useSandBoxEnv: true #是否使用微信支付沙箱测试环境
+email:
+    username:
+    password:
+    host: smtp.zoho.com.cn
+    port: 465
+    notificationEmail: niefy@qq.com
