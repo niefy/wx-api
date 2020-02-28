@@ -16,6 +16,7 @@ import java.util.Date;
 @TableName("template_msg_log")
 public class TemplateMsgLog implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @TableId(type = IdType.AUTO)
     private int logId;
     private String touser;

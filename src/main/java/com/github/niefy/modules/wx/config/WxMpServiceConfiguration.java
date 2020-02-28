@@ -1,6 +1,5 @@
 package com.github.niefy.modules.wx.config;
 
-import com.github.niefy.modules.wx.handler.*;
 import lombok.RequiredArgsConstructor;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.api.impl.WxMpServiceOkHttpImpl;

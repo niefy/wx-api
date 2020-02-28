@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 @TableName("msg_template")
 public class MsgTemplate implements Serializable {
-
+    private static final long serialVersionUID = 1L;
     @TableId(type = IdType.INPUT)
     private String templateId;
     private String title;

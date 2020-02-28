@@ -16,7 +16,7 @@ import java.sql.Time;
  */
 @TableName("msg_reply_rule")
 public class MsgReplyRule implements Serializable {
-
+    private static final long serialVersionUID = 1L;
     @TableId(type = IdType.AUTO)
     private int ruleId;
     @NotEmpty(message = "规则名称不得为空")

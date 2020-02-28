@@ -49,7 +49,7 @@ public class EmailServiceImpl implements EmailService {
             // Set From: 头部头字段
             message.setFrom(new InternetAddress(properties.getUsername()));
             // Set To: 头部头字段
-            message.addRecipients(Message.RecipientType.TO, new InternetAddress().parse(to));
+            message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
             // Set Subject: 头字段
             message.setSubject(subject);
             // 创建消息部分

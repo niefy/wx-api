@@ -12,6 +12,7 @@ import java.util.Date;
  */
 @TableName("article")
 public class Article implements Serializable {
+	private static final long serialVersionUID = 1L;
 	@TableId(type = IdType.AUTO)
 	private int id;
 	private int type;

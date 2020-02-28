@@ -17,7 +17,9 @@ import java.util.Date;
  */
 @TableName("wx_user")
 public class User implements Serializable {
-        @TableId(type = IdType.INPUT)
+
+	private static final long serialVersionUID = 1L;
+	@TableId(type = IdType.INPUT)
         private String openid;
         private String phone;
         private String nickname;

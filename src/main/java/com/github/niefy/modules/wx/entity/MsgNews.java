@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 @TableName("msg_news")
 public class MsgNews implements Serializable {
-
+    private static final long serialVersionUID = 1L;
     @TableId(type = IdType.AUTO)
     private int newsId;
     private String title;

@@ -16,6 +16,7 @@ import org.apache.shiro.authc.AuthenticationToken;
  * @author Mark sunlightcs@gmail.com
  */
 public class OAuth2Token implements AuthenticationToken {
+    private static final long serialVersionUID = 1L;
     private String token;
 
     public OAuth2Token(String token){

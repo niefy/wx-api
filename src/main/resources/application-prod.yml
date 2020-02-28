@@ -1,5 +1,5 @@
 server:
-    baseAddress: https://wx.guosen.com.hk
+    baseAddress: http://xxx.ngrok.io
     uploadBaseDir: /usr/share/nginx/html/
 
 spring:
