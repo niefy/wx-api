@@ -27,7 +27,7 @@
 		<commons.io.version>2.5</commons.io.version>
 		<commons.codec.version>1.10</commons.codec.version>
 		<commons.configuration.version>1.10</commons.configuration.version>
-		<shiro.version>1.4.0</shiro.version>
+		<shiro.version>1.5.1</shiro.version>
 		<jwt.version>0.7.0</jwt.version>
 		<kaptcha.version>0.0.9</kaptcha.version>
 		<qiniu.version>7.2.23</qiniu.version>
@@ -36,7 +36,7 @@
 		<swagger.version>2.7.0</swagger.version>
 		<joda.time.version>2.9.9</joda.time.version>
 		<fastjson.version>1.2.60</fastjson.version>
-		<lombok.version>1.18.4</lombok.version>
+		<lombok.version>1.18.10</lombok.version>
 		<weixin-java.version>3.6.0</weixin-java.version>
 	</properties>
 

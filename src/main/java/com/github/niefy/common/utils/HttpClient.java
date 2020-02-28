@@ -81,9 +81,10 @@ public class HttpClient {
     private  String readResponseString(HttpURLConnection conn) {
         StringBuilder sb = new StringBuilder();
         InputStream inputStream = null;
+        BufferedReader reader = null;
         try {
             inputStream = conn.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, charset));
+            reader = new BufferedReader(new InputStreamReader(inputStream, charset));
             String line;
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append("\n");
@@ -95,6 +96,13 @@ public class HttpClient {
             if (inputStream != null) {
                 try {
                     inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(reader!=null){
+                try {
+                    reader.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
