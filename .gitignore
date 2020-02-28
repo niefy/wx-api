@@ -1,9 +1,13 @@
 # Compiled class file
 *.class
 *.iml
-*.idea/
-*target/
-*.settings/
+.idea/
+target/
+.settings/
+.vscode/
+.classpath
+.factorypath
+.project
 # Log file
 *.log
 
