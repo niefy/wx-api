@@ -70,6 +70,7 @@ CREATE TABLE `msg_reply_rule`  (
   `rule_id` int(11) NOT NULL AUTO_INCREMENT,
   `rule_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '规则名称',
   `match_value` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '匹配的关键词、事件等',
+  `exact_match` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否精确匹配',
   `reply_type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1' COMMENT '回复消息类型',
   `reply_content` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '回复消息内容',
   `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '规则是否有效',
@@ -82,10 +83,10 @@ CREATE TABLE `msg_reply_rule`  (
 -- ----------------------------
 -- Records of msg_reply_rule
 -- ----------------------------
-INSERT INTO `msg_reply_rule` VALUES (1, '关注公众号', 'subscribe', 'text', '你好，欢迎关注！\n<a href=\"https://github.com/niefy\">点击链接查看我的主页</a>', 1, '关注回复', '00:00:00', '23:59:59');
-INSERT INTO `msg_reply_rule` VALUES (9, '人工-9点前', '人工,客服', 'text', '您好，人工在线时间为工作日9:00-17:30。现在是非人工时段，您的咨询，我们将于下一工作日回复。', 1, '人工客服', '00:00:00', '09:00:00');
-INSERT INTO `msg_reply_rule` VALUES (10, '人工-五点半后', '人工,客服', 'text', '您好，人工在线时间为工作日9:00-17:30。现在是非人工时段，您的咨询，我们将于下一工作日回复。', 1, '人工客服', '17:30:00', '23:59:59');
-INSERT INTO `msg_reply_rule` VALUES (11, '人工-工作时间', '人工', 'text', '人工在线时间为工作日9:00-17:30。如您于工作时间咨询，我们将于工作时间内回复您！', 1, '人工客服', '09:00:00', '17:30:00');
+INSERT INTO `msg_reply_rule` VALUES (1, '关注公众号', 'subscribe', 0, 'text', '你好，欢迎关注！\n<a href=\"https://github.com/niefy\">点击链接查看我的主页</a>', 1, '关注回复', '00:00:00', '23:59:59');
+INSERT INTO `msg_reply_rule` VALUES (9, '人工-9点前', '人工,客服', 0, 'text', '您好，人工在线时间为工作日9:00-17:30。现在是非人工时段，您的咨询，我们将于下一工作日回复。', 1, '人工客服', '00:00:00', '09:00:00');
+INSERT INTO `msg_reply_rule` VALUES (10, '人工-五点半后', '人工,客服', 0, 'text', '您好，人工在线时间为工作日9:00-17:30。现在是非人工时段，您的咨询，我们将于下一工作日回复。', 1, '人工客服', '17:30:00', '23:59:59');
+INSERT INTO `msg_reply_rule` VALUES (11, '人工-工作时间', '人工', 0, 'text', '人工在线时间为工作日9:00-17:30。如您于工作时间咨询，我们将于工作时间内回复您！', 1, '人工客服', '09:00:00', '17:30:00');
 
 -- ----------------------------
 -- Table structure for msg_template
