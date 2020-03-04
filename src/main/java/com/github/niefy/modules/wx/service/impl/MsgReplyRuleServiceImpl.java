@@ -81,7 +81,7 @@ public class MsgReplyRuleServiceImpl  extends ServiceImpl<MsgReplyRuleMapper, Ms
     @Override
     public List<MsgReplyRule> getMatchedRules(boolean exactMatch, String keywords) {
         return this.getValidRules().stream()
-				.filter(rule->isMatch(exactMatch,rule.getMatchValue().split(","),keywords))
+				.filter(rule->isMatch(exactMatch || rule.isExactMatch(),rule.getMatchValue().split(","),keywords))
 				.collect(Collectors.toList());
     }
 
