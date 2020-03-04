@@ -99,7 +99,7 @@ public class WxAssetsManageController {
     public R materialFileUpload(MultipartFile file, String fileName, String mediaType) throws WxErrorException, IOException {
         if(file==null)return R.error("文件不得为空");
         String originalFilename=file.getOriginalFilename();
-        File tempFile = File.createTempFile("tmp", originalFilename.substring(originalFilename.lastIndexOf(".")));
+        File tempFile = File.createTempFile(fileName+"--", originalFilename.substring(originalFilename.lastIndexOf(".")));
         file.transferTo(tempFile);
         WxMpMaterial wxMaterial = new WxMpMaterial();
         wxMaterial.setFile(tempFile);
