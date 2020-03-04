@@ -23,11 +23,12 @@ public class MsgReplyRule implements Serializable {
     private String ruleName;
     @NotEmpty(message = "匹配关键词不得为空")
     private String matchValue;
+    private boolean exactMatch;
     private String replyType;
     @NotEmpty(message = "回复内容不得为空")
     private String replyContent;
     @TableField(value = "`status`")
-    private int status;
+    private boolean status;
     @TableField(value = "`desc`")
     private String desc;
     private Time effectTimeStart;
@@ -78,11 +79,11 @@ public class MsgReplyRule implements Serializable {
         this.replyContent = replyContent;
     }
 
-    public int getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
@@ -108,5 +109,13 @@ public class MsgReplyRule implements Serializable {
 
     public void setEffectTimeEnd(Time effectTimeEnd) {
         this.effectTimeEnd = effectTimeEnd;
+    }
+    
+    public boolean isExactMatch() {
+        return exactMatch;
+    }
+
+    public void setExactMatch(boolean exactMatch) {
+        this.exactMatch = exactMatch;
     }
 }
