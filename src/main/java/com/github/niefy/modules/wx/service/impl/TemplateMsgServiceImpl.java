@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author Nifury
@@ -27,6 +29,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TemplateMsgServiceImpl implements TemplateMsgService {
+	ExecutorService templateMsgExecutor = Executors.newFixedThreadPool(10);
 	@Autowired
 	private TemplateMsgLogService templateMsgLogService;
 	private final WxMpService wxService;
@@ -34,21 +37,23 @@ public class TemplateMsgServiceImpl implements TemplateMsgService {
     MsgTemplateService msgTemplateService;
 
 	/**
-	 * 发送微信模版消息
+	 * 发送微信模版消息,使用固定线程的线程池
 	 */
 	@Override
 	@Async
 	public void sendTemplateMsg(WxMpTemplateMessage msg) {
-		String result =null;
-		try {
-			result = wxService.getTemplateMsgService().sendTemplateMsg(msg);
-		} catch (WxErrorException e) {
-			result= e.getMessage();
-		}
+		templateMsgExecutor.submit(()->{
+			String result =null;
+			try {
+				result = wxService.getTemplateMsgService().sendTemplateMsg(msg);
+			} catch (WxErrorException e) {
+				result= e.getMessage();
+			}
 
-		//保存发送日志
-		TemplateMsgLog log = new TemplateMsgLog(msg, result);
-		templateMsgLogService.addLog(log);
+			//保存发送日志
+			TemplateMsgLog log = new TemplateMsgLog(msg, result);
+			templateMsgLogService.addLog(log);
+		});
 	}
 
 	/**
