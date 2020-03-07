@@ -8,4 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 @CacheNamespace(flushInterval = 300000L)//缓存五分钟过期
 public interface UserMapper extends BaseMapper<User> {
+
+    void unsubscribe(String openid);
 }

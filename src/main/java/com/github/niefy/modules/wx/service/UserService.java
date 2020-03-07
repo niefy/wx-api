@@ -1,11 +1,14 @@
 package com.github.niefy.modules.wx.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.modules.wx.entity.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService extends IService<User> {
+    PageUtils queryPage(Map<String, Object> params);
     /**
      * 根据openid更新用户信息
      *
@@ -43,4 +46,10 @@ public interface UserService extends IService<User> {
      * @param user
      */
     void updateOrInsert(User user);
+
+    /**
+     * 取消关注，更新关注状态
+     * @param openid
+     */
+    void unsubscribe(String openid);
 }

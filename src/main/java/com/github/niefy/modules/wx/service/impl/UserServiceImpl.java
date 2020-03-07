@@ -1,9 +1,13 @@
 package com.github.niefy.modules.wx.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.niefy.common.utils.PageUtils;
+import com.github.niefy.common.utils.Query;
 import com.github.niefy.modules.wx.dao.UserMapper;
+import com.github.niefy.modules.wx.entity.Article;
 import com.github.niefy.modules.wx.entity.User;
 import com.github.niefy.modules.wx.dto.PageSizeConstant;
 import com.github.niefy.modules.wx.service.UserService;
@@ -13,8 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Nifury
@@ -28,6 +34,19 @@ public class UserServiceImpl  extends ServiceImpl<UserMapper, User> implements U
 	@Autowired
 	private WxMpService wxService;
 
+	@Override
+	public PageUtils queryPage(Map<String, Object> params) {
+		String openid = (String)params.get("openid");
+		String nickname = (String)params.get("nickname");
+		IPage<User> page = this.page(
+				new Query<User>().getPage(params),
+				new QueryWrapper<User>()
+						.eq(!StringUtils.isEmpty(openid),"openid",openid)
+						.like(!StringUtils.isEmpty(nickname),"nickname",nickname)
+		);
+
+		return new PageUtils(page);
+	}
 	/**
 	 * 根据openid更新用户信息
 	 *
@@ -106,5 +125,10 @@ public class UserServiceImpl  extends ServiceImpl<UserMapper, User> implements U
 		if (updateCount < 1) {
 			userMapper.insert(user);
 		}
+	}
+
+	@Override
+	public void unsubscribe(String openid) {
+		userMapper.unsubscribe(openid);
 	}
 }

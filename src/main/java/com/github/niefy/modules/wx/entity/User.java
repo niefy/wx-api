@@ -20,15 +20,16 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@TableId(type = IdType.INPUT)
-        private String openid;
-        private String phone;
-        private String nickname;
-        private int sex;
-        private String city;
-        private String province;
-        private String headimgurl;
-        @JSONField(name="subscribe_time")
+	private String openid;
+	private String phone;
+	private String nickname;
+	private int sex;
+	private String city;
+	private String province;
+	private String headimgurl;
+	@JSONField(name="subscribe_time")
     private Date subscribeTime;
+	private boolean subscribe;
 
     public User() {
     }
@@ -99,5 +100,12 @@ public class User implements Serializable {
 	public void setSubscribeTime(Date subscribeTime) {
 			this.subscribeTime = subscribeTime;
     }
-	
+
+	public boolean isSubscribe() {
+		return subscribe;
+	}
+
+	public void setSubscribe(boolean subscribe) {
+		this.subscribe = subscribe;
+	}
 }

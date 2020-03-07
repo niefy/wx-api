@@ -221,6 +221,10 @@ INSERT INTO `sys_menu` VALUES (103, 6, '带参二维码', 'wx/wxqrcode', NULL, 1
 INSERT INTO `sys_menu` VALUES (104, 103, '查看', NULL, 'wx:wxqrcode:list,wx:wxqrcode:info', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (105, 103, '新增', NULL, 'wx:wxqrcode:save', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (107, 103, '删除', NULL, 'wx:wxqrcode:delete', 2, NULL, 6);
+INSERT INTO `sys_menu` VALUES (108, 6, '微信用户', 'wx/wx-user', NULL, 1, 'config', 6);
+INSERT INTO `sys_menu` VALUES (109, 108, '查看', NULL, 'wx:user:list,wx:user:info', 2, NULL, 6);
+INSERT INTO `sys_menu` VALUES (110, 108, '删除', NULL, 'wx:user:delete', 2, NULL, 6);
+
 
 -- ----------------------------
 -- Table structure for sys_oss
@@ -353,6 +357,7 @@ CREATE TABLE `wx_user`  (
   `province` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '省份',
   `headimgurl` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '头像',
   `subscribe_time` datetime(0) NULL DEFAULT NULL COMMENT '订阅时间',
+  `subscribe` tinyint(1) NULL DEFAULT 1 COMMENT '是否订阅',
   PRIMARY KEY (`openid`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
 
