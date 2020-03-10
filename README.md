@@ -7,9 +7,9 @@
 - 微信登录、微信分享、CMS前端示例：https://github.com/niefy/wx-client
 
 # 技术选型
-- 核心框架：Spring Boot 2.1
-- 安全框架：Apache Shiro 1.4
-- 持久层框架：MyBatis-Plus
+- 核心框架：Spring Boot
+- 安全框架：Apache Shiro
+- 持久层框架：[MyBatis-Plus](https://baomidou.oschina.io/mybatis-plus-doc/#/quick-start)
 - 公众号开发框架：[WxJava](https://github.com/Wechat-Group/WxJava)
 - 项目脚手架：[renren-fast](https://gitee.com/renrenio/renren-fast)
 - 页面交互：Vue2.x、ElementUI、TinyMce Editor、Vuex
@@ -65,7 +65,7 @@
 - [x] 公众号自动回复（使用更灵活的客服消息接口做自动回复）
     - [x] 支持配置关注事件、扫描带参二维码、接受消息等场景自动回复
     - [x] 支持一个事件或一条消息进行多次回复
-    - [x] 模糊匹配、多关键词、可配置时段
+    - [x] 精确匹配、模糊匹配、多关键词、可配置时段
     - [x] 文字回复
     - [x] 图片、语音、视频、图文素材等媒体形式回复
     - [x] 回复小程序卡片、回复菜单消息
@@ -75,7 +75,7 @@
     - [x] 上传图片、语音、视频素材,获取素材media_id
     - [x] 获取公众号图文素材
     - [ ] 添加公众号图文素材
-- [ ] 公众号用户管理
+- [X] 公众号用户管理
 - [ ] 模板消息
 - [x] 后台权限管理
     - [x] 可配置权限
