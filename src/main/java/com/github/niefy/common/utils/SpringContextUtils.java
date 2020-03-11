@@ -43,7 +43,7 @@ public class SpringContextUtils implements ApplicationContextAware {
 		return applicationContext.isSingleton(name);
 	}
 
-	public static Class<? extends Object> getType(String name) {
+	public static Class<?> getType(String name) {
 		return applicationContext.getType(name);
 	}
 

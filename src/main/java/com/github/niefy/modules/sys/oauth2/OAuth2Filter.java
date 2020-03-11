@@ -15,6 +15,8 @@ import org.apache.http.HttpStatus;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletRequest;
@@ -29,7 +31,7 @@ import java.io.IOException;
  * @author Mark sunlightcs@gmail.com
  */
 public class OAuth2Filter extends AuthenticatingFilter {
-
+    Logger logger = LoggerFactory.getLogger(this.getClass());
     @Override
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
         //获取请求token
@@ -84,7 +86,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
             String json = JSON.toJSONString(r);
             httpResponse.getWriter().print(json);
         } catch (IOException e1) {
-
+            logger.error("onLoginFailure",e1);
         }
 
         return false;

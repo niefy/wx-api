@@ -43,7 +43,7 @@ public class TemplateMsgServiceImpl implements TemplateMsgService {
 	@Async
 	public void sendTemplateMsg(WxMpTemplateMessage msg) {
 		templateMsgExecutor.submit(()->{
-			String result =null;
+			String result;
 			try {
 				result = wxService.getTemplateMsgService().sendTemplateMsg(msg);
 			} catch (WxErrorException e) {

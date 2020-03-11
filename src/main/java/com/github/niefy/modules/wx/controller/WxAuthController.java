@@ -1,7 +1,6 @@
 package com.github.niefy.modules.wx.controller;
 
 import com.github.niefy.common.utils.*;
-import com.github.niefy.modules.sys.enums.SysOperationEnum;
 import com.github.niefy.modules.sys.service.SysLogService;
 import com.github.niefy.modules.wx.form.CodeToOpenidForm;
 import lombok.RequiredArgsConstructor;
@@ -82,7 +81,6 @@ public class WxAuthController {
             CookieUtil.setCookie(response, "openid", openid, 365 * 24 * 60 * 60);
             String openidToken = MD5Util.getMD5AndSalt(openid);
             CookieUtil.setCookie(response, "openidToken", openidToken, 365 * 24 * 60 * 60);
-            sysLogService.addLog(SysOperationEnum.微信授权,"code:"+code);
             return R.ok().put(openid);
         }catch (WxErrorException e){
             logger.error("code换取openid失败",e);
@@ -126,7 +124,6 @@ public class WxAuthController {
         resMap.put("wxTimestamp",wxTimestamp );
         resMap.put("wxNoncestr",wxNoncestr );
         resMap.put("wxSignature",wxSignature );
-        sysLogService.addLog(SysOperationEnum.加载微信分享,"wxShareUrl:"+wxShareUrl);
         return R.ok().put(resMap);
     }
 }
