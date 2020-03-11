@@ -9,7 +9,6 @@ package com.github.niefy.modules.sys.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.github.niefy.modules.sys.enums.SysOperationEnum;
 import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.modules.sys.entity.SysLogEntity;
 
@@ -25,16 +24,5 @@ public interface SysLogService extends IService<SysLogEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    /**
-     * 添加系统日志到队列中，队列数据会定时批量插入到数据库
-     * @param operation
-     */
-    public void addTaskLog(SysOperationEnum operation, String params);
-
-    /**
-     * 添加系统日志到队列中，队列数据会定时批量插入到数据库
-     * @param operation
-     */
-    public void addLog(SysOperationEnum operation, String params);
 
 }

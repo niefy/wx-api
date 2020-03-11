@@ -9,7 +9,6 @@ package com.github.niefy.modules.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.github.niefy.modules.sys.enums.SysOperationEnum;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -45,9 +44,9 @@ public class SysLogEntity implements Serializable {
 	public SysLogEntity() {
 	}
 
-	public SysLogEntity(String openid, SysOperationEnum operation, String params, String ip) {
+	public SysLogEntity(String openid,String method, String params, String ip) {
 		this.username = openid;
-		this.operation = operation.toString();
+		this.method=method;
 		this.params = params;
 		this.ip = ip;
 		this.createDate=new Date();
