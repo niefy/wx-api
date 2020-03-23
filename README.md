@@ -22,8 +22,8 @@
 # 后端部署
 - 通过git下载源码
 - idea、eclipse需安装lombok插件，不然会提示找不到entity的get set方法
-- 创建数据库wx，数据库编码为UTF-8
-- 执行db/mysql.sql文件，初始化数据
+- 创建数据库wx，数据库字符集utf8mb4，编码规则utf8mb4_general_ci（如未正确设置可能影响昵称表情及特殊符号存储）
+- 执行db/mysql.sql文件，初始化数据，需要Mysql版本5.7+
 - Eclipse、IDEA打开项目，等待maven自动引入依赖
 - 修改application-dev.yml，更新MySQL账号和密码
 - 修改application-dev.yml，更改微信公众号appid、secret、token，开发时建议申请[微信公众号测试号](https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login)
