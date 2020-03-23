@@ -10,6 +10,7 @@ package com.github.niefy.modules.sys.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.github.niefy.modules.sys.entity.SysConfigEntity;
+import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,6 +20,7 @@ import org.apache.ibatis.annotations.Param;
  * @author Mark sunlightcs@gmail.com
  */
 @Mapper
+@CacheNamespace(flushInterval = 300000L)//缓存五分钟过期
 public interface SysConfigDao extends BaseMapper<SysConfigEntity> {
 
 	/**

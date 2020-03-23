@@ -93,14 +93,20 @@ INSERT INTO `msg_reply_rule` VALUES (11, '人工-工作时间', '人工', 0, 'te
 -- ----------------------------
 DROP TABLE IF EXISTS `msg_template`;
 CREATE TABLE `msg_template`  (
-  `template_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'ID',
+  `id` bigint(0) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `template_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '公众号模板消息模板ID',
   `title` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标题',
   `data` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '内容',
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '链接',
   `color` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '颜色',
-  `status` tinyint(4) NULL DEFAULT NULL COMMENT '是否有效',
-  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '模版名称'
+  `status` tinyint(0) UNSIGNED NULL DEFAULT NULL COMMENT '是否有效',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '模版名称',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_template_id`(`template_id`) USING BTREE COMMENT '公众号模板消息ID',
+  INDEX `idx_name`(`name`) USING BTREE COMMENT '消息模板名称'
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '消息模板' ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
 
 -- ----------------------------
 -- Table structure for sys_captcha

@@ -9,6 +9,7 @@ package com.github.niefy.modules.sys.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.github.niefy.modules.sys.entity.SysRoleEntity;
+import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
  * @author Mark sunlightcs@gmail.com
  */
 @Mapper
+@CacheNamespace(flushInterval = 300000L)//缓存五分钟过期
 public interface SysRoleDao extends BaseMapper<SysRoleEntity> {
 	
 	/**
