@@ -46,10 +46,10 @@ public class MsgTemplateManageController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{templateId}")
+    @RequestMapping("/info/{id}")
     @RequiresPermissions("wx:msgtemplate:info")
-    public R info(@PathVariable("templateId") String templateId){
-		MsgTemplate msgTemplate = msgTemplateService.getById(templateId);
+    public R info(@PathVariable("id") Long id){
+		MsgTemplate msgTemplate = msgTemplateService.getById(id);
 
         return R.ok().put("msgTemplate", msgTemplate);
     }
@@ -81,8 +81,8 @@ public class MsgTemplateManageController {
      */
     @RequestMapping("/delete")
     @RequiresPermissions("wx:msgtemplate:delete")
-    public R delete(@RequestBody String[] templateIds){
-		msgTemplateService.removeByIds(Arrays.asList(templateIds));
+    public R delete(@RequestBody String[] ids){
+		msgTemplateService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }

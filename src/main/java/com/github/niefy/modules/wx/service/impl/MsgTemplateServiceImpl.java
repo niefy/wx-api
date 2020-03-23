@@ -10,6 +10,7 @@ import com.github.niefy.common.validator.Assert;
 import com.github.niefy.modules.wx.entity.MsgTemplate;
 import com.github.niefy.modules.wx.service.MsgTemplateService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
@@ -19,9 +20,13 @@ public class MsgTemplateServiceImpl extends ServiceImpl<MsgTemplateMapper, MsgTe
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        String title = (String)params.get("title");
+        String name = (String)params.get("name");
         IPage<MsgTemplate> page = this.page(
                 new Query<MsgTemplate>().getPage(params),
                 new QueryWrapper<MsgTemplate>()
+                        .like(!StringUtils.isEmpty(title),"title",title)
+                        .like(!StringUtils.isEmpty(name),"name",name)
         );
 
         return new PageUtils(page);

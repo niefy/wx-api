@@ -15,20 +15,29 @@ import java.io.Serializable;
 @TableName("msg_template")
 public class MsgTemplate implements Serializable {
     private static final long serialVersionUID = 1L;
-    @TableId(type = IdType.INPUT)
+    @TableId(type = IdType.AUTO)
+    private Long id;
     private String templateId;
     private String title;
     private String data;
     private String url;
     private String color;
     @TableField(value = "`status`")
-    private int status;
+    private boolean status;
     @TableField(value = "`name`")
     private String name;
 
     @Override
     public String toString() {
         return Json.toJsonString(this);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTemplateId() {
@@ -71,11 +80,11 @@ public class MsgTemplate implements Serializable {
         this.color = color;
     }
 
-    public int getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
