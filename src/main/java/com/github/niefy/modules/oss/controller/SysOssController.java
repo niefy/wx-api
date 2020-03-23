@@ -8,6 +8,7 @@
 package com.github.niefy.modules.oss.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.github.niefy.common.exception.RRException;
 import com.github.niefy.common.utils.ConfigConstant;
 import com.github.niefy.common.utils.Constant;
 import com.github.niefy.common.utils.PageUtils;
@@ -17,12 +18,14 @@ import com.github.niefy.common.validator.group.AliyunGroup;
 import com.github.niefy.common.validator.group.QcloudGroup;
 import com.github.niefy.common.validator.group.QiniuGroup;
 import com.github.niefy.modules.oss.cloud.CloudStorageConfig;
+import com.github.niefy.modules.oss.cloud.OSSFactory;
 import com.github.niefy.modules.oss.entity.SysOssEntity;
 import com.github.niefy.modules.oss.service.SysOssService;
 import com.github.niefy.modules.sys.service.SysConfigService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -98,11 +101,22 @@ public class SysOssController {
 	 */
 	@PostMapping("/upload")
 	@RequiresPermissions("sys:oss:all")
-	public R upload(@RequestBody SysOssEntity ossEntity) throws Exception {
+	public R upload(@RequestParam("file") MultipartFile file) throws Exception {
+		if (file.isEmpty()) {
+			throw new RRException("上传文件不能为空");
+		}
+
+		//上传文件
+		String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+		String url = OSSFactory.build().uploadSuffix(file.getBytes(), suffix);
+
+		//保存文件信息
+		SysOssEntity ossEntity = new SysOssEntity();
+		ossEntity.setUrl(url);
 		ossEntity.setCreateDate(new Date());
 		sysOssService.save(ossEntity);
 
-		return R.ok();
+		return R.ok().put("url", url);
 	}
 
 
