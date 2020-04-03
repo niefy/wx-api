@@ -363,8 +363,13 @@ CREATE TABLE `wx_user`  (
   `province` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '省份',
   `headimgurl` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '头像',
   `subscribe_time` datetime(0) NULL DEFAULT NULL COMMENT '订阅时间',
-  `subscribe` tinyint(1) NULL DEFAULT 1 COMMENT '是否订阅',
-  PRIMARY KEY (`openid`) USING BTREE
+  `unionid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'unionid',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '备注',
+  `tagid_list` json NULL COMMENT '标签ID列表',
+  `subscribe_scene` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '关注场景',
+  `qr_scene_str` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '扫码场景值',
+  PRIMARY KEY (`openid`) USING BTREE,
+  INDEX `idx_unionid`(`unionid`) USING BTREE COMMENT 'unionid'
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
