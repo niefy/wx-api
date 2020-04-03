@@ -28,14 +28,19 @@ public class User implements Serializable {
 	private String province;
 	private String headimgurl;
 	@JSONField(name="subscribe_time")
-    private Date subscribeTime;
+    	private Date subscribeTime;
 	private boolean subscribe;
+	private String unionid;
+	private String remark;
+	private JSONArray tagidList;
+	private String subscribeScene;
+	private String qrSceneStr;
 
-    public User() {
-    }
-    public User(String openid) {
-        this.openid = openid;
-    }
+	public User() {
+	}
+	public User(String openid) {
+		this.openid = openid;
+	}
 
 	public User(WxMpUser userWxInfo) {
 		this.openid = userWxInfo.getOpenId();
@@ -45,6 +50,12 @@ public class User implements Serializable {
 		this.province = userWxInfo.getProvince();
 		this.headimgurl = userWxInfo.getHeadImgUrl();
 		this.subscribeTime = new Date(userWxInfo.getSubscribeTime());
+		this.unionid=wxMpUser.getUnionId();
+		this.remark=wxMpUser.getRemark();
+		this.tagidList=JSONArray.parseArray(JSONObject.toJSONString(wxMpUser.getTagIds()));
+		this.subscribeScene=wxMpUser.getSubscribeScene();
+		String qrScene =  wxMpUser.getQrScene();
+		this.qrSceneStr= StringUtils.isEmpty(qrScene) ? wxMpUser.getQrSceneStr() : qrScene;
 	}
 
 	@Override
@@ -107,5 +118,44 @@ public class User implements Serializable {
 
 	public void setSubscribe(boolean subscribe) {
 		this.subscribe = subscribe;
+	}
+	public String getUnionid() {
+		return unionid;
+	}
+
+	public void setUnionid(String unionid) {
+		this.unionid = unionid;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public JSONArray getTagidList() {
+		return tagidList;
+	}
+
+	public void setTagidList(JSONArray tagidList) {
+		this.tagidList = tagidList;
+	}
+
+	public String getSubscribeScene() {
+		return subscribeScene;
+	}
+
+	public void setSubscribeScene(String subscribeScene) {
+		this.subscribeScene = subscribeScene;
+	}
+
+	public String getQrSceneStr() {
+		return qrSceneStr;
+	}
+
+	public void setQrSceneStr(String qrSceneStr) {
+		this.qrSceneStr = qrSceneStr;
 	}
 }
