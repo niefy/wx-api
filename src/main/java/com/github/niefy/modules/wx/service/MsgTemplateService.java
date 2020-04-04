@@ -19,6 +19,7 @@ public interface MsgTemplateService extends IService<MsgTemplate> {
 
     /**
      * 通过模板名称查询
+     *
      * @param name
      * @return
      */

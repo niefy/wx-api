@@ -1,7 +1,5 @@
 /**
  * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- *
  * 版权所有，侵权必究！
  */
 
@@ -14,7 +12,6 @@ import java.util.UUID;
 
 /**
  * 生成token
- *
  * @author Mark sunlightcs@gmail.com
  */
 public class TokenGenerator {
@@ -26,11 +23,11 @@ public class TokenGenerator {
     private static final char[] hexCode = "0123456789abcdef".toCharArray();
 
     public static String toHexString(byte[] data) {
-        if(data == null) {
+        if (data == null) {
             return null;
         }
-        StringBuilder r = new StringBuilder(data.length*2);
-        for ( byte b : data) {
+        StringBuilder r = new StringBuilder(data.length * 2);
+        for (byte b : data) {
             r.append(hexCode[(b >> 4) & 0xF]);
             r.append(hexCode[(b & 0xF)]);
         }

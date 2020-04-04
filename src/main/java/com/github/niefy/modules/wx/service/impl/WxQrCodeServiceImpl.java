@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Map;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -27,11 +28,11 @@ public class WxQrCodeServiceImpl extends ServiceImpl<WxQrCodeMapper, WxQrCodeEnt
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        String sceneStr = (String)params.get("sceneStr");
+        String sceneStr = (String) params.get("sceneStr");
         IPage<WxQrCodeEntity> page = this.page(
-                new Query<WxQrCodeEntity>().getPage(params),
-                new QueryWrapper<WxQrCodeEntity>()
-                        .like(!StringUtils.isEmpty(sceneStr),"scene_str",sceneStr)
+            new Query<WxQrCodeEntity>().getPage(params),
+            new QueryWrapper<WxQrCodeEntity>()
+                .like(!StringUtils.isEmpty(sceneStr), "scene_str", sceneStr)
         );
 
         return new PageUtils(page);
@@ -39,25 +40,26 @@ public class WxQrCodeServiceImpl extends ServiceImpl<WxQrCodeMapper, WxQrCodeEnt
 
     /**
      * 创建公众号带参二维码
+     *
      * @param form
      * @return
      */
     @Override
     public WxMpQrCodeTicket createQrCode(WxQrCodeForm form) throws WxErrorException {
         WxMpQrCodeTicket ticket;
-        if(form.getIsTemp()){//创建临时二维码
-            ticket = wxService.getQrcodeService().qrCodeCreateTmpTicket(form.getSceneStr(),form.getExpireSeconds());
-        }else {//创建永久二维码
-            ticket=wxService.getQrcodeService().qrCodeCreateLastTicket(form.getSceneStr());
+        if (form.getIsTemp()) {//创建临时二维码
+            ticket = wxService.getQrcodeService().qrCodeCreateTmpTicket(form.getSceneStr(), form.getExpireSeconds());
+        } else {//创建永久二维码
+            ticket = wxService.getQrcodeService().qrCodeCreateLastTicket(form.getSceneStr());
         }
-        WxQrCodeEntity wxQrCodeEntity=new WxQrCodeEntity(form);
+        WxQrCodeEntity wxQrCodeEntity = new WxQrCodeEntity(form);
         wxQrCodeEntity.setTicket(ticket.getTicket());
         wxQrCodeEntity.setUrl(ticket.getUrl());
-        if(form.getIsTemp()){
-            wxQrCodeEntity.setExpireTime(new Date(new Date().getTime()+ticket.getExpireSeconds()*1000L));
+        if (form.getIsTemp()) {
+            wxQrCodeEntity.setExpireTime(new Date(new Date().getTime() + ticket.getExpireSeconds() * 1000L));
         }
         this.save(wxQrCodeEntity);
-        return  ticket;
+        return ticket;
     }
 
 }

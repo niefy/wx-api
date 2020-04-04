@@ -1,7 +1,5 @@
 /**
  * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- *
  * 版权所有，侵权必究！
  */
 
@@ -16,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Redis工具类
- *
  * @author Mark sunlightcs@gmail.com
  */
 @Component
@@ -30,20 +27,20 @@ public class RedisUtils {
     /**  不设置过期时长 */
     public final static long NOT_EXPIRE = -1;
 
-    public void set(String key, Object value, long expire){
+    public void set(String key, Object value, long expire) {
         valueOperations.set(key, toJson(value));
-        if(expire != NOT_EXPIRE){
+        if (expire != NOT_EXPIRE) {
             redisTemplate.expire(key, expire, TimeUnit.SECONDS);
         }
     }
 
-    public void set(String key, Object value){
+    public void set(String key, Object value) {
         set(key, value, DEFAULT_EXPIRE);
     }
 
     public <T> T get(String key, Class<T> clazz, long expire) {
         String value = valueOperations.get(key);
-        if(expire != NOT_EXPIRE){
+        if (expire != NOT_EXPIRE) {
             redisTemplate.expire(key, expire, TimeUnit.SECONDS);
         }
         return value == null ? null : fromJson(value, clazz);
@@ -55,7 +52,7 @@ public class RedisUtils {
 
     public String get(String key, long expire) {
         String value = valueOperations.get(key);
-        if(expire != NOT_EXPIRE){
+        if (expire != NOT_EXPIRE) {
             redisTemplate.expire(key, expire, TimeUnit.SECONDS);
         }
         return value;
@@ -72,9 +69,9 @@ public class RedisUtils {
     /**
      * Object转成JSON数据
      */
-    private String toJson(Object object){
-        if(object instanceof Integer || object instanceof Long || object instanceof Float ||
-                object instanceof Double || object instanceof Boolean || object instanceof String){
+    private String toJson(Object object) {
+        if (object instanceof Integer || object instanceof Long || object instanceof Float ||
+            object instanceof Double || object instanceof Boolean || object instanceof String) {
             return String.valueOf(object);
         }
         return JSON.toJSONString(object);
@@ -83,7 +80,7 @@ public class RedisUtils {
     /**
      * JSON数据，转成Object
      */
-    private <T> T fromJson(String json, Class<T> clazz){
-        return JSON.parseObject(json,clazz);
+    private <T> T fromJson(String json, Class<T> clazz) {
+        return JSON.parseObject(json, clazz);
     }
 }

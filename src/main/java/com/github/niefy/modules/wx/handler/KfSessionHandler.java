@@ -10,19 +10,17 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 
 /**
- * 
  * @author Binary Wang
- *
  */
 @Component
-public class KfSessionHandler extends AbstractHandler{
+public class KfSessionHandler extends AbstractHandler {
 
-  @Override
-  public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
-      Map<String, Object> context, WxMpService wxMpService,
-            WxSessionManager sessionManager) {
+    @Override
+    public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
+                                    Map<String, Object> context, WxMpService wxMpService,
+                                    WxSessionManager sessionManager) {
 
-    return null;
-  }
+        return null;
+    }
 
 }

@@ -22,6 +22,7 @@ public interface WxQrCodeService extends IService<WxQrCodeEntity> {
 
     /**
      * 创建公众号带参二维码
+     *
      * @param form
      * @return
      */

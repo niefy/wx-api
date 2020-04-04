@@ -17,7 +17,6 @@ import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.common.utils.R;
 
 
-
 /**
  * 用户表
  *
@@ -36,7 +35,7 @@ public class UserManageController {
      */
     @RequestMapping("/list")
     @RequiresPermissions("wx:user:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = userService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -48,7 +47,7 @@ public class UserManageController {
      */
     @RequestMapping("/info/{openid}")
     @RequiresPermissions("wx:user:info")
-    public R info(@PathVariable("openid") String openid){
+    public R info(@PathVariable("openid") String openid) {
         User user = userService.getById(openid);
 
         return R.ok().put("user", user);
@@ -59,7 +58,7 @@ public class UserManageController {
      */
     @RequestMapping("/save")
     @RequiresPermissions("wx:user:save")
-    public R save(@RequestBody User user){
+    public R save(@RequestBody User user) {
         userService.save(user);
 
         return R.ok();
@@ -70,8 +69,8 @@ public class UserManageController {
      */
     @RequestMapping("/update")
     @RequiresPermissions("wx:user:update")
-    public R update(@RequestBody User user){
-			userService.updateById(user);
+    public R update(@RequestBody User user) {
+        userService.updateById(user);
 
         return R.ok();
     }
@@ -81,7 +80,7 @@ public class UserManageController {
      */
     @RequestMapping("/delete")
     @RequiresPermissions("wx:user:delete")
-    public R delete(@RequestBody String[] ids){
+    public R delete(@RequestBody String[] ids) {
         userService.removeByIds(Arrays.asList(ids));
 
         return R.ok();

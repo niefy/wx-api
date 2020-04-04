@@ -37,7 +37,7 @@ public class WxMenuManageController {
      */
     @PostMapping("/updateMenu")
     @RequiresPermissions("wx:menu:save")
-    public R updateMenu(@RequestBody WxMenu wxMenu) throws WxErrorException{
+    public R updateMenu(@RequestBody WxMenu wxMenu) throws WxErrorException {
         wxService.getMenuService().menuCreate(wxMenu);
         return R.ok();
     }

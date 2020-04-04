@@ -11,6 +11,7 @@ public class EmailProperties {
     private String username;
     private String password;
     private String port;
+
     @Override
     public String toString() {
         return Json.toJsonString(this);

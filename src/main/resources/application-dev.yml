@@ -24,9 +24,9 @@ spring:
             test-on-return: false
             stat-view-servlet:
                 enabled: false
-#                url-pattern: /druid/*
-#                login-username: admin
-#                login-password: admin
+            #                url-pattern: /druid/*
+            #                login-username: admin
+            #                login-password: admin
             filter:
                 stat:
                     log-slow-sql: true

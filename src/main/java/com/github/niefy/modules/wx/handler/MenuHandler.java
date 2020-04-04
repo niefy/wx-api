@@ -28,7 +28,7 @@ public class MenuHandler extends AbstractHandler {
             return null;
         }
         logger.info("菜单事件：" + wxMessage.getEventKey());
-        weixinMsgService.wxReplyMsg(true,wxMessage.getFromUser(), wxMessage.getEventKey());
+        weixinMsgService.wxReplyMsg(true, wxMessage.getFromUser(), wxMessage.getEventKey());
         return null;
     }
 

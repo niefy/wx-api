@@ -1,7 +1,5 @@
 /**
  * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- *
  * 版权所有，侵权必究！
  */
 
@@ -22,13 +20,13 @@ import java.util.Map;
 @Service("sysOssService")
 public class SysOssServiceImpl extends ServiceImpl<SysOssDao, SysOssEntity> implements SysOssService {
 
-	@Override
-	public PageUtils queryPage(Map<String, Object> params) {
-		IPage<SysOssEntity> page = this.page(
-			new Query<SysOssEntity>().getPage(params)
-		);
+    @Override
+    public PageUtils queryPage(Map<String, Object> params) {
+        IPage<SysOssEntity> page = this.page(
+            new Query<SysOssEntity>().getPage(params)
+        );
 
-		return new PageUtils(page);
-	}
-	
+        return new PageUtils(page);
+    }
+
 }

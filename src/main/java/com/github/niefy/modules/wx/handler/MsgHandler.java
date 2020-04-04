@@ -25,16 +25,16 @@ public class MsgHandler extends AbstractHandler {
 
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
-            Map<String, Object> context, WxMpService wxMpService,
-            WxSessionManager sessionManager) {
+                                    Map<String, Object> context, WxMpService wxMpService,
+                                    WxSessionManager sessionManager) {
 
         String textContent = wxMessage.getContent();
-        boolean autoReplyed = weixinMsgService.wxReplyMsg(false,wxMessage.getFromUser(), textContent);
+        boolean autoReplyed = weixinMsgService.wxReplyMsg(false, wxMessage.getFromUser(), textContent);
         //当用户输入关键词如“你好”，“客服”等，并且有客服在线时，把消息转发给在线客服
         if ("人工".equals(textContent) || !autoReplyed) {
             return WxMpXmlOutMessage
-                    .TRANSFER_CUSTOMER_SERVICE().fromUser(wxMessage.getToUser())
-                    .toUser(wxMessage.getFromUser()).build();
+                .TRANSFER_CUSTOMER_SERVICE().fromUser(wxMessage.getToUser())
+                .toUser(wxMessage.getFromUser()).build();
         }
         return null;
 

@@ -1,7 +1,5 @@
 /**
  * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- *
  * 版权所有，侵权必究！
  */
 
@@ -35,19 +33,19 @@ public class ShiroServiceImpl implements ShiroService {
         List<String> permsList;
 
         //系统管理员，拥有最高权限
-        if(userId == Constant.SUPER_ADMIN){
+        if (userId == Constant.SUPER_ADMIN) {
             List<SysMenuEntity> menuList = sysMenuDao.selectList(null);
             permsList = new ArrayList<>(menuList.size());
-            for(SysMenuEntity menu : menuList){
+            for (SysMenuEntity menu : menuList) {
                 permsList.add(menu.getPerms());
             }
-        }else{
+        } else {
             permsList = sysUserDao.queryAllPerms(userId);
         }
         //用户权限列表
         Set<String> permsSet = new HashSet<>();
-        for(String perms : permsList){
-            if(StringUtils.isBlank(perms)){
+        for (String perms : permsList) {
+            if (StringUtils.isBlank(perms)) {
                 continue;
             }
             permsSet.addAll(Arrays.asList(perms.trim().split(",")));

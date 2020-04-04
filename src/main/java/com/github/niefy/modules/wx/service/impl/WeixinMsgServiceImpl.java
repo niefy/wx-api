@@ -33,31 +33,33 @@ public class WeixinMsgServiceImpl implements WeixinMsgService {
     @Autowired
     WxMpService wxService;
 
-	/**
-	 * 根据规则配置通过微信客服消息接口自动回复消息
-	 * @param exactMatch 是否精确匹配
-	 * @param toUser 用户openid
-	 * @param keywords 匹配关键词
-	 * @return 是否已自动回复，无匹配规则则不自动回复
-	 */
+    /**
+     * 根据规则配置通过微信客服消息接口自动回复消息
+     *
+     * @param exactMatch 是否精确匹配
+     * @param toUser     用户openid
+     * @param keywords   匹配关键词
+     * @return 是否已自动回复，无匹配规则则不自动回复
+     */
     @Override
-    public boolean wxReplyMsg(boolean exactMatch,String toUser, String keywords) {
+    public boolean wxReplyMsg(boolean exactMatch, String toUser, String keywords) {
         try {
-            List<MsgReplyRule> rules = msgReplyRuleService.getMatchedRules( exactMatch, keywords);
+            List<MsgReplyRule> rules = msgReplyRuleService.getMatchedRules(exactMatch, keywords);
             if (rules.isEmpty()) return false;
-            for (MsgReplyRule rule:rules){
+            for (MsgReplyRule rule : rules) {
                 String replyType = rule.getReplyType();
                 String replyContent = rule.getReplyContent();
-                if(WxConsts.KefuMsgType.TEXT.equals(replyType))this.replyText(toUser,replyContent);
-                else if(WxConsts.KefuMsgType.IMAGE.equals(replyType))this.replyImage(toUser,replyContent);
-                else if(WxConsts.KefuMsgType.VOICE.equals(replyType))this.replyVoice(toUser,replyContent);
-                else if(WxConsts.KefuMsgType.VIDEO.equals(replyType))this.replyVideo(toUser,replyContent);
-                else if(WxConsts.KefuMsgType.MUSIC.equals(replyType))this.replyMusic(toUser,replyContent);
-                else if(WxConsts.KefuMsgType.NEWS.equals(replyType))this.replyNews(toUser,replyContent);
-                else if(WxConsts.KefuMsgType.MPNEWS.equals(replyType))this.replyMpNews(toUser,replyContent);
-                else if(WxConsts.KefuMsgType.WXCARD.equals(replyType))this.replyWxCard(toUser,replyContent);
-                else if(WxConsts.KefuMsgType.MINIPROGRAMPAGE.equals(replyType))this.replyMiniProgram(toUser,replyContent);
-                else if(WxConsts.KefuMsgType.MSGMENU.equals(replyType))this.replyMsgMenu(toUser,replyContent);
+                if (WxConsts.KefuMsgType.TEXT.equals(replyType)) this.replyText(toUser, replyContent);
+                else if (WxConsts.KefuMsgType.IMAGE.equals(replyType)) this.replyImage(toUser, replyContent);
+                else if (WxConsts.KefuMsgType.VOICE.equals(replyType)) this.replyVoice(toUser, replyContent);
+                else if (WxConsts.KefuMsgType.VIDEO.equals(replyType)) this.replyVideo(toUser, replyContent);
+                else if (WxConsts.KefuMsgType.MUSIC.equals(replyType)) this.replyMusic(toUser, replyContent);
+                else if (WxConsts.KefuMsgType.NEWS.equals(replyType)) this.replyNews(toUser, replyContent);
+                else if (WxConsts.KefuMsgType.MPNEWS.equals(replyType)) this.replyMpNews(toUser, replyContent);
+                else if (WxConsts.KefuMsgType.WXCARD.equals(replyType)) this.replyWxCard(toUser, replyContent);
+                else if (WxConsts.KefuMsgType.MINIPROGRAMPAGE.equals(replyType))
+                    this.replyMiniProgram(toUser, replyContent);
+                else if (WxConsts.KefuMsgType.MSGMENU.equals(replyType)) this.replyMsgMenu(toUser, replyContent);
             }
             return true;
         } catch (Exception e) {
@@ -65,8 +67,9 @@ public class WeixinMsgServiceImpl implements WeixinMsgService {
         }
         return false;
     }
+
     @Override
-    public void replyText(String toUser,String content) throws WxErrorException {
+    public void replyText(String toUser, String content) throws WxErrorException {
         wxService.getKefuService().sendKefuMessage(WxMpKefuMessage.TEXT().toUser(toUser).content(content).build());
     }
 
@@ -89,13 +92,13 @@ public class WeixinMsgServiceImpl implements WeixinMsgService {
     public void replyMusic(String toUser, String musicInfoJson) throws WxErrorException {
         JSONObject json = JSON.parseObject(musicInfoJson);
         wxService.getKefuService().sendKefuMessage(
-                WxMpKefuMessage.MUSIC().toUser(toUser)
-                        .musicUrl(json.getString("musicurl"))
-                        .hqMusicUrl(json.getString("hqmusicurl"))
-                        .title(json.getString("title"))
-                        .description(json.getString("description"))
-                        .thumbMediaId(json.getString("thumb_media_id"))
-                        .build());
+            WxMpKefuMessage.MUSIC().toUser(toUser)
+                .musicUrl(json.getString("musicurl"))
+                .hqMusicUrl(json.getString("hqmusicurl"))
+                .title(json.getString("title"))
+                .description(json.getString("description"))
+                .thumbMediaId(json.getString("thumb_media_id"))
+                .build());
     }
 
     @Override
@@ -118,13 +121,13 @@ public class WeixinMsgServiceImpl implements WeixinMsgService {
     public void replyMiniProgram(String toUser, String miniProgramInfoJson) throws WxErrorException {
         JSONObject json = JSON.parseObject(miniProgramInfoJson);
         wxService.getKefuService().sendKefuMessage(
-                WxMpKefuMessage.MINIPROGRAMPAGE()
-                        .toUser(toUser)
-                        .title(json.getString("title"))
-                        .appId(json.getString("appid"))
-                        .pagePath(json.getString("pagepath"))
-                        .thumbMediaId(json.getString("thumb_media_id"))
-                        .build());
+            WxMpKefuMessage.MINIPROGRAMPAGE()
+                .toUser(toUser)
+                .title(json.getString("title"))
+                .appId(json.getString("appid"))
+                .pagePath(json.getString("pagepath"))
+                .thumbMediaId(json.getString("thumb_media_id"))
+                .build());
     }
 
     @Override
@@ -132,11 +135,11 @@ public class WeixinMsgServiceImpl implements WeixinMsgService {
         JSONObject json = JSON.parseObject(msgMenusJson);
         List<WxMpKefuMessage.MsgMenu> msgMenus = json.getJSONArray("list").toJavaList(WxMpKefuMessage.MsgMenu.class);
         wxService.getKefuService().sendKefuMessage(
-                WxMpKefuMessage.MSGMENU()
-                        .toUser(toUser)
-                        .headContent(json.getString("head_content"))
-                        .tailContent(json.getString("tail_content"))
-                        .msgMenus(msgMenus).build());
+            WxMpKefuMessage.MSGMENU()
+                .toUser(toUser)
+                .headContent(json.getString("head_content"))
+                .tailContent(json.getString("tail_content"))
+                .msgMenus(msgMenus).build());
     }
 
 }

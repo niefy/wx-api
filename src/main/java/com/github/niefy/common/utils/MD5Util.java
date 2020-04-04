@@ -6,13 +6,14 @@ import java.security.MessageDigest;
  * MD5加密工具类
  */
 public class MD5Util {
-	private static final String DEFAULT_MD_5_SALT ="fjdsl321312kf349832&*^*903294[JNLIUIK]%fsdjfkl";//加盐md5盐值
+    private static final String DEFAULT_MD_5_SALT = "fjdsl321312kf349832&*^*903294[JNLIUIK]%fsdjfkl";//加盐md5盐值
+
     /**
      * 获得字符串的md5值
      *
      * @return md5加密后的字符串
      */
-	public static String getMD5(String s) {
+    public static String getMD5(String s) {
         char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
         try {
             byte[] btInput = s.getBytes();
@@ -59,11 +60,12 @@ public class MD5Util {
     public static String getMD5AndSalt(String str, String salt) {
         return getMD5(getMD5(str).concat(salt));
     }
-    
+
     /**
      * 获得加盐md5，算法过程是原字符串md5后连接加盐字符串后再进行md5
      * 使用默认盐值
-     * @param str  待加密的字符串
+     *
+     * @param str 待加密的字符串
      * @return 加盐md5
      */
     public static String getMD5AndSalt(String str) {

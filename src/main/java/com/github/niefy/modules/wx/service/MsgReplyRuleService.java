@@ -9,6 +9,7 @@ import java.util.Map;
 
 public interface MsgReplyRuleService extends IService<MsgReplyRule> {
     PageUtils queryPage(Map<String, Object> params);
+
     /**
      * 保存自动回复规则
      *
@@ -33,8 +34,9 @@ public interface MsgReplyRuleService extends IService<MsgReplyRule> {
 
     /**
      * 筛选符合条件的回复规则
+     *
      * @param exactMatch 是否精确匹配
-     * @param keywords 关键词
+     * @param keywords   关键词
      * @return 规则列表
      */
     List<MsgReplyRule> getMatchedRules(boolean exactMatch, String keywords);

@@ -9,6 +9,7 @@ import java.util.Map;
 
 public interface UserService extends IService<User> {
     PageUtils queryPage(Map<String, Object> params);
+
     /**
      * 根据openid更新用户信息
      *
@@ -49,6 +50,7 @@ public interface UserService extends IService<User> {
 
     /**
      * 取消关注，更新关注状态
+     *
      * @param openid
      */
     void unsubscribe(String openid);

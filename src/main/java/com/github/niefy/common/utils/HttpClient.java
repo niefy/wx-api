@@ -9,11 +9,12 @@ import java.util.Map;
 public class HttpClient {
     private String charset = "UTF-8";
     private String url;
-    private Method method= Method.GET;
+    private Method method = Method.GET;
     private Map<String, String> param;
     private Map<String, String> headers;
     private String requestBody;
-    public enum Method{
+
+    public enum Method {
         /**
          * GET请求
          */
@@ -31,19 +32,22 @@ public class HttpClient {
          */
         DELETE("DELETE");
         private String type;
-        Method(String type){
-            this.type=type;
+
+        Method(String type) {
+            this.type = type;
         }
     }
+
     public HttpClient(String url) {
-        this.url=url;
+        this.url = url;
     }
 
     /**
      * 打开连接并返回结果
+     *
      * @return
      */
-    public String open(){
+    public String open() {
         HttpURLConnection conn = null;
         try {
             conn = getHttpConnection(buildUrlWithQueryString(url, param), method.type, headers);
@@ -58,7 +62,7 @@ public class HttpClient {
         }
     }
 
-    private  HttpURLConnection getHttpConnection(String url, String method, Map<String, String> headers) throws IOException {
+    private HttpURLConnection getHttpConnection(String url, String method, Map<String, String> headers) throws IOException {
         HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
         conn.setRequestMethod(method);
         conn.setDoOutput(true);
@@ -78,7 +82,7 @@ public class HttpClient {
     }
 
 
-    private  String readResponseString(HttpURLConnection conn) {
+    private String readResponseString(HttpURLConnection conn) {
         StringBuilder sb = new StringBuilder();
         InputStream inputStream = null;
         BufferedReader reader = null;
@@ -100,7 +104,7 @@ public class HttpClient {
                     e.printStackTrace();
                 }
             }
-            if(reader!=null){
+            if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException e) {
@@ -113,7 +117,7 @@ public class HttpClient {
     /**
      * Build queryString of the url
      */
-    private  String buildUrlWithQueryString(String url, Map<String, String> queryParas) {
+    private String buildUrlWithQueryString(String url, Map<String, String> queryParas) {
         if (queryParas == null || queryParas.isEmpty()) {
             return url;
         }

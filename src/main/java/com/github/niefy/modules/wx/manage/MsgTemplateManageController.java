@@ -17,7 +17,6 @@ import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.common.utils.R;
 
 
-
 /**
  * 消息模板
  *
@@ -36,7 +35,7 @@ public class MsgTemplateManageController {
      */
     @RequestMapping("/list")
     @RequiresPermissions("wx:msgtemplate:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = msgTemplateService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -48,8 +47,8 @@ public class MsgTemplateManageController {
      */
     @RequestMapping("/info/{id}")
     @RequiresPermissions("wx:msgtemplate:info")
-    public R info(@PathVariable("id") Long id){
-		MsgTemplate msgTemplate = msgTemplateService.getById(id);
+    public R info(@PathVariable("id") Long id) {
+        MsgTemplate msgTemplate = msgTemplateService.getById(id);
 
         return R.ok().put("msgTemplate", msgTemplate);
     }
@@ -59,8 +58,8 @@ public class MsgTemplateManageController {
      */
     @RequestMapping("/save")
     @RequiresPermissions("wx:msgtemplate:save")
-    public R save(@RequestBody MsgTemplate msgTemplate){
-		msgTemplateService.save(msgTemplate);
+    public R save(@RequestBody MsgTemplate msgTemplate) {
+        msgTemplateService.save(msgTemplate);
 
         return R.ok();
     }
@@ -70,8 +69,8 @@ public class MsgTemplateManageController {
      */
     @RequestMapping("/update")
     @RequiresPermissions("wx:msgtemplate:update")
-    public R update(@RequestBody MsgTemplate msgTemplate){
-		msgTemplateService.updateById(msgTemplate);
+    public R update(@RequestBody MsgTemplate msgTemplate) {
+        msgTemplateService.updateById(msgTemplate);
 
         return R.ok();
     }
@@ -81,8 +80,8 @@ public class MsgTemplateManageController {
      */
     @RequestMapping("/delete")
     @RequiresPermissions("wx:msgtemplate:delete")
-    public R delete(@RequestBody String[] ids){
-		msgTemplateService.removeByIds(Arrays.asList(ids));
+    public R delete(@RequestBody String[] ids) {
+        msgTemplateService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }

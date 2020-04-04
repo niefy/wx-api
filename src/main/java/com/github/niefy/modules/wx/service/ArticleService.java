@@ -11,6 +11,7 @@ import java.util.Map;
 
 public interface ArticleService extends IService<Article> {
     PageUtils queryPage(Map<String, Object> params);
+
     /**
      * 查询文章详情，每次查询后增加点击次数
      *
@@ -21,6 +22,7 @@ public interface ArticleService extends IService<Article> {
 
     /**
      * 添加或编辑文章,同名文章不可重复添加
+     *
      * @param article
      */
 
@@ -28,6 +30,7 @@ public interface ArticleService extends IService<Article> {
 
     /**
      * 按条件分页查询
+     *
      * @param title
      * @param page
      * @return
@@ -45,6 +48,7 @@ public interface ArticleService extends IService<Article> {
 
     /**
      * 文章查找，不返回文章详情字段
+     *
      * @param articleType
      * @param category
      * @param keywords

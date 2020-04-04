@@ -30,6 +30,7 @@ public class WxAssetsManageController {
 
     /**
      * 获取素材总数
+     *
      * @return
      * @throws WxErrorException
      */
@@ -41,6 +42,7 @@ public class WxAssetsManageController {
 
     /**
      * 根据类别分页获取非图文素材列表
+     *
      * @param type
      * @param page
      * @return
@@ -49,14 +51,15 @@ public class WxAssetsManageController {
     @GetMapping("/materialFileBatchGet")
     @RequiresPermissions("wx:material:list")
     public R materialFileBatchGet(@RequestParam(defaultValue = "image") String type,
-                                       @RequestParam(defaultValue = "1") int page) throws WxErrorException {
-        int offset=(page-1)* PageSizeConstant.PAGE_SIZE_SMALL;
-        WxMpMaterialFileBatchGetResult res = wxService.getMaterialService().materialFileBatchGet(type,offset, PageSizeConstant.PAGE_SIZE_SMALL);
+                                  @RequestParam(defaultValue = "1") int page) throws WxErrorException {
+        int offset = (page - 1) * PageSizeConstant.PAGE_SIZE_SMALL;
+        WxMpMaterialFileBatchGetResult res = wxService.getMaterialService().materialFileBatchGet(type, offset, PageSizeConstant.PAGE_SIZE_SMALL);
         return R.ok().put(res);
     }
 
     /**
      * 分页获取图文素材列表
+     *
      * @param page
      * @return
      * @throws WxErrorException
@@ -64,13 +67,14 @@ public class WxAssetsManageController {
     @GetMapping("/materialNewsBatchGet")
     @RequiresPermissions("wx:material:list")
     public R materialNewsBatchGet(@RequestParam(defaultValue = "1") int page) throws WxErrorException {
-        int offset=(page-1)*PageSizeConstant.PAGE_SIZE_SMALL;
+        int offset = (page - 1) * PageSizeConstant.PAGE_SIZE_SMALL;
         WxMpMaterialNewsBatchGetResult res = wxService.getMaterialService().materialNewsBatchGet(offset, PageSizeConstant.PAGE_SIZE_SMALL);
         return R.ok().put(res);
     }
 
     /**
      * 添加图文永久素材
+     *
      * @param mpMaterialNewsArticle
      * @return
      * @throws WxErrorException
@@ -87,6 +91,7 @@ public class WxAssetsManageController {
 
     /**
      * 添加多媒体永久素材
+     *
      * @param file
      * @param fileName
      * @param mediaType
@@ -97,20 +102,21 @@ public class WxAssetsManageController {
     @PostMapping("/materialFileUpload")
     @RequiresPermissions("wx:material:save")
     public R materialFileUpload(MultipartFile file, String fileName, String mediaType) throws WxErrorException, IOException {
-        if(file==null)return R.error("文件不得为空");
-        String originalFilename=file.getOriginalFilename();
-        File tempFile = File.createTempFile(fileName+"--", originalFilename.substring(originalFilename.lastIndexOf(".")));
+        if (file == null) return R.error("文件不得为空");
+        String originalFilename = file.getOriginalFilename();
+        File tempFile = File.createTempFile(fileName + "--", originalFilename.substring(originalFilename.lastIndexOf(".")));
         file.transferTo(tempFile);
         WxMpMaterial wxMaterial = new WxMpMaterial();
         wxMaterial.setFile(tempFile);
         wxMaterial.setName(fileName);
-        WxMpMaterialUploadResult res = wxService.getMaterialService().materialFileUpload(mediaType,wxMaterial);
+        WxMpMaterialUploadResult res = wxService.getMaterialService().materialFileUpload(mediaType, wxMaterial);
         tempFile.deleteOnExit();
         return R.ok().put(res);
     }
 
     /**
      * 删除素材
+     *
      * @param form
      * @return
      * @throws WxErrorException

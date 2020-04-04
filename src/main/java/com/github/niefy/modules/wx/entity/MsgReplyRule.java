@@ -110,7 +110,7 @@ public class MsgReplyRule implements Serializable {
     public void setEffectTimeEnd(Time effectTimeEnd) {
         this.effectTimeEnd = effectTimeEnd;
     }
-    
+
     public boolean isExactMatch() {
         return exactMatch;
     }

@@ -20,7 +20,6 @@ import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.common.utils.R;
 
 
-
 /**
  * 自动回复规则
  *
@@ -39,7 +38,7 @@ public class MsgReplyRuleManageController {
      */
     @RequestMapping("/list")
     @RequiresPermissions("wx:msgreplyrule:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = msgReplyRuleService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -51,8 +50,8 @@ public class MsgReplyRuleManageController {
      */
     @RequestMapping("/info/{ruleId}")
     @RequiresPermissions("wx:msgreplyrule:info")
-    public R info(@PathVariable("ruleId") Integer ruleId){
-		MsgReplyRule msgReplyRule = msgReplyRuleService.getById(ruleId);
+    public R info(@PathVariable("ruleId") Integer ruleId) {
+        MsgReplyRule msgReplyRule = msgReplyRuleService.getById(ruleId);
 
         return R.ok().put("msgReplyRule", msgReplyRule);
     }
@@ -62,12 +61,12 @@ public class MsgReplyRuleManageController {
      */
     @RequestMapping("/save")
     @RequiresPermissions("wx:msgreplyrule:save")
-    public R save(@RequestBody MsgReplyRule msgReplyRule){
-        if(WxConsts.KefuMsgType.NEWS.equals(msgReplyRule.getReplyType()) &&
-                !Pattern.matches(RegexConstant.NUMBER_ARRAY, msgReplyRule.getReplyContent())){
+    public R save(@RequestBody MsgReplyRule msgReplyRule) {
+        if (WxConsts.KefuMsgType.NEWS.equals(msgReplyRule.getReplyType()) &&
+            !Pattern.matches(RegexConstant.NUMBER_ARRAY, msgReplyRule.getReplyContent())) {
             return R.error("图文消息ID格式不正确");
         }
-		msgReplyRuleService.save(msgReplyRule);
+        msgReplyRuleService.save(msgReplyRule);
 
         return R.ok();
     }
@@ -77,8 +76,8 @@ public class MsgReplyRuleManageController {
      */
     @RequestMapping("/update")
     @RequiresPermissions("wx:msgreplyrule:update")
-    public R update(@RequestBody MsgReplyRule msgReplyRule){
-		msgReplyRuleService.updateById(msgReplyRule);
+    public R update(@RequestBody MsgReplyRule msgReplyRule) {
+        msgReplyRuleService.updateById(msgReplyRule);
 
         return R.ok();
     }
@@ -88,8 +87,8 @@ public class MsgReplyRuleManageController {
      */
     @RequestMapping("/delete")
     @RequiresPermissions("wx:msgreplyrule:delete")
-    public R delete(@RequestBody Integer[] ruleIds){
-		msgReplyRuleService.removeByIds(Arrays.asList(ruleIds));
+    public R delete(@RequestBody Integer[] ruleIds) {
+        msgReplyRuleService.removeByIds(Arrays.asList(ruleIds));
 
         return R.ok();
     }

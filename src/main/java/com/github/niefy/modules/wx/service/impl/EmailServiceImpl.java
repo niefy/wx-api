@@ -16,15 +16,17 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.util.Properties;
+
 @Service
 @EnableConfigurationProperties(EmailProperties.class)
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
     private final EmailProperties properties;
+
     /**
      * 获得邮件会话属性
      */
-    private Session getDefaultSession(){
+    private Session getDefaultSession() {
         final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
         Properties p = new Properties();
         p.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
@@ -33,17 +35,18 @@ public class EmailServiceImpl implements EmailService {
         p.put("mail.smtp.port", properties.getPort());
         p.put("mail.smtp.auth", "true");
         p.setProperty("mail.smtp.socketFactory.port", properties.getPort());
-        return Session.getDefaultInstance(p,new Authenticator(){
-            public PasswordAuthentication getPasswordAuthentication(){
+        return Session.getDefaultInstance(p, new Authenticator() {
+            public PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(properties.getUsername(), properties.getPassword()); //发件人邮件用户名、密码
             }
         });
     }
+
     @Override
-    public void sendMail(String to, String subject, String content, String... files){
+    public void sendMail(String to, String subject, String content, String... files) {
         // 获取默认session对象
         Session session = getDefaultSession();
-        try{
+        try {
             // 创建默认的 MimeMessage 对象。
             MimeMessage message = new MimeMessage(session);
             // Set From: 头部头字段
@@ -55,7 +58,7 @@ public class EmailServiceImpl implements EmailService {
             // 创建消息部分
             MimeBodyPart textPart = new MimeBodyPart();
             // 消息
-            textPart.setContent(content,"text/html;charset=utf-8");
+            textPart.setContent(content, "text/html;charset=utf-8");
             // 创建多重消息
             Multipart multipart = new MimeMultipart();
             // 设置文本消息部分
@@ -68,10 +71,10 @@ public class EmailServiceImpl implements EmailService {
                 multipart.addBodyPart(filePart);
             }
             // 发送完整消息
-            message.setContent(multipart );
+            message.setContent(multipart);
             Transport.send(message);
-        }catch (MessagingException e) {
-            throw new RRException("邮件发送失败",e);
+        } catch (MessagingException e) {
+            throw new RRException("邮件发送失败", e);
         }
     }
 }

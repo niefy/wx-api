@@ -25,10 +25,10 @@ public class TemplateMsgController {
     TemplateMsgService templateMsgService;
 
     @PostMapping("/sendToUser")
-    public R sendToUser(HttpServletRequest request, @RequestBody TemplateMsgForm form){
+    public R sendToUser(HttpServletRequest request, @RequestBody TemplateMsgForm form) {
         String ip = IPUtils.getIpAddr(request);
-        logger.info("发送模板消息，ip={},detail={}",ip,form);
-        if(form.isValid())templateMsgService.sendToUser(form);
+        logger.info("发送模板消息，ip={},detail={}", ip, form);
+        if (form.isValid()) templateMsgService.sendToUser(form);
         return R.ok();
     }
 }

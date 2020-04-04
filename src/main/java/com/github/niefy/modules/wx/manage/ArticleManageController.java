@@ -17,7 +17,6 @@ import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.common.utils.R;
 
 
-
 /**
  * 文章
  *
@@ -36,7 +35,7 @@ public class ArticleManageController {
      */
     @RequestMapping("/list")
     @RequiresPermissions("wx:article:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = articleService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -48,8 +47,8 @@ public class ArticleManageController {
      */
     @RequestMapping("/info/{id}")
     @RequiresPermissions("wx:article:info")
-    public R info(@PathVariable("id") Integer id){
-		Article article = articleService.getById(id);
+    public R info(@PathVariable("id") Integer id) {
+        Article article = articleService.getById(id);
 
         return R.ok().put("article", article);
     }
@@ -59,8 +58,8 @@ public class ArticleManageController {
      */
     @RequestMapping("/save")
     @RequiresPermissions("wx:article:save")
-    public R save(@RequestBody Article article){
-		articleService.save(article);
+    public R save(@RequestBody Article article) {
+        articleService.save(article);
 
         return R.ok();
     }
@@ -70,8 +69,8 @@ public class ArticleManageController {
      */
     @RequestMapping("/update")
     @RequiresPermissions("wx:article:update")
-    public R update(@RequestBody Article article){
-		articleService.updateById(article);
+    public R update(@RequestBody Article article) {
+        articleService.updateById(article);
 
         return R.ok();
     }
@@ -81,8 +80,8 @@ public class ArticleManageController {
      */
     @RequestMapping("/delete")
     @RequiresPermissions("wx:article:delete")
-    public R delete(@RequestBody Integer[] ids){
-		articleService.removeByIds(Arrays.asList(ids));
+    public R delete(@RequestBody Integer[] ids) {
+        articleService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }

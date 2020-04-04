@@ -38,31 +38,31 @@ public class WxAuthController {
     private String appId;
     @Value("${server.baseAddress}")
     private String appBaseAddress;
-    
+
     @GetMapping("/getCode")
     @CrossOrigin
     public String getCode(HttpServletRequest request, HttpServletResponse response,
                           @RequestParam(required = false) String state,
                           @RequestParam(required = false) String code,
-                          @RequestParam(required = false)String redirect) throws Exception {
-        logger.info("获取微信授权code,redirect="+redirect);
-        logger.info("获取微信授权code,state="+state);
-        if(StringUtils.isEmpty(code) && !StringUtils.isEmpty(redirect)){
-            String authUrl=wxService.oauth2buildAuthorizationUrl(appBaseAddress+request.getRequestURI(), WxConsts.OAuth2Scope.SNSAPI_BASE, URLEncoder.encode(redirect,"utf-8"));
-            logger.info("获取微信授权code,重定向到"+authUrl);
+                          @RequestParam(required = false) String redirect) throws Exception {
+        logger.info("获取微信授权code,redirect=" + redirect);
+        logger.info("获取微信授权code,state=" + state);
+        if (StringUtils.isEmpty(code) && !StringUtils.isEmpty(redirect)) {
+            String authUrl = wxService.oauth2buildAuthorizationUrl(appBaseAddress + request.getRequestURI(), WxConsts.OAuth2Scope.SNSAPI_BASE, URLEncoder.encode(redirect, "utf-8"));
+            logger.info("获取微信授权code,重定向到" + authUrl);
             response.sendRedirect(authUrl);
             return null;
-        }else if(!StringUtils.isEmpty(code) && Pattern.matches("[a-zA-z]+://[^\\s]*", state)){
-            String returnUrl= URIUtil.appendUri(state,"code="+code);
-            logger.info("授权完成，重定向到："+returnUrl);
+        } else if (!StringUtils.isEmpty(code) && Pattern.matches("[a-zA-z]+://[^\\s]*", state)) {
+            String returnUrl = URIUtil.appendUri(state, "code=" + code);
+            logger.info("授权完成，重定向到：" + returnUrl);
             response.sendRedirect(returnUrl);
             return null;
         }
         return "parameters error";
 
     }
-    
-    
+
+
     /**
      * 使用微信授权code换取openid
      *
@@ -74,7 +74,7 @@ public class WxAuthController {
     @PostMapping("/codeToOpenid")
     @CrossOrigin
     public R codeToOpenid(HttpServletRequest request, HttpServletResponse response, @RequestBody CodeToOpenidForm form) {
-        String code=form.getCode();
+        String code = form.getCode();
         try {
             WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxService.oauth2getAccessToken(code);
             String openid = wxMpOAuth2AccessToken.getOpenId();
@@ -82,8 +82,8 @@ public class WxAuthController {
             String openidToken = MD5Util.getMD5AndSalt(openid);
             CookieUtil.setCookie(response, "openidToken", openidToken, 365 * 24 * 60 * 60);
             return R.ok().put(openid);
-        }catch (WxErrorException e){
-            logger.error("code换取openid失败",e);
+        } catch (WxErrorException e) {
+            logger.error("code换取openid失败", e);
             return R.error(e.getError().getErrorMsg());
         }
 
@@ -92,6 +92,7 @@ public class WxAuthController {
     /**
      * 获取微信分享的签名配置
      * 允许跨域（只有微信公众号添加了js安全域名的网站才能加载微信分享，故这里不对域名进行校验）
+     *
      * @param request
      * @param response
      * @return
@@ -115,15 +116,15 @@ public class WxAuthController {
 
         // 加密获取signature
         StringBuilder wxBaseString = new StringBuilder();
-        wxMap.forEach((key,value)-> wxBaseString.append(key).append("=").append(value).append("&"));
+        wxMap.forEach((key, value) -> wxBaseString.append(key).append("=").append(value).append("&"));
         String wxSignString = wxBaseString.substring(0, wxBaseString.length() - 1);
         // signature
         String wxSignature = SHA1Util.sha1(wxSignString);
         Map<String, String> resMap = new TreeMap<>();
-        resMap.put("appId",appId );
-        resMap.put("wxTimestamp",wxTimestamp );
-        resMap.put("wxNoncestr",wxNoncestr );
-        resMap.put("wxSignature",wxSignature );
+        resMap.put("appId", appId);
+        resMap.put("wxTimestamp", wxTimestamp);
+        resMap.put("wxNoncestr", wxNoncestr);
+        resMap.put("wxSignature", wxSignature);
         return R.ok().put(resMap);
     }
 }

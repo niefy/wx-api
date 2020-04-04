@@ -2,15 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.github.niefy.modules.sys.dao.SysUserRoleDao">
-	<cache-ref namespace="com.github.niefy.modules.sys.dao.SysConfigDao"/>
-	<delete id="deleteBatch">
-		delete from sys_user_role where role_id in
-		<foreach item="roleId" collection="array" open="(" separator="," close=")">
-			#{roleId}
-		</foreach>
-	</delete>
+    <cache-ref namespace="com.github.niefy.modules.sys.dao.SysConfigDao"/>
+    <delete id="deleteBatch">
+        delete from sys_user_role where role_id in
+        <foreach item="roleId" collection="array" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+    </delete>
 
-	<select id="queryRoleIdList" resultType="long">
-		select role_id from sys_user_role where user_id = #{value}
-	</select>
+    <select id="queryRoleIdList" resultType="long">
+        select role_id from sys_user_role where user_id = #{value}
+    </select>
 </mapper>

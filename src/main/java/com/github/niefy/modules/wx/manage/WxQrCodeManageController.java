@@ -37,12 +37,13 @@ public class WxQrCodeManageController {
         WxMpQrCodeTicket ticket = wxQrCodeService.createQrCode(form);
         return R.ok().put(ticket);
     }
+
     /**
      * 列表
      */
     @RequestMapping("/list")
     @RequiresPermissions("wx:wxqrcode:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = wxQrCodeService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -54,7 +55,7 @@ public class WxQrCodeManageController {
      */
     @RequestMapping("/info/{id}")
     @RequiresPermissions("wx:wxqrcode:info")
-    public R info(@PathVariable("id") Long id){
+    public R info(@PathVariable("id") Long id) {
         WxQrCodeEntity wxQrCode = wxQrCodeService.getById(id);
 
         return R.ok().put("wxQrCode", wxQrCode);
@@ -65,7 +66,7 @@ public class WxQrCodeManageController {
      */
     @RequestMapping("/delete")
     @RequiresPermissions("wx:wxqrcode:delete")
-    public R delete(@RequestBody Long[] ids){
+    public R delete(@RequestBody Long[] ids) {
         wxQrCodeService.removeByIds(Arrays.asList(ids));
 
         return R.ok();

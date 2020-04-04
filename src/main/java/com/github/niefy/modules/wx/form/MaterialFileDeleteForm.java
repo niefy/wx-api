@@ -4,10 +4,12 @@ import com.github.niefy.common.utils.Json;
 
 public class MaterialFileDeleteForm {
     String mediaId;
+
     @Override
     public String toString() {
         return Json.toJsonString(this);
     }
+
     public String getMediaId() {
         return mediaId;
     }

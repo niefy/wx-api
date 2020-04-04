@@ -7,6 +7,7 @@ import javax.validation.constraints.NotEmpty;
 public class CodeToOpenidForm {
     @NotEmpty(message = "code不得为空")
     private String code;
+
     @Override
     public String toString() {
         return Json.toJsonString(this);

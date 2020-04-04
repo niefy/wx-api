@@ -12,12 +12,14 @@ public class TemplateMsgForm {
     public String toString() {
         return Json.toJsonString(this);
     }
-    public boolean isValid(){
-        if(openid==null || openid.isEmpty() || msg==null || msg.isEmpty() || template==null || template.isEmpty()){
+
+    public boolean isValid() {
+        if (openid == null || openid.isEmpty() || msg == null || msg.isEmpty() || template == null || template.isEmpty()) {
             throw new RRException("缺少必要参数");
         }
         return true;
     }
+
     public String getOpenid() {
         return openid;
     }

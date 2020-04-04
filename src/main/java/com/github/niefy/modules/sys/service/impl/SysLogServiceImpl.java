@@ -1,7 +1,5 @@
 /**
  * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- *
  * 版权所有，侵权必究！
  */
 
@@ -36,26 +34,28 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogDao, SysLogEntity> impl
      * 未保存的日志队列
      */
     private static ConcurrentLinkedQueue<SysLogEntity> SysLogsQueue = new ConcurrentLinkedQueue<>();
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        String key = (String)params.get("key");
+        String key = (String) params.get("key");
 
         IPage<SysLogEntity> page = this.page(
             new Query<SysLogEntity>().getPage(params),
-            new QueryWrapper<SysLogEntity>().like(StringUtils.isNotBlank(key),"username", key)
+            new QueryWrapper<SysLogEntity>().like(StringUtils.isNotBlank(key), "username", key)
         );
 
         return new PageUtils(page);
     }
+
     /**
      * 添加系统日志到队列中，队列数据会定时批量插入到数据库
      * @param params
      */
-    public void addLog(String method,String params) {
+    public void addLog(String method, String params) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String openid = CookieUtil.getCookieValue(request,"openid");
+        String openid = CookieUtil.getCookieValue(request, "openid");
         String ip = IPUtils.getIpAddr(request);
-        SysLogEntity sysLog = new SysLogEntity(openid,method,params,ip);
+        SysLogEntity sysLog = new SysLogEntity(openid, method, params, ip);
         SysLogsQueue.offer(sysLog);
     }
 
@@ -63,12 +63,12 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogDao, SysLogEntity> impl
      * 定时将日志插入到数据库
      */
     @Scheduled(cron = "0 0/5 * * * ?")
-    synchronized void batchAddSysLog(){
+    synchronized void batchAddSysLog() {
         List<SysLogEntity> logs = new ArrayList<>();
-        while (!SysLogsQueue.isEmpty()){
+        while (!SysLogsQueue.isEmpty()) {
             logs.add(SysLogsQueue.poll());
         }
-        if(!logs.isEmpty()){
+        if (!logs.isEmpty()) {
             this.saveBatch(logs);
         }
     }

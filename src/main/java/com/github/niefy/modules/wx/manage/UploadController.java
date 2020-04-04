@@ -17,15 +17,15 @@ public class UploadController {
     FileTransferService fileTransferService;
 
     @RequestMapping("/uploadImg")
-    public R uploadImg(MultipartFile file,String savePath){
+    public R uploadImg(MultipartFile file, String savePath) {
         String filename = file.getOriginalFilename();
-        if(!Pattern.matches(RegexConstant.IMAGE_FILE_NAME, filename)){
-            return R.error("文件"+filename+"格式不支持");
+        if (!Pattern.matches(RegexConstant.IMAGE_FILE_NAME, filename)) {
+            return R.error("文件" + filename + "格式不支持");
         }
-        if(file.getSize()>1024*1024){
+        if (file.getSize() > 1024 * 1024) {
             return R.error("只可上传1以下的文件");
         }
-        String path=fileTransferService.saveFile(file,savePath);
+        String path = fileTransferService.saveFile(file, savePath);
         return R.ok().put(path);
     }
 }
