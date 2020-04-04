@@ -5,11 +5,7 @@ import java.util.Map;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.github.niefy.modules.wx.entity.TemplateMsgLog;
 import com.github.niefy.modules.wx.service.TemplateMsgLogService;
@@ -33,7 +29,7 @@ public class TemplateMsgLogManageController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @RequiresPermissions("wx:templatemsglog:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = templateMsgLogService.queryPage(params);
@@ -45,7 +41,7 @@ public class TemplateMsgLogManageController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{logId}")
+    @GetMapping("/info/{logId}")
     @RequiresPermissions("wx:templatemsglog:info")
     public R info(@PathVariable("logId") Integer logId) {
         TemplateMsgLog templateMsgLog = templateMsgLogService.getById(logId);
@@ -56,7 +52,7 @@ public class TemplateMsgLogManageController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     @RequiresPermissions("wx:templatemsglog:save")
     public R save(@RequestBody TemplateMsgLog templateMsgLog) {
         templateMsgLogService.save(templateMsgLog);
@@ -67,7 +63,7 @@ public class TemplateMsgLogManageController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     @RequiresPermissions("wx:templatemsglog:update")
     public R update(@RequestBody TemplateMsgLog templateMsgLog) {
         templateMsgLogService.updateById(templateMsgLog);
@@ -78,7 +74,7 @@ public class TemplateMsgLogManageController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     @RequiresPermissions("wx:templatemsglog:delete")
     public R delete(@RequestBody Integer[] logIds) {
         templateMsgLogService.removeByIds(Arrays.asList(logIds));

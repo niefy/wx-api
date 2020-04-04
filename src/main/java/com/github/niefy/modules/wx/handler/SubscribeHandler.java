@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.github.niefy.modules.wx.service.UserService;
+import com.github.niefy.modules.wx.service.WxUserService;
 import com.github.niefy.modules.wx.service.WeixinMsgService;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
@@ -22,7 +22,7 @@ public class SubscribeHandler extends AbstractHandler {
     @Autowired
     WeixinMsgService weixinMsgService;
     @Autowired
-    UserService userService;
+    WxUserService userService;
 
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService wxMpService,

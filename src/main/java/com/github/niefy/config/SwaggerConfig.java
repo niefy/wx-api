@@ -40,7 +40,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("人人开源")
+            .title("微信公众号对接后台")
             .description("wx-api文档")
             .version("3.0.0")
             .build();

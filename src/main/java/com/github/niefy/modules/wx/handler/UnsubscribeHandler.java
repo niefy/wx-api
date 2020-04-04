@@ -2,7 +2,7 @@ package com.github.niefy.modules.wx.handler;
 
 import java.util.Map;
 
-import com.github.niefy.modules.wx.service.UserService;
+import com.github.niefy.modules.wx.service.WxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 @Component
 public class UnsubscribeHandler extends AbstractHandler {
     @Autowired
-    UserService userService;
+    WxUserService userService;
 
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,

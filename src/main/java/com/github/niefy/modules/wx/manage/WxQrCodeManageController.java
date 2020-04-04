@@ -41,7 +41,7 @@ public class WxQrCodeManageController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @RequiresPermissions("wx:wxqrcode:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = wxQrCodeService.queryPage(params);
@@ -53,7 +53,7 @@ public class WxQrCodeManageController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
+    @GetMapping("/info/{id}")
     @RequiresPermissions("wx:wxqrcode:info")
     public R info(@PathVariable("id") Long id) {
         WxQrCodeEntity wxQrCode = wxQrCodeService.getById(id);
@@ -64,7 +64,7 @@ public class WxQrCodeManageController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     @RequiresPermissions("wx:wxqrcode:delete")
     public R delete(@RequestBody Long[] ids) {
         wxQrCodeService.removeByIds(Arrays.asList(ids));

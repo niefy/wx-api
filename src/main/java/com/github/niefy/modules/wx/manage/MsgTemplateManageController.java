@@ -6,11 +6,7 @@ import java.util.Map;
 import com.github.niefy.modules.wx.entity.MsgTemplate;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.github.niefy.modules.wx.service.MsgTemplateService;
 import com.github.niefy.common.utils.PageUtils;
@@ -33,7 +29,7 @@ public class MsgTemplateManageController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @RequiresPermissions("wx:msgtemplate:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = msgTemplateService.queryPage(params);
@@ -45,7 +41,7 @@ public class MsgTemplateManageController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
+    @GetMapping("/info/{id}")
     @RequiresPermissions("wx:msgtemplate:info")
     public R info(@PathVariable("id") Long id) {
         MsgTemplate msgTemplate = msgTemplateService.getById(id);
@@ -56,7 +52,7 @@ public class MsgTemplateManageController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     @RequiresPermissions("wx:msgtemplate:save")
     public R save(@RequestBody MsgTemplate msgTemplate) {
         msgTemplateService.save(msgTemplate);
@@ -67,7 +63,7 @@ public class MsgTemplateManageController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     @RequiresPermissions("wx:msgtemplate:update")
     public R update(@RequestBody MsgTemplate msgTemplate) {
         msgTemplateService.updateById(msgTemplate);
@@ -78,7 +74,7 @@ public class MsgTemplateManageController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     @RequiresPermissions("wx:msgtemplate:delete")
     public R delete(@RequestBody String[] ids) {
         msgTemplateService.removeByIds(Arrays.asList(ids));

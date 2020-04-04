@@ -7,11 +7,7 @@ import com.github.niefy.modules.wx.entity.Article;
 import com.github.niefy.modules.wx.service.ArticleService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.common.utils.R;
@@ -33,7 +29,7 @@ public class ArticleManageController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @RequiresPermissions("wx:article:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = articleService.queryPage(params);
@@ -45,7 +41,7 @@ public class ArticleManageController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
+    @GetMapping("/info/{id}")
     @RequiresPermissions("wx:article:info")
     public R info(@PathVariable("id") Integer id) {
         Article article = articleService.getById(id);
@@ -56,7 +52,7 @@ public class ArticleManageController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     @RequiresPermissions("wx:article:save")
     public R save(@RequestBody Article article) {
         articleService.save(article);
@@ -67,7 +63,7 @@ public class ArticleManageController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     @RequiresPermissions("wx:article:update")
     public R update(@RequestBody Article article) {
         articleService.updateById(article);
@@ -78,7 +74,7 @@ public class ArticleManageController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     @RequiresPermissions("wx:article:delete")
     public R delete(@RequestBody Integer[] ids) {
         articleService.removeByIds(Arrays.asList(ids));

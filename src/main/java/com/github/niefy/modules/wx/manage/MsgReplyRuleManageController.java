@@ -9,11 +9,7 @@ import com.github.niefy.modules.wx.dto.RegexConstant;
 import me.chanjar.weixin.common.api.WxConsts;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.github.niefy.modules.wx.entity.MsgReplyRule;
 import com.github.niefy.common.utils.PageUtils;
@@ -36,7 +32,7 @@ public class MsgReplyRuleManageController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @RequiresPermissions("wx:msgreplyrule:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = msgReplyRuleService.queryPage(params);
@@ -48,7 +44,7 @@ public class MsgReplyRuleManageController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{ruleId}")
+    @GetMapping("/info/{ruleId}")
     @RequiresPermissions("wx:msgreplyrule:info")
     public R info(@PathVariable("ruleId") Integer ruleId) {
         MsgReplyRule msgReplyRule = msgReplyRuleService.getById(ruleId);
@@ -59,7 +55,7 @@ public class MsgReplyRuleManageController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     @RequiresPermissions("wx:msgreplyrule:save")
     public R save(@RequestBody MsgReplyRule msgReplyRule) {
         if (WxConsts.KefuMsgType.NEWS.equals(msgReplyRule.getReplyType()) &&
@@ -74,7 +70,7 @@ public class MsgReplyRuleManageController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     @RequiresPermissions("wx:msgreplyrule:update")
     public R update(@RequestBody MsgReplyRule msgReplyRule) {
         msgReplyRuleService.updateById(msgReplyRule);
@@ -85,7 +81,7 @@ public class MsgReplyRuleManageController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     @RequiresPermissions("wx:msgreplyrule:delete")
     public R delete(@RequestBody Integer[] ruleIds) {
         msgReplyRuleService.removeByIds(Arrays.asList(ruleIds));

@@ -2,12 +2,12 @@ package com.github.niefy.modules.wx.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.niefy.common.utils.PageUtils;
-import com.github.niefy.modules.wx.entity.User;
+import com.github.niefy.modules.wx.entity.WxUser;
 
 import java.util.List;
 import java.util.Map;
 
-public interface UserService extends IService<User> {
+public interface WxUserService extends IService<WxUser> {
     PageUtils queryPage(Map<String, Object> params);
 
     /**
@@ -16,15 +16,7 @@ public interface UserService extends IService<User> {
      * @param openid
      * @return
      */
-    User refreshUserInfo(String openid);
-
-    /**
-     * 分页查询用户数据，每页50条数据
-     *
-     * @param pageNumber
-     * @return
-     */
-    List<User> getUserList(int pageNumber, String nickname);
+    WxUser refreshUserInfo(String openid);
 
     /**
      * 计数
@@ -46,7 +38,7 @@ public interface UserService extends IService<User> {
      *
      * @param user
      */
-    void updateOrInsert(User user);
+    void updateOrInsert(WxUser user);
 
     /**
      * 取消关注，更新关注状态
@@ -54,4 +46,9 @@ public interface UserService extends IService<User> {
      * @param openid
      */
     void unsubscribe(String openid);
+    /**
+     * 同步用户列表
+     */
+    void syncWxUsers();
+
 }

@@ -6,30 +6,35 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.common.utils.Query;
-import com.github.niefy.modules.wx.dao.UserMapper;
-import com.github.niefy.modules.wx.entity.User;
+import com.github.niefy.modules.wx.dao.WxUserMapper;
+import com.github.niefy.modules.wx.entity.WxUser;
 import com.github.niefy.modules.wx.dto.PageSizeConstant;
-import com.github.niefy.modules.wx.service.UserService;
+import com.github.niefy.modules.wx.service.WxUserService;
+import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.api.WxMpUserService;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
+import me.chanjar.weixin.mp.bean.result.WxMpUserList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Nifury
  * @date 2017-9-27
  */
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> implements WxUserService {
     Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
-    private UserMapper userMapper;
+    private WxUserMapper userMapper;
     @Autowired
     private WxMpService wxService;
 
@@ -37,9 +42,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public PageUtils queryPage(Map<String, Object> params) {
         String openid = (String) params.get("openid");
         String nickname = (String) params.get("nickname");
-        IPage<User> page = this.page(
-            new Query<User>().getPage(params),
-            new QueryWrapper<User>()
+        IPage<WxUser> page = this.page(
+            new Query<WxUser>().getPage(params),
+            new QueryWrapper<WxUser>()
                 .eq(!StringUtils.isEmpty(openid), "openid", openid)
                 .like(!StringUtils.isEmpty(nickname), "nickname", nickname)
         );
@@ -54,13 +59,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return
      */
     @Override
-    public User refreshUserInfo(String openid) {
+    public WxUser refreshUserInfo(String openid) {
 
         try {
             // 获取微信用户基本信息
             WxMpUser userWxInfo = wxService.getUserService().userInfo(openid, null);
             if (userWxInfo != null) {
-                User user = new User(userWxInfo);
+                WxUser user = new WxUser(userWxInfo);
                 this.updateOrInsert(user);
                 return user;
             }
@@ -68,18 +73,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             e.printStackTrace();
         }
         return null;
-    }
-
-    /**
-     * 分页查询用户数据，每页50条数据
-     *
-     * @param pageNumber
-     * @return
-     */
-    @Override
-    public List<User> getUserList(int pageNumber, String nickname) {
-        return userMapper.selectPage(new Page<User>(pageNumber, PageSizeConstant.PAGE_SIZE_SMALL),
-            new QueryWrapper<User>().like("nickname", nickname).orderByDesc("subscribe_time")).getRecords();
     }
 
     /**
@@ -104,7 +97,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             // 获取微信用户基本信息
             WxMpUser userWxInfo = wxService.getUserService().userInfo(openid, null);
             if (userWxInfo != null && userWxInfo.getSubscribe()) {
-                User user = new User(userWxInfo);
+                WxUser user = new WxUser(userWxInfo);
                 this.updateOrInsert(user);
                 return true;
             }
@@ -120,7 +113,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @param user
      */
     @Override
-    public void updateOrInsert(User user) {
+    public void updateOrInsert(WxUser user) {
         Integer updateCount = userMapper.updateById(user);
         if (updateCount < 1) {
             userMapper.insert(user);
@@ -130,5 +123,28 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public void unsubscribe(String openid) {
         userMapper.unsubscribe(openid);
+    }
+    /**
+     * 同步用户列表,公众号一次拉取调用最多拉取10000个关注者的OpenID，可以通过传入nextOpenid参数多次拉取
+     */
+    @Override
+    @Async
+    public void syncWxUsers() {
+        boolean hasMore=true;
+        String nextOpenid=null;
+        WxMpUserService wxMpUserService = wxService.getUserService();
+        try {
+            while (hasMore){
+                WxMpUserList wxMpUserList = wxMpUserService.userList(nextOpenid);
+                List<WxMpUser> wxMpUsers = wxMpUserService.userInfoList(wxMpUserList.getOpenids());
+                List<WxUser> wxUsers=wxMpUsers.parallelStream().map(WxUser::new).collect(Collectors.toList());
+                this.saveOrUpdateBatch(wxUsers);
+                nextOpenid=wxMpUserList.getNextOpenid();
+                hasMore=StringUtils.isEmpty(nextOpenid);
+            }
+        } catch (WxErrorException e) {
+            logger.error("同步公众号粉丝出错:",e);
+        }
+
     }
 }

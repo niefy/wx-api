@@ -1,6 +1,7 @@
 server:
     baseAddress: http://xxx.ngrok.io
-    uploadBaseDir: D:/nginx-1.17.5/html
+    uploadBaseDir: /usr/share/nginx/html/
+
 spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
@@ -39,8 +40,8 @@ spring:
 wx:
     mp:
         configs:
-            -   appid:
-                secret:
+            -   appid: wx7b6ca33b71fbbf27
+                secret: d4624c36b6795d1d99dcf0547af5443d
                 token: my_weixin_token_
                 aesKey:
     pay:
@@ -51,9 +52,3 @@ wx:
         subMchId: #服务商模式下的子商户号
         keyPath: classpath:/cert/wx-pay-cert.p12 # p12证书的位置，可以指定绝对路径，也可以指定类路径（以classpath:开头）
         useSandBoxEnv: true #是否使用微信支付沙箱测试环境
-email:
-    username:
-    password:
-    host: smtp.zoho.com.cn
-    port: 465
-    notificationEmail: niefy@qq.com

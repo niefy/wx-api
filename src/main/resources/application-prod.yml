@@ -52,9 +52,3 @@ wx:
         subMchId:  #服务商模式下的子商户号
         keyPath: classpath:/cert/wx-pay-cert.p12 # p12证书的位置，可以指定绝对路径，也可以指定类路径（以classpath:开头）
         useSandBoxEnv: false #是否使用微信支付沙箱测试环境
-email:
-    username:
-    password:
-    host: smtp.zoho.com.cn
-    port: 465
-    notificationEmail: niefy@qq.com

@@ -18,7 +18,7 @@ import java.util.Date;
  * @date 2017-9-27
  */
 @TableName("wx_user")
-public class User implements Serializable {
+public class WxUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @TableId(type = IdType.INPUT)
@@ -38,21 +38,22 @@ public class User implements Serializable {
     private String subscribeScene;
     private String qrSceneStr;
 
-    public User() {
+    public WxUser() {
     }
 
-    public User(String openid) {
+    public WxUser(String openid) {
         this.openid = openid;
     }
 
-    public User(WxMpUser wxMpUser) {
+    public WxUser(WxMpUser wxMpUser) {
         this.openid = wxMpUser.getOpenId();
         this.nickname = wxMpUser.getNickname();
         this.sex = wxMpUser.getSex();
         this.city = wxMpUser.getCity();
         this.province = wxMpUser.getProvince();
         this.headimgurl = wxMpUser.getHeadImgUrl();
-        this.subscribeTime = new Date(wxMpUser.getSubscribeTime());
+        this.subscribeTime = new Date(wxMpUser.getSubscribeTime()*1000L);
+        this.subscribe=true;
         this.unionid = wxMpUser.getUnionId();
         this.remark = wxMpUser.getRemark();
         this.tagidList = JSONArray.parseArray(JSONObject.toJSONString(wxMpUser.getTagIds()));

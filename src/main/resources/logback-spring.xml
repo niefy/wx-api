@@ -33,7 +33,7 @@
         <!--滚动策略-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--路径-->
-            <fileNamePattern>/usr/local/weixin/logs/weixin.%d.log</fileNamePattern>
+            <fileNamePattern>/usr/local/wx/logs/wx.%d.log</fileNamePattern>
             <MaxHistory>100</MaxHistory>
         </rollingPolicy>
     </appender>
