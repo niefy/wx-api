@@ -50,7 +50,7 @@ public class ShiroConfig {
         filterMap.put("/sys/**", "oauth2");
         filterMap.put("/manage/**", "oauth2");
         filterMap.put("/wx/**", "anon");
-        filterMap.put("/**", "oauth2");
+        filterMap.put("/**", "anon");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
 
         return shiroFilter;
