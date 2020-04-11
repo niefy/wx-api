@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.github.niefy.common.utils.Json;
+import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.sql.Time;
  * @author Nifury
  * @date 2017-11-1
  */
+@Data
 @TableName("msg_reply_rule")
 public class MsgReplyRule implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -37,85 +39,5 @@ public class MsgReplyRule implements Serializable {
     @Override
     public String toString() {
         return Json.toJsonString(this);
-    }
-
-    public int getRuleId() {
-        return ruleId;
-    }
-
-    public void setRuleId(int ruleId) {
-        this.ruleId = ruleId;
-    }
-
-    public String getRuleName() {
-        return ruleName;
-    }
-
-    public void setRuleName(String ruleName) {
-        this.ruleName = ruleName;
-    }
-
-    public String getMatchValue() {
-        return matchValue;
-    }
-
-    public void setMatchValue(String matchValue) {
-        this.matchValue = matchValue;
-    }
-
-    public String getReplyType() {
-        return replyType;
-    }
-
-    public void setReplyType(String replyType) {
-        this.replyType = replyType;
-    }
-
-    public String getReplyContent() {
-        return replyContent;
-    }
-
-    public void setReplyContent(String replyContent) {
-        this.replyContent = replyContent;
-    }
-
-    public boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
-    public Time getEffectTimeStart() {
-        return effectTimeStart;
-    }
-
-    public void setEffectTimeStart(Time effectTimeStart) {
-        this.effectTimeStart = effectTimeStart;
-    }
-
-    public Time getEffectTimeEnd() {
-        return effectTimeEnd;
-    }
-
-    public void setEffectTimeEnd(Time effectTimeEnd) {
-        this.effectTimeEnd = effectTimeEnd;
-    }
-
-    public boolean isExactMatch() {
-        return exactMatch;
-    }
-
-    public void setExactMatch(boolean exactMatch) {
-        this.exactMatch = exactMatch;
     }
 }

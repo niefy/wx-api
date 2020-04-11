@@ -18,6 +18,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @TableName("sys_config")
 public class SysConfigEntity {
+    private static final long serialVersionUID = 1L;
     @TableId
     private Long id;
     @NotBlank(message = "参数名不能为空")
