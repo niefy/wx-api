@@ -4,11 +4,16 @@ import java.util.Arrays;
 import java.util.Map;
 
 import com.github.niefy.modules.wx.entity.MsgTemplate;
+import com.github.niefy.modules.wx.form.TemplateMsgBatchForm;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import me.chanjar.weixin.common.error.WxErrorException;
+
 import com.github.niefy.modules.wx.service.MsgTemplateService;
+import com.github.niefy.modules.wx.service.TemplateMsgService;
 import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.common.utils.R;
 
@@ -21,10 +26,12 @@ import com.github.niefy.common.utils.R;
  * @date 2019-11-12 18:30:15
  */
 @RestController
-@RequestMapping("/manage/msgtemplate")
+@RequestMapping("/manage/msgTemplate")
 public class MsgTemplateManageController {
     @Autowired
     private MsgTemplateService msgTemplateService;
+    @Autowired
+    private TemplateMsgService templateMsgService;
 
     /**
      * 列表
@@ -45,6 +52,16 @@ public class MsgTemplateManageController {
     @RequiresPermissions("wx:msgtemplate:info")
     public R info(@PathVariable("id") Long id) {
         MsgTemplate msgTemplate = msgTemplateService.getById(id);
+
+        return R.ok().put("msgTemplate", msgTemplate);
+    }
+    /**
+     * 信息
+     */
+    @GetMapping("/getByName")
+    @RequiresPermissions("wx:msgtemplate:info")
+    public R getByName( String name){
+        MsgTemplate msgTemplate = msgTemplateService.selectByName(name);
 
         return R.ok().put("msgTemplate", msgTemplate);
     }
@@ -81,5 +98,27 @@ public class MsgTemplateManageController {
 
         return R.ok();
     }
+
+    /**
+     * 同步公众号模板
+     */
+    @PostMapping("/syncWxTemplate")
+    @RequiresPermissions("wx:msgtemplate:save")
+    public R syncWxTemplate() throws WxErrorException {
+        msgTemplateService.syncWxTemplate();
+        return R.ok();
+    }
+
+    /**
+     * 批量向用户发送模板消息
+     * 通过用户筛选条件（一般使用标签筛选），将消息发送给数据库中所有符合筛选条件的用户
+     */
+    @PostMapping("/sendMsgBatch")
+    @RequiresPermissions("wx:msgtemplate:save")
+    public R sendMsgBatch(@RequestBody TemplateMsgBatchForm form) throws WxErrorException {
+        templateMsgService.sendMsgBatch(form);
+        return R.ok();
+    }
+
 
 }

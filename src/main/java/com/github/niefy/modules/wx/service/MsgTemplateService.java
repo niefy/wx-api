@@ -2,6 +2,9 @@ package com.github.niefy.modules.wx.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.niefy.modules.wx.entity.MsgTemplate;
+
+import me.chanjar.weixin.common.error.WxErrorException;
+
 import com.github.niefy.common.utils.PageUtils;
 
 import java.util.Map;
@@ -24,5 +27,11 @@ public interface MsgTemplateService extends IService<MsgTemplate> {
      * @return
      */
     MsgTemplate selectByName(String name);
+
+    /**
+     * 同步公众号已添加的消息模板
+     * @throws WxErrorException
+     */
+    void syncWxTemplate() throws WxErrorException;
 }
 

@@ -21,7 +21,7 @@ import com.github.niefy.common.utils.R;
  * @date 2019-11-12 18:30:15
  */
 @RestController
-@RequestMapping("/manage/templatemsglog")
+@RequestMapping("/manage/templateMsgLog")
 public class TemplateMsgLogManageController {
     @Autowired
     private TemplateMsgLogService templateMsgLogService;

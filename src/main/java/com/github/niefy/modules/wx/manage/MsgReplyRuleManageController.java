@@ -24,7 +24,7 @@ import com.github.niefy.common.utils.R;
  * @date 2019-11-12 18:30:15
  */
 @RestController
-@RequestMapping("/manage/msgreplyrule")
+@RequestMapping("/manage/msgReplyRule")
 public class MsgReplyRuleManageController {
     @Autowired
     private MsgReplyRuleService msgReplyRuleService;

@@ -9,14 +9,24 @@ import com.github.niefy.common.utils.Query;
 import com.github.niefy.common.validator.Assert;
 import com.github.niefy.modules.wx.entity.MsgTemplate;
 import com.github.niefy.modules.wx.service.MsgTemplateService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import me.chanjar.weixin.common.error.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.template.WxMpTemplate;
+
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service("msgTemplateService")
 public class MsgTemplateServiceImpl extends ServiceImpl<MsgTemplateMapper, MsgTemplate> implements MsgTemplateService {
+    @Autowired
+    private WxMpService wxService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -39,6 +49,13 @@ public class MsgTemplateServiceImpl extends ServiceImpl<MsgTemplateMapper, MsgTe
             .eq("name", name)
             .eq("status", 1)
             .last("LIMIT 1"));
+    }
+
+    @Override
+    public void syncWxTemplate() throws WxErrorException {
+        List<WxMpTemplate> wxMpTemplateList= wxService.getTemplateMsgService().getAllPrivateTemplate();
+        List<MsgTemplate> templates = wxMpTemplateList.stream().map(MsgTemplate::new).collect(Collectors.toList());
+        this.saveBatch(templates);
     }
 
 }

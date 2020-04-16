@@ -2,6 +2,7 @@ package com.github.niefy.modules.wx.manage;
 
 import com.github.niefy.modules.wx.dto.PageSizeConstant;
 import com.github.niefy.modules.wx.form.MaterialFileDeleteForm;
+import com.github.niefy.modules.wx.service.WxAssetsService;
 import com.github.niefy.common.utils.R;
 import lombok.RequiredArgsConstructor;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -10,6 +11,7 @@ import me.chanjar.weixin.mp.bean.material.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,10 +25,10 @@ import java.io.IOException;
  */
 @RestController
 @RequestMapping("/manage/wxAssets")
-@RequiredArgsConstructor
 public class WxAssetsManageController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final WxMpService wxService;
+    @Autowired
+    WxAssetsService wxAssetsService;
 
     /**
      * 获取素材总数
@@ -36,7 +38,7 @@ public class WxAssetsManageController {
      */
     @GetMapping("/materialCount")
     public R materialCount() throws WxErrorException {
-        WxMpMaterialCountResult res = wxService.getMaterialService().materialCount();
+        WxMpMaterialCountResult res = wxAssetsService.materialCount();
         return R.ok().put(res);
     }
 
@@ -52,8 +54,7 @@ public class WxAssetsManageController {
     @RequiresPermissions("wx:material:list")
     public R materialFileBatchGet(@RequestParam(defaultValue = "image") String type,
                                   @RequestParam(defaultValue = "1") int page) throws WxErrorException {
-        int offset = (page - 1) * PageSizeConstant.PAGE_SIZE_SMALL;
-        WxMpMaterialFileBatchGetResult res = wxService.getMaterialService().materialFileBatchGet(type, offset, PageSizeConstant.PAGE_SIZE_SMALL);
+        WxMpMaterialFileBatchGetResult res = wxAssetsService.materialFileBatchGet(type,page);
         return R.ok().put(res);
     }
 
@@ -67,8 +68,7 @@ public class WxAssetsManageController {
     @GetMapping("/materialNewsBatchGet")
     @RequiresPermissions("wx:material:list")
     public R materialNewsBatchGet(@RequestParam(defaultValue = "1") int page) throws WxErrorException {
-        int offset = (page - 1) * PageSizeConstant.PAGE_SIZE_SMALL;
-        WxMpMaterialNewsBatchGetResult res = wxService.getMaterialService().materialNewsBatchGet(offset, PageSizeConstant.PAGE_SIZE_SMALL);
+        WxMpMaterialNewsBatchGetResult res = wxAssetsService.materialNewsBatchGet(page);
         return R.ok().put(res);
     }
 
@@ -82,10 +82,7 @@ public class WxAssetsManageController {
     @PostMapping("/materialNewsUpload")
     @RequiresPermissions("wx:material:save")
     public R materialNewsUpload(@RequestBody WxMpMaterialNews.WxMpMaterialNewsArticle mpMaterialNewsArticle) throws WxErrorException {
-        WxMpMaterialNews wxMpMaterialNewsSingle = new WxMpMaterialNews();
-        mpMaterialNewsArticle.setShowCoverPic(true);
-        wxMpMaterialNewsSingle.addArticle(mpMaterialNewsArticle);
-        WxMpMaterialUploadResult res = wxService.getMaterialService().materialNewsUpload(wxMpMaterialNewsSingle);
+        WxMpMaterialUploadResult res = wxAssetsService.materialNewsUpload(mpMaterialNewsArticle);
         return R.ok().put(res);
     }
 
@@ -103,14 +100,7 @@ public class WxAssetsManageController {
     @RequiresPermissions("wx:material:save")
     public R materialFileUpload(MultipartFile file, String fileName, String mediaType) throws WxErrorException, IOException {
         if (file == null) return R.error("文件不得为空");
-        String originalFilename = file.getOriginalFilename();
-        File tempFile = File.createTempFile(fileName + "--", originalFilename.substring(originalFilename.lastIndexOf(".")));
-        file.transferTo(tempFile);
-        WxMpMaterial wxMaterial = new WxMpMaterial();
-        wxMaterial.setFile(tempFile);
-        wxMaterial.setName(fileName);
-        WxMpMaterialUploadResult res = wxService.getMaterialService().materialFileUpload(mediaType, wxMaterial);
-        tempFile.deleteOnExit();
+        WxMpMaterialUploadResult res = wxAssetsService.materialFileUpload(mediaType,fileName,file);
         return R.ok().put(res);
     }
 
@@ -125,7 +115,7 @@ public class WxAssetsManageController {
     @PostMapping("/materialDelete")
     @RequiresPermissions("wx:material:delete")
     public R materialDelete(@RequestBody MaterialFileDeleteForm form) throws WxErrorException, IOException {
-        boolean res = wxService.getMaterialService().materialDelete(form.getMediaId());
+        boolean res = wxAssetsService.materialDelete(form.getMediaId());
         return R.ok().put(res);
     }
 

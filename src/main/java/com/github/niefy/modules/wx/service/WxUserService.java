@@ -1,14 +1,21 @@
 package com.github.niefy.modules.wx.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.modules.wx.entity.WxUser;
+
+import me.chanjar.weixin.common.error.WxErrorException;
 
 import java.util.List;
 import java.util.Map;
 
 public interface WxUserService extends IService<WxUser> {
-    PageUtils queryPage(Map<String, Object> params);
+    /**
+     * 分页查询用户数据
+     * @param params
+     * @return
+     */
+    IPage<WxUser> queryPage(Map<String, Object> params);
 
     /**
      * 根据openid更新用户信息
@@ -19,19 +26,10 @@ public interface WxUserService extends IService<WxUser> {
     WxUser refreshUserInfo(String openid);
 
     /**
-     * 计数
-     *
-     * @return
+     * 异步批量更新用户信息
+     * @param openidList
      */
-    int count();
-
-    /**
-     * 检查用户是否关注微信，已关注时会保存用户的信息
-     *
-     * @param openid
-     * @return
-     */
-    boolean wxSubscribeCheck(String openid);
+    void refreshUserInfoAsync(String[] openidList);
 
     /**
      * 数据存在时更新，否则新增
@@ -50,5 +48,11 @@ public interface WxUserService extends IService<WxUser> {
      * 同步用户列表
      */
     void syncWxUsers();
+    
+    /**
+     * 通过传入的openid列表，同步用户列表
+     * @param openids
+     */
+    void syncWxUsers(List<String> openids) throws WxErrorException;
 
 }

@@ -49,19 +49,21 @@ public class WxUser implements Serializable {
 
     public WxUser(WxMpUser wxMpUser) {
         this.openid = wxMpUser.getOpenId();
-        this.nickname = wxMpUser.getNickname();
-        this.sex = wxMpUser.getSex();
-        this.city = wxMpUser.getCity();
-        this.province = wxMpUser.getProvince();
-        this.headimgurl = wxMpUser.getHeadImgUrl();
-        this.subscribeTime = new Date(wxMpUser.getSubscribeTime()*1000L);
-        this.subscribe=true;
-        this.unionid = wxMpUser.getUnionId();
-        this.remark = wxMpUser.getRemark();
-        this.tagidList = JSONArray.parseArray(JSONObject.toJSONString(wxMpUser.getTagIds()));
-        this.subscribeScene = wxMpUser.getSubscribeScene();
-        String qrScene = wxMpUser.getQrScene();
-        this.qrSceneStr = StringUtils.isEmpty(qrScene) ? wxMpUser.getQrSceneStr() : qrScene;
+		this.subscribe=wxMpUser.getSubscribe();
+		if(wxMpUser.getSubscribe()){
+			this.nickname = wxMpUser.getNickname();
+			this.sex = wxMpUser.getSex();
+			this.city = wxMpUser.getCity();
+			this.province = wxMpUser.getProvince();
+			this.headimgurl = wxMpUser.getHeadImgUrl();
+			this.subscribeTime = new Date(wxMpUser.getSubscribeTime()*1000);
+			this.unionid=wxMpUser.getUnionId();
+			this.remark=wxMpUser.getRemark();
+			this.tagidList=JSONArray.parseArray(JSONObject.toJSONString(wxMpUser.getTagIds()));
+			this.subscribeScene=wxMpUser.getSubscribeScene();
+			String qrScene =  wxMpUser.getQrScene();
+			this.qrSceneStr= StringUtils.isEmpty(qrScene) ? wxMpUser.getQrSceneStr() : qrScene;
+		}
     }
 
     @Override

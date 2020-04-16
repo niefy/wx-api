@@ -32,7 +32,7 @@ public class WxUserManageController {
     @GetMapping("/list")
     @RequiresPermissions("wx:wxuser:list")
     public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = userService.queryPage(params);
+        PageUtils page = new PageUtils(userService.queryPage(params));
 
         return R.ok().put("page", page);
     }
