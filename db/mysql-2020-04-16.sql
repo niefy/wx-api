@@ -11,7 +11,7 @@
  Target Server Version : 80013
  File Encoding         : 65001
 
- Date: 03/01/2020 11:34:13
+ Date: 16/04/2020 17:53:02
 */
 
 SET NAMES utf8mb4;
@@ -40,7 +40,6 @@ CREATE TABLE `article`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_title`(`title`) USING BTREE COMMENT '标题不得重复'
 ) ENGINE = InnoDB AUTO_INCREMENT = 337 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'CMS文章中心' ROW_FORMAT = Dynamic;
-
 
 -- ----------------------------
 -- Records of article
@@ -93,20 +92,25 @@ INSERT INTO `msg_reply_rule` VALUES (11, '人工-工作时间', '人工', 0, 'te
 -- ----------------------------
 DROP TABLE IF EXISTS `msg_template`;
 CREATE TABLE `msg_template`  (
-  `id` bigint(0) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `template_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '公众号模板消息模板ID',
-  `title` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标题',
-  `data` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '内容',
-  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '链接',
-  `color` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '颜色',
-  `status` tinyint(0) UNSIGNED NULL DEFAULT NULL COMMENT '是否有效',
+  `id` bigint(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `template_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '公众号模板ID',
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '模版名称',
+  `title` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标题',
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '模板内容',
+  `data` json NULL COMMENT '消息内容',
+  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '链接',
+  `miniprogram` json NULL COMMENT '小程序信息',
+  `status` tinyint(1) UNSIGNED NOT NULL COMMENT '是否有效',
+  `update_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_template_id`(`template_id`) USING BTREE COMMENT '公众号模板消息ID',
-  INDEX `idx_name`(`name`) USING BTREE COMMENT '消息模板名称'
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '消息模板' ROW_FORMAT = Dynamic;
+  UNIQUE INDEX `idx_name`(`name`) USING BTREE COMMENT '模板名称',
+  INDEX `idx_status`(`status`) USING BTREE COMMENT '模板状态'
+) ENGINE = InnoDB AUTO_INCREMENT = 61 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '消息模板' ROW_FORMAT = Dynamic;
 
-SET FOREIGN_KEY_CHECKS = 1;
+-- ----------------------------
+-- Records of msg_template
+-- ----------------------------
+INSERT INTO `msg_template` VALUES (61, 'eNTzp4shr0etQmp9PflcVu2qsOkH7PmJbKyM_SuzHe8', 'TEST', '课程更新通知', '{{first.DATA}} \n成功获取：{{keyword1.DATA}} \n获取时间：{{keyword2.DATA}}\n{{remark.DATA}}', '[{\"name\": \"first\", \"color\": \"#000000\", \"value\": \"测试通知\"}, {\"name\": \"keyword1\", \"color\": \"#000000\", \"value\": \"hhh\"}, {\"name\": \"keyword2\", \"color\": \"#000000\", \"value\": \"2020/04/16\"}, {\"name\": \"remark\", \"color\": \"#000000\", \"value\": \"点击查看详情\"}]', NULL, '{\"appid\": \"\", \"pagepath\": \"\"}', 1, '2020-04-16 17:40:00');
 
 -- ----------------------------
 -- Table structure for sys_captcha
@@ -168,7 +172,7 @@ CREATE TABLE `sys_menu`  (
   `icon` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '菜单图标',
   `order_num` int(11) NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 108 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 111 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -204,33 +208,29 @@ INSERT INTO `sys_menu` VALUES (42, 41, '查看', NULL, 'wx:article:list,wx:artic
 INSERT INTO `sys_menu` VALUES (43, 41, '新增', NULL, 'wx:article:save', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (44, 41, '修改', NULL, 'wx:article:update', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (45, 41, '删除', NULL, 'wx:article:delete', 2, NULL, 6);
-INSERT INTO `sys_menu` VALUES (66, 6, '自动回复规则', 'wx/msgreplyrule', NULL, 1, 'config', 6);
+INSERT INTO `sys_menu` VALUES (66, 6, '自动回复规则', 'wx/msg-reply-rule', NULL, 1, 'config', 6);
 INSERT INTO `sys_menu` VALUES (67, 66, '查看', NULL, 'wx:msgreplyrule:list,wx:msgreplyrule:info', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (68, 66, '新增', NULL, 'wx:msgreplyrule:save', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (69, 66, '修改', NULL, 'wx:msgreplyrule:update', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (70, 66, '删除', NULL, 'wx:msgreplyrule:delete', 2, NULL, 6);
-INSERT INTO `sys_menu` VALUES (71, 6, '消息模板', 'wx/msgtemplate', NULL, 1, 'config', 6);
+INSERT INTO `sys_menu` VALUES (71, 6, '消息模板', 'wx/msg-template', NULL, 1, 'config', 6);
 INSERT INTO `sys_menu` VALUES (72, 71, '查看', NULL, 'wx:msgtemplate:list,wx:msgtemplate:info', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (73, 71, '新增', NULL, 'wx:msgtemplate:save', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (74, 71, '修改', NULL, 'wx:msgtemplate:update', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (75, 71, '删除', NULL, 'wx:msgtemplate:delete', 2, NULL, 6);
-INSERT INTO `sys_menu` VALUES (81, 9, '模版消息发送记录', 'wx/templatemsglog', NULL, 1, 'config', 6);
-INSERT INTO `sys_menu` VALUES (82, 81, '查看', NULL, 'wx:templatemsglog:list,wx:templatemsglog:info', 2, NULL, 6);
-INSERT INTO `sys_menu` VALUES (83, 81, '新增', NULL, 'wx:templatemsglog:save', 2, NULL, 6);
-INSERT INTO `sys_menu` VALUES (84, 81, '修改', NULL, 'wx:templatemsglog:update', 2, NULL, 6);
+INSERT INTO `sys_menu` VALUES (81, 9, '模版消息发送记录', 'wx/template-msg-log', NULL, 1, 'config', 6);
 INSERT INTO `sys_menu` VALUES (85, 81, '删除', NULL, 'wx:templatemsglog:delete', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (99, 32, '更新公众号菜单', '', 'wx:menu:save', 2, '', 0);
 INSERT INTO `sys_menu` VALUES (100, 33, '图文素材-查看', '', 'wx:material:list', 2, '', 0);
 INSERT INTO `sys_menu` VALUES (101, 33, '图文素材-新增', '', 'wx:material:save', 2, '', 0);
 INSERT INTO `sys_menu` VALUES (102, 34, '多媒体素材-查看', '', 'wx:material:save', 2, '', 0);
-INSERT INTO `sys_menu` VALUES (103, 6, '带参二维码', 'wx/wxqrcode', NULL, 1, 'config', 6);
+INSERT INTO `sys_menu` VALUES (103, 6, '带参二维码', 'wx/wx-qrcode', NULL, 1, 'config', 6);
 INSERT INTO `sys_menu` VALUES (104, 103, '查看', NULL, 'wx:wxqrcode:list,wx:wxqrcode:info', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (105, 103, '新增', NULL, 'wx:wxqrcode:save', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (107, 103, '删除', NULL, 'wx:wxqrcode:delete', 2, NULL, 6);
-INSERT INTO `sys_menu` VALUES (108, 6, '微信用户', 'wx/wx-user', NULL, 1, 'config', 6);
-INSERT INTO `sys_menu` VALUES (109, 108, '查看', NULL, 'wx:user:list,wx:user:info', 2, NULL, 6);
-INSERT INTO `sys_menu` VALUES (110, 108, '删除', NULL, 'wx:user:delete', 2, NULL, 6);
-
+INSERT INTO `sys_menu` VALUES (108, 6, '粉丝管理', 'wx/wx-user', NULL, 1, 'config', 6);
+INSERT INTO `sys_menu` VALUES (109, 108, '查看', NULL, 'wx:wxuser:list,wx:wxuser:info', 2, NULL, 6);
+INSERT INTO `sys_menu` VALUES (110, 108, '删除', NULL, 'wx:wxuser:delete', 2, NULL, 6);
 
 -- ----------------------------
 -- Table structure for sys_oss
@@ -315,25 +315,20 @@ CREATE TABLE `sys_user_token`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统用户Token' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of sys_user_token
--- ----------------------------
-INSERT INTO `sys_user_token` VALUES (1, 'e2ac788e1644b3fc0f6b658a3de14419', '2020-01-03 22:12:07', '2020-01-03 10:12:07');
-
--- ----------------------------
 -- Table structure for template_msg_log
 -- ----------------------------
 DROP TABLE IF EXISTS `template_msg_log`;
 CREATE TABLE `template_msg_log`  (
-  `log_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `touser` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'openid',
-  `template_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '模板ID',
-  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '链接',
-  `data` varchar(2048) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '内容',
-  `color` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '颜色',
+  `log_id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `touser` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户openid',
+  `template_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'templateid',
+  `data` json NULL COMMENT '消息数据',
+  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '消息链接',
+  `miniprogram` json NULL COMMENT '小程序信息',
   `send_time` datetime(0) NULL DEFAULT NULL COMMENT '发送时间',
   `send_result` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '发送结果',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 55150 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '模版消息发送记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 116249 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '微信模版消息发送记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for wx_qr_code
@@ -358,12 +353,12 @@ CREATE TABLE `wx_user`  (
   `openid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '微信openid',
   `phone` char(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '手机号',
   `nickname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '昵称',
-  `sex` tinyint(0) NULL DEFAULT NULL COMMENT '性别(0-未知、1-男、2-女)',
+  `sex` tinyint(4) NULL DEFAULT NULL COMMENT '性别(0-未知、1-男、2-女)',
   `city` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '城市',
   `province` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '省份',
   `headimgurl` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '头像',
   `subscribe_time` datetime(0) NULL DEFAULT NULL COMMENT '订阅时间',
-  `subscribe` tinyint(0) UNSIGNED NULL DEFAULT 1 COMMENT '是否关注',
+  `subscribe` tinyint(3) UNSIGNED NULL DEFAULT 1 COMMENT '是否关注',
   `unionid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'unionid',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '备注',
   `tagid_list` json NULL COMMENT '标签ID列表',
@@ -372,5 +367,6 @@ CREATE TABLE `wx_user`  (
   PRIMARY KEY (`openid`) USING BTREE,
   INDEX `idx_unionid`(`unionid`) USING BTREE COMMENT 'unionid'
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
+
 
 SET FOREIGN_KEY_CHECKS = 1;
