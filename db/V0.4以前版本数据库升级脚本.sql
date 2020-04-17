@@ -103,6 +103,7 @@ INSERT INTO `sys_menu` VALUES (107, 103, '删除', NULL, 'wx:wxqrcode:delete', 2
 INSERT INTO `sys_menu` VALUES (108, 6, '粉丝管理', 'wx/wx-user', NULL, 1, 'config', 6);
 INSERT INTO `sys_menu` VALUES (109, 108, '查看', NULL, 'wx:wxuser:list,wx:wxuser:info', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (110, 108, '删除', NULL, 'wx:wxuser:delete', 2, NULL, 6);
+INSERT INTO `sys_menu` VALUES (1111, 108, '同步', NULL, 'wx:wxuser:save', 2, NULL, 6);
 
 -- ----------------------------
 -- Table structure for template_msg_log

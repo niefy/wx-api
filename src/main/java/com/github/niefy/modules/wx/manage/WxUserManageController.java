@@ -53,22 +53,11 @@ public class WxUserManageController {
      * 同步用户列表
      */
     @PostMapping("/syncWxUsers")
-    @RequiresPermissions("wx:wxuser:list")
+    @RequiresPermissions("wx:wxuser:save")
     public R syncWxUsers() {
         userService.syncWxUsers();
 
         return R.ok("任务已建立");
-    }
-
-    /**
-     * 修改
-     */
-    @PostMapping("/update")
-    @RequiresPermissions("wx:wxuser:update")
-    public R update(@RequestBody WxUser WxUser) {
-        userService.updateById(WxUser);
-
-        return R.ok();
     }
 
 
