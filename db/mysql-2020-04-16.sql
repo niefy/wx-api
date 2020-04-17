@@ -107,10 +107,6 @@ CREATE TABLE `msg_template`  (
   INDEX `idx_status`(`status`) USING BTREE COMMENT '模板状态'
 ) ENGINE = InnoDB AUTO_INCREMENT = 61 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '消息模板' ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Records of msg_template
--- ----------------------------
-INSERT INTO `msg_template` VALUES (61, 'eNTzp4shr0etQmp9PflcVu2qsOkH7PmJbKyM_SuzHe8', 'TEST', '课程更新通知', '{{first.DATA}} \n成功获取：{{keyword1.DATA}} \n获取时间：{{keyword2.DATA}}\n{{remark.DATA}}', '[{\"name\": \"first\", \"color\": \"#000000\", \"value\": \"测试通知\"}, {\"name\": \"keyword1\", \"color\": \"#000000\", \"value\": \"hhh\"}, {\"name\": \"keyword2\", \"color\": \"#000000\", \"value\": \"2020/04/16\"}, {\"name\": \"remark\", \"color\": \"#000000\", \"value\": \"点击查看详情\"}]', NULL, '{\"appid\": \"\", \"pagepath\": \"\"}', 1, '2020-04-16 17:40:00');
 
 -- ----------------------------
 -- Table structure for sys_captcha
