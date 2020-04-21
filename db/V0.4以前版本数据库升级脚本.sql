@@ -28,7 +28,7 @@ CREATE TABLE `msg_template`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_name`(`name`) USING BTREE COMMENT '模板名称',
   INDEX `idx_status`(`status`) USING BTREE COMMENT '模板状态'
-) ENGINE = InnoDB AUTO_INCREMENT = 61 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '消息模板' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 61 CHARACTER SET = utf8mb4 COMMENT = '消息模板';
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -44,7 +44,7 @@ CREATE TABLE `sys_menu`  (
   `icon` varchar(50)  NULL DEFAULT NULL COMMENT '菜单图标',
   `order_num` int(11) NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 111 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 111 CHARACTER SET = utf8mb4 COMMENT = '菜单管理';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -119,7 +119,7 @@ CREATE TABLE `template_msg_log`  (
   `send_time` datetime(0) NULL DEFAULT NULL COMMENT '发送时间',
   `send_result` varchar(255)  NULL DEFAULT NULL COMMENT '发送结果',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 116249 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '微信模版消息发送记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 116249 CHARACTER SET = utf8mb4 COMMENT = '微信模版消息发送记录';
 
 -- ----------------------------
 -- Table structure for wx_user
@@ -142,5 +142,4 @@ CREATE TABLE `wx_user`  (
   `qr_scene_str` varchar(64)  NULL DEFAULT NULL COMMENT '扫码场景值',
   PRIMARY KEY (`openid`) USING BTREE,
   INDEX `idx_unionid`(`unionid`) USING BTREE COMMENT 'unionid'
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
-
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COMMENT = '用户表';
