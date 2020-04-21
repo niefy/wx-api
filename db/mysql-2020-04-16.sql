@@ -39,7 +39,7 @@ CREATE TABLE `article`  (
   `image` varchar(255) NULL DEFAULT NULL COMMENT '文章首图',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_title`(`title`) USING BTREE COMMENT '标题不得重复'
-) ENGINE = InnoDB AUTO_INCREMENT = 337 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'CMS文章中心' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 337 CHARACTER SET = utf8 COMMENT = 'CMS文章中心';
 
 -- ----------------------------
 -- Records of article
@@ -59,7 +59,7 @@ CREATE TABLE `msg_news`  (
   `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否有效',
   `order` tinyint(2) NOT NULL DEFAULT 0 COMMENT '排序，序号越小越优先',
   PRIMARY KEY (`news_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '微信图文消息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COMMENT = '微信图文消息';
 
 -- ----------------------------
 -- Table structure for msg_reply_rule
@@ -77,7 +77,7 @@ CREATE TABLE `msg_reply_rule`  (
   `effect_time_start` time(0) NULL DEFAULT '00:00:00' COMMENT '生效起始时间',
   `effect_time_end` time(0) NULL DEFAULT '23:59:59' COMMENT '生效结束时间',
   PRIMARY KEY (`rule_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '自动回复规则' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8 COMMENT = '自动回复规则';
 
 -- ----------------------------
 -- Records of msg_reply_rule
@@ -105,7 +105,7 @@ CREATE TABLE `msg_template`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_name`(`name`) USING BTREE COMMENT '模板名称',
   INDEX `idx_status`(`status`) USING BTREE COMMENT '模板状态'
-) ENGINE = InnoDB AUTO_INCREMENT = 61 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '消息模板' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 61 CHARACTER SET = utf8 COMMENT = '消息模板';
 
 
 -- ----------------------------
@@ -117,7 +117,7 @@ CREATE TABLE `sys_captcha`  (
   `code` varchar(6) NOT NULL COMMENT '验证码',
   `expire_time` datetime(0) NULL DEFAULT NULL COMMENT '过期时间',
   PRIMARY KEY (`uuid`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统验证码' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COMMENT = '系统验证码';
 
 -- ----------------------------
 -- Table structure for sys_config
@@ -131,7 +131,7 @@ CREATE TABLE `sys_config`  (
   `remark` varchar(500) NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `param_key`(`param_key`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统配置信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COMMENT = '系统配置信息表';
 
 -- ----------------------------
 -- Records of sys_config
@@ -152,7 +152,7 @@ CREATE TABLE `sys_log`  (
   `ip` varchar(64) NULL DEFAULT NULL COMMENT 'IP地址',
   `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 306 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 306 CHARACTER SET = utf8mb4 COMMENT = '系统日志';
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -168,7 +168,7 @@ CREATE TABLE `sys_menu`  (
   `icon` varchar(50) NULL DEFAULT NULL COMMENT '菜单图标',
   `order_num` int(11) NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 111 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 111 CHARACTER SET = utf8mb4 COMMENT = '菜单管理';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -238,7 +238,7 @@ CREATE TABLE `sys_oss`  (
   `url` varchar(200) NULL DEFAULT NULL COMMENT 'URL地址',
   `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件上传' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COMMENT = '文件上传';
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -251,7 +251,7 @@ CREATE TABLE `sys_role`  (
   `create_user_id` bigint(20) NULL DEFAULT NULL COMMENT '创建者ID',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = '角色';
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -262,7 +262,7 @@ CREATE TABLE `sys_role_menu`  (
   `role_id` bigint(20) NULL DEFAULT NULL COMMENT '角色ID',
   `menu_id` bigint(20) NULL DEFAULT NULL COMMENT '菜单ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色与菜单对应关系' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = '角色与菜单对应关系';
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -280,7 +280,7 @@ CREATE TABLE `sys_user`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统用户' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COMMENT = '系统用户';
 
 -- ----------------------------
 -- Records of sys_user
@@ -296,7 +296,7 @@ CREATE TABLE `sys_user_role`  (
   `user_id` bigint(20) NULL DEFAULT NULL COMMENT '用户ID',
   `role_id` bigint(20) NULL DEFAULT NULL COMMENT '角色ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户与角色对应关系' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = '用户与角色对应关系';
 
 -- ----------------------------
 -- Table structure for sys_user_token
@@ -309,7 +309,7 @@ CREATE TABLE `sys_user_token`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `token`(`token`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统用户Token' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COMMENT = '系统用户Token';
 
 -- ----------------------------
 -- Table structure for template_msg_log
@@ -325,7 +325,7 @@ CREATE TABLE `template_msg_log`  (
   `send_time` datetime(0) NULL DEFAULT NULL COMMENT '发送时间',
   `send_result` varchar(255) NULL DEFAULT NULL COMMENT '发送结果',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 116249 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '微信模版消息发送记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 116249 CHARACTER SET = utf8 COMMENT = '微信模版消息发送记录';
 
 -- ----------------------------
 -- Table structure for wx_qr_code
@@ -340,7 +340,7 @@ CREATE TABLE `wx_qr_code`  (
   `expire_time` datetime(0) NULL DEFAULT NULL COMMENT '该二维码失效时间',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '该二维码创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '公众号带参二维码' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COMMENT = '公众号带参二维码';
 
 -- ----------------------------
 -- Table structure for wx_user
@@ -363,7 +363,7 @@ CREATE TABLE `wx_user`  (
   `qr_scene_str` varchar(64) NULL DEFAULT NULL COMMENT '扫码场景值',
   PRIMARY KEY (`openid`) USING BTREE,
   INDEX `idx_unionid`(`unionid`) USING BTREE COMMENT 'unionid'
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COMMENT = '用户表';
 
 
 SET FOREIGN_KEY_CHECKS = 1;
