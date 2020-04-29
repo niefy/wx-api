@@ -17,7 +17,7 @@ import javax.validation.constraints.NotBlank;
  */
 @Data
 @TableName("sys_config")
-public class SysConfigEntity {
+public class SysConfigEntity implements Serializable{
     private static final long serialVersionUID = 1L;
     @TableId
     private Long id;
