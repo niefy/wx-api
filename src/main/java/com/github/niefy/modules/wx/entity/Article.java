@@ -28,8 +28,6 @@ public class Article implements Serializable {
     private String subCategory;
     private Date createTime;
     private Date updateTime;
-    private Date startTime;
-    private Date endTime;
     private int openCount;
     private String targetLink;
     private String image;

@@ -61,17 +61,6 @@ public class ArticleManageController {
     }
 
     /**
-     * 修改
-     */
-    @PostMapping("/update")
-    @RequiresPermissions("wx:article:update")
-    public R update(@RequestBody Article article) {
-        articleService.updateById(article);
-
-        return R.ok();
-    }
-
-    /**
      * 删除
      */
     @PostMapping("/delete")

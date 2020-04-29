@@ -23,7 +23,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `article`;
 CREATE TABLE `article`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `type` tinyint(1) NULL DEFAULT 1 COMMENT '文章类型[1:普通文章，2:弹出通知，3：滚动公告,4:图片通知]',
+  `type` tinyint(1) NULL DEFAULT 1 COMMENT '文章类型[1:普通文章，5:帮助中心]',
   `title` varchar(1024) NOT NULL COMMENT '标题',
   `summary` varchar(1024) NULL DEFAULT NULL COMMENT '文章摘要',
   `tags` varchar(255) NULL DEFAULT NULL COMMENT '文章标签',
@@ -33,8 +33,6 @@ CREATE TABLE `article`  (
   `create_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   `open_count` int(11) NULL DEFAULT 0 COMMENT '点击次数',
-  `start_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '生效时间',
-  `end_time` datetime(0) NULL DEFAULT NULL COMMENT '失效时间',
   `target_link` varchar(255) NULL DEFAULT NULL COMMENT '指向外链',
   `image` varchar(255) NULL DEFAULT NULL COMMENT '文章首图',
   PRIMARY KEY (`id`) USING BTREE,
@@ -199,7 +197,7 @@ INSERT INTO `sys_menu` VALUES (32, 6, '公众号菜单', 'wx/wx-menu', '', 1, 'l
 INSERT INTO `sys_menu` VALUES (33, 6, '图文素材', 'wx/material-news', '', 1, 'log', 0);
 INSERT INTO `sys_menu` VALUES (34, 6, '媒体素材', 'wx/material-file', NULL, 1, 'log', 0);
 INSERT INTO `sys_menu` VALUES (35, 34, '新增', '', 'wx:material:save', 2, '', 0);
-INSERT INTO `sys_menu` VALUES (41, 7, '文章公告', 'wx/article', NULL, 1, 'config', 6);
+INSERT INTO `sys_menu` VALUES (41, 7, '文章管理', 'wx/article', NULL, 1, 'config', 6);
 INSERT INTO `sys_menu` VALUES (42, 41, '查看', NULL, 'wx:article:list,wx:article:info', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (43, 41, '新增', NULL, 'wx:article:save', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (44, 41, '修改', NULL, 'wx:article:update', 2, NULL, 6);

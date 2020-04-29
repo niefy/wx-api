@@ -75,7 +75,7 @@ INSERT INTO `sys_menu` VALUES (32, 6, '公众号菜单', 'wx/wx-menu', '', 1, 'l
 INSERT INTO `sys_menu` VALUES (33, 6, '图文素材', 'wx/material-news', '', 1, 'log', 0);
 INSERT INTO `sys_menu` VALUES (34, 6, '媒体素材', 'wx/material-file', NULL, 1, 'log', 0);
 INSERT INTO `sys_menu` VALUES (35, 34, '新增', '', 'wx:material:save', 2, '', 0);
-INSERT INTO `sys_menu` VALUES (41, 7, '文章公告', 'wx/article', NULL, 1, 'config', 6);
+INSERT INTO `sys_menu` VALUES (41, 7, '文章管理', 'wx/article', NULL, 1, 'config', 6);
 INSERT INTO `sys_menu` VALUES (42, 41, '查看', NULL, 'wx:article:list,wx:article:info', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (43, 41, '新增', NULL, 'wx:article:save', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (44, 41, '修改', NULL, 'wx:article:update', 2, NULL, 6);
