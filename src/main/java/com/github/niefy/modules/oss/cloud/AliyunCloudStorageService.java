@@ -5,7 +5,9 @@
 
 package com.github.niefy.modules.oss.cloud;
 
+import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.OSSClientBuilder;
 import com.github.niefy.common.exception.RRException;
 
 import java.io.ByteArrayInputStream;
@@ -16,7 +18,7 @@ import java.io.InputStream;
  * @author Mark sunlightcs@gmail.com
  */
 public class AliyunCloudStorageService extends CloudStorageService {
-    private OSSClient client;
+    private OSS client;
 
     public AliyunCloudStorageService(CloudStorageConfig config) {
         this.config = config;
@@ -26,7 +28,7 @@ public class AliyunCloudStorageService extends CloudStorageService {
     }
 
     private void init() {
-        client = new OSSClient(config.getAliyunEndPoint(), config.getAliyunAccessKeyId(),
+        client = new OSSClientBuilder().build(config.getAliyunEndPoint(), config.getAliyunAccessKeyId(),
             config.getAliyunAccessKeySecret());
     }
 

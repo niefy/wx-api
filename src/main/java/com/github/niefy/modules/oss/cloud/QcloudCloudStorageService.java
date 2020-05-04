@@ -6,14 +6,19 @@
 package com.github.niefy.modules.oss.cloud;
 
 
-import com.alibaba.fastjson.JSONObject;
+import com.github.niefy.common.exception.RRException;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
-import com.qcloud.cos.request.UploadFileRequest;
-import com.qcloud.cos.sign.Credentials;
-import com.github.niefy.common.exception.RRException;
+import com.qcloud.cos.auth.BasicCOSCredentials;
+import com.qcloud.cos.auth.COSCredentials;
+import com.qcloud.cos.model.ObjectMetadata;
+import com.qcloud.cos.model.PutObjectRequest;
+import com.qcloud.cos.model.PutObjectResult;
+import com.qcloud.cos.region.Region;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -21,6 +26,7 @@ import java.io.InputStream;
  * 腾讯云存储
  * @author Mark sunlightcs@gmail.com
  */
+@Slf4j
 public class QcloudCloudStorageService extends CloudStorageService {
     private COSClient client;
 
@@ -32,15 +38,14 @@ public class QcloudCloudStorageService extends CloudStorageService {
     }
 
     private void init() {
-        Credentials credentials = new Credentials(config.getQcloudAppId(), config.getQcloudSecretId(),
-            config.getQcloudSecretKey());
+        COSCredentials credentials = new BasicCOSCredentials(config.getQcloudSecretId(),config.getQcloudSecretKey());
 
-        //初始化客户端配置
-        ClientConfig clientConfig = new ClientConfig();
         //设置bucket所在的区域，华南：gz 华北：tj 华东：sh
-        clientConfig.setRegion(config.getQcloudRegion());
+        Region region = new Region(config.getQcloudRegion());
+        //初始化客户端配置
+        ClientConfig clientConfig = new ClientConfig(region);
 
-        client = new COSClient(clientConfig, credentials);
+        client = new COSClient(credentials,clientConfig);
     }
 
     @Override
@@ -49,15 +54,12 @@ public class QcloudCloudStorageService extends CloudStorageService {
         if (!path.startsWith("/")) {
             path = "/" + path;
         }
-
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        // 设置输入流长度为500
+        objectMetadata.setContentLength(data.length);
         //上传到腾讯云
-        UploadFileRequest request = new UploadFileRequest(config.getQcloudBucketName(), path, data);
-        String response = client.uploadFile(request);
-
-        JSONObject jsonObject = JSONObject.parseObject(response);
-        if (jsonObject.getInteger("code") != 0) {
-            throw new RRException("文件上传失败，" + jsonObject.getString("message"));
-        }
+        PutObjectRequest request = new PutObjectRequest(config.getQcloudBucketName(), path, new ByteArrayInputStream(data), objectMetadata);
+        client.putObject(request);
 
         return config.getQcloudDomain() + path;
     }

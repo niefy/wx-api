@@ -62,8 +62,8 @@ public final class HTMLFilter {
     private static final Pattern P_BOTH_ARROWS = Pattern.compile("<>");
 
     // @xxx could grow large... maybe use sesat's ReferenceMap
-    private static final ConcurrentMap<String, Pattern> P_REMOVE_PAIR_BLANKS = new ConcurrentHashMap<String, Pattern>();
-    private static final ConcurrentMap<String, Pattern> P_REMOVE_SELF_BLANKS = new ConcurrentHashMap<String, Pattern>();
+    private static final ConcurrentMap<String, Pattern> P_REMOVE_PAIR_BLANKS = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, Pattern> P_REMOVE_SELF_BLANKS = new ConcurrentHashMap<>();
 
     /**
      * set of allowed html elements, along with allowed attributes for each element
@@ -72,7 +72,7 @@ public final class HTMLFilter {
     /**
      * counts of open tags for each (allowable) html element
      **/
-    private final Map<String, Integer> vTagCounts = new HashMap<String, Integer>();
+    private final Map<String, Integer> vTagCounts = new HashMap<>();
 
     /**
      * html elements which must always be self-closing (e.g. "<img />")
@@ -121,19 +121,19 @@ public final class HTMLFilter {
     public HTMLFilter() {
         vAllowed = new HashMap<>();
 
-        final ArrayList<String> a_atts = new ArrayList<String>();
+        final ArrayList<String> a_atts = new ArrayList<>();
         a_atts.add("href");
         a_atts.add("target");
         vAllowed.put("a", a_atts);
 
-        final ArrayList<String> img_atts = new ArrayList<String>();
+        final ArrayList<String> img_atts = new ArrayList<>();
         img_atts.add("src");
         img_atts.add("width");
         img_atts.add("height");
         img_atts.add("alt");
         vAllowed.put("img", img_atts);
 
-        final ArrayList<String> no_atts = new ArrayList<String>();
+        final ArrayList<String> no_atts = new ArrayList<>();
         vAllowed.put("b", no_atts);
         vAllowed.put("strong", no_atts);
         vAllowed.put("i", no_atts);
@@ -454,7 +454,7 @@ public final class HTMLFilter {
         Matcher m = P_ENTITY.matcher(s);
         while (m.find()) {
             final String match = m.group(1);
-            final int decimal = Integer.decode(match).intValue();
+            final int decimal = Integer.decode(match);
             m.appendReplacement(buf, Matcher.quoteReplacement(chr(decimal)));
         }
         m.appendTail(buf);

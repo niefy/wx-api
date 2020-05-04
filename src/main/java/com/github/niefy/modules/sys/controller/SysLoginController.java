@@ -11,7 +11,6 @@ import com.github.niefy.modules.sys.form.SysLoginForm;
 import com.github.niefy.modules.sys.service.SysCaptchaService;
 import com.github.niefy.modules.sys.service.SysUserService;
 import com.github.niefy.modules.sys.service.SysUserTokenService;
-import org.apache.commons.io.IOUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,9 +49,11 @@ public class SysLoginController extends AbstractController {
         //获取图片验证码
         BufferedImage image = sysCaptchaService.getCaptcha(uuid);
 
-        ServletOutputStream out = response.getOutputStream();
-        ImageIO.write(image, "jpg", out);
-        IOUtils.closeQuietly(out);
+        try(//try-with-resources 语法，自动关闭资源
+            ServletOutputStream out = response.getOutputStream()
+        ){
+            ImageIO.write(image, "jpg", out);
+        }
     }
 
     /**
