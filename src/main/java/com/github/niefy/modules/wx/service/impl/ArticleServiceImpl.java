@@ -30,7 +30,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     /**
      * 查询文章列表时返回的字段（过滤掉详情字段以加快速度）
      */
-    private static final String LIST_FILEDS = "id,summary,image,sub_category,update_time,title,type,tags,create_time,target_link,start_time,open_count,end_time,category";
+    private static final String LIST_FILEDS = "id,summary,image,sub_category,update_time,title,type,tags,create_time,target_link,open_count,category";
     @Autowired
     ArticleMapper articleMapper;
 
