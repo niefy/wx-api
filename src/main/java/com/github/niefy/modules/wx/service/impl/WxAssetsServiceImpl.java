@@ -2,6 +2,7 @@ package com.github.niefy.modules.wx.service.impl;
 
 import com.github.niefy.modules.wx.dto.PageSizeConstant;
 import com.github.niefy.modules.wx.service.WxAssetsService;
+import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.material.*;
@@ -10,10 +11,12 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @CacheConfig(cacheNames = {"wxAssetsServiceCache"})
@@ -25,6 +28,12 @@ public class WxAssetsServiceImpl implements WxAssetsService {
     @Cacheable(key="methodName")
     public WxMpMaterialCountResult materialCount() throws WxErrorException {
         return wxMpService.getMaterialService().materialCount();
+    }
+
+    @Override
+    @Cacheable(key="methodName + #mediaId")
+    public WxMpMaterialNews materialNewsInfo(String mediaId) throws WxErrorException {
+        return wxMpService.getMaterialService().materialNewsInfo(mediaId);
     }
 
     @Override
@@ -45,13 +54,22 @@ public class WxAssetsServiceImpl implements WxAssetsService {
 
     @Override
     @CacheEvict(allEntries = true)
-    public WxMpMaterialUploadResult materialNewsUpload(WxMpMaterialNews.WxMpMaterialNewsArticle mpMaterialNewsArticle) throws WxErrorException {
-        WxMpMaterialNews wxMpMaterialNewsSingle = new WxMpMaterialNews();
-        mpMaterialNewsArticle.setShowCoverPic(true);
-        wxMpMaterialNewsSingle.addArticle(mpMaterialNewsArticle);
-        return wxMpService.getMaterialService().materialNewsUpload(wxMpMaterialNewsSingle);
+    public WxMpMaterialUploadResult materialNewsUpload(List<WxMpMaterialNews.WxMpMaterialNewsArticle> articles) throws WxErrorException {
+        Assert.notEmpty(articles,"图文列表不得为空");
+        WxMpMaterialNews news = new WxMpMaterialNews();
+        news.setArticles(articles);
+        return wxMpService.getMaterialService().materialNewsUpload(news);
     }
 
+    /**
+     * 更新图文素材中的某篇文章
+     * @param form
+     */
+    @Override
+    @CacheEvict(allEntries = true)
+    public void materialArticleUpdate(WxMpMaterialArticleUpdate form)  throws WxErrorException{
+        wxMpService.getMaterialService().materialNewsUpdate(form);
+    }
     @Override
     @CacheEvict(allEntries = true)
     public WxMpMaterialUploadResult materialFileUpload(String mediaType, String fileName, MultipartFile file) throws WxErrorException, IOException {
@@ -61,6 +79,9 @@ public class WxAssetsServiceImpl implements WxAssetsService {
         WxMpMaterial wxMaterial = new WxMpMaterial();
         wxMaterial.setFile(tempFile);
         wxMaterial.setName(fileName);
+        if(WxConsts.MediaFileType.VIDEO.equals(mediaType)){
+            wxMaterial.setVideoTitle(fileName);
+        }
         WxMpMaterialUploadResult res = wxMpService.getMaterialService().materialFileUpload(mediaType,wxMaterial);
         tempFile.deleteOnExit();
         return null;
