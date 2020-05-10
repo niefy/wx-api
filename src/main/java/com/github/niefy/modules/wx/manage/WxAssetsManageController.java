@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * 微信公众号素材管理
@@ -41,6 +42,19 @@ public class WxAssetsManageController {
         WxMpMaterialCountResult res = wxAssetsService.materialCount();
         return R.ok().put(res);
     }
+
+    /**
+     * 获取素材总数
+     *
+     * @return
+     * @throws WxErrorException
+     */
+    @GetMapping("/materialNewsInfo")
+    public R materialNewsInfo(String mediaId) throws WxErrorException {
+        WxMpMaterialNews res = wxAssetsService.materialNewsInfo(mediaId);
+        return R.ok().put(res);
+    }
+
 
     /**
      * 根据类别分页获取非图文素材列表
@@ -75,15 +89,31 @@ public class WxAssetsManageController {
     /**
      * 添加图文永久素材
      *
-     * @param mpMaterialNewsArticle
+     * @param articles
      * @return
      * @throws WxErrorException
      */
     @PostMapping("/materialNewsUpload")
     @RequiresPermissions("wx:wxassets:save")
-    public R materialNewsUpload(@RequestBody WxMpMaterialNews.WxMpMaterialNewsArticle mpMaterialNewsArticle) throws WxErrorException {
-        WxMpMaterialUploadResult res = wxAssetsService.materialNewsUpload(mpMaterialNewsArticle);
+    public R materialNewsUpload(@RequestBody List<WxMpMaterialNews.WxMpMaterialNewsArticle> articles) throws WxErrorException {
+        if(articles.isEmpty())return R.error("图文列表不得为空");
+        WxMpMaterialUploadResult res = wxAssetsService.materialNewsUpload(articles);
         return R.ok().put(res);
+    }
+
+    /**
+     * 修改图文素材文章
+     *
+     * @param form
+     * @return
+     * @throws WxErrorException
+     */
+    @PostMapping("/materialArticleUpdate")
+    @RequiresPermissions("wx:wxassets:save")
+    public R materialArticleUpdate(@RequestBody WxMpMaterialArticleUpdate form) throws WxErrorException {
+        if(form.getArticles()==null)return R.error("文章不得为空");
+        wxAssetsService.materialArticleUpdate(form);
+        return R.ok();
     }
 
     /**
