@@ -2,6 +2,7 @@ package com.github.niefy.modules.wx.service.impl;
 
 import com.github.niefy.modules.wx.dto.PageSizeConstant;
 import com.github.niefy.modules.wx.service.WxAssetsService;
+import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.material.*;
@@ -61,6 +62,9 @@ public class WxAssetsServiceImpl implements WxAssetsService {
         WxMpMaterial wxMaterial = new WxMpMaterial();
         wxMaterial.setFile(tempFile);
         wxMaterial.setName(fileName);
+        if(WxConsts.MediaFileType.VIDEO.equals(mediaType)){
+            wxMaterial.setVideoTitle(fileName);
+        }
         WxMpMaterialUploadResult res = wxMpService.getMaterialService().materialFileUpload(mediaType,wxMaterial);
         tempFile.deleteOnExit();
         return null;

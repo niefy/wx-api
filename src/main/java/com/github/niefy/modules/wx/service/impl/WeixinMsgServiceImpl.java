@@ -2,8 +2,10 @@ package com.github.niefy.modules.wx.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.github.niefy.common.validator.Assert;
+import com.github.niefy.modules.wx.entity.Article;
 import com.github.niefy.modules.wx.entity.MsgReplyRule;
-import com.github.niefy.modules.wx.service.MsgNewsService;
+import com.github.niefy.modules.wx.service.ArticleService;
 import com.github.niefy.modules.wx.service.MsgReplyRuleService;
 import com.github.niefy.modules.wx.service.WeixinMsgService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,10 @@ import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 微信公众号消息处理
@@ -29,9 +34,9 @@ public class WeixinMsgServiceImpl implements WeixinMsgService {
     @Autowired
     MsgReplyRuleService msgReplyRuleService;
     @Autowired
-    MsgNewsService msgNewsService;
-    @Autowired
     WxMpService wxService;
+    @Autowired
+    ArticleService articleService;
 
     /**
      * 根据规则配置通过微信客服消息接口自动回复消息
@@ -101,12 +106,29 @@ public class WeixinMsgServiceImpl implements WeixinMsgService {
                 .build());
     }
 
+    /**
+     * 发送图文消息（点击跳转到外链） 图文消息条数限制在1条以内
+     * @param toUser
+     * @param articleIdStr
+     * @throws WxErrorException
+     */
     @Override
-    public void replyNews(String toUser, String newsIds) throws WxErrorException {
-        List<WxMpKefuMessage.WxArticle> newsList = msgNewsService.findByIds(newsIds);
+    public void replyNews(String toUser, String articleIdStr) throws WxErrorException {
+        Assert.isBlank(articleIdStr,"文章ID不得为空");
+        int articleId = Integer.parseInt(articleIdStr);
+        Article a = articleService.findById(articleId);
+        List<WxMpKefuMessage.WxArticle> newsList = new ArrayList<WxMpKefuMessage.WxArticle>(){{
+            add(new WxMpKefuMessage.WxArticle(a.getTitle(),a.getSummary(),a.getTargetLink(),a.getImage()));
+        }};
         wxService.getKefuService().sendKefuMessage(WxMpKefuMessage.NEWS().toUser(toUser).articles(newsList).build());
     }
 
+    /**
+     * 发送图文消息（点击跳转到图文消息页面） 图文消息条数限制在1条以内
+     * @param toUser
+     * @param mediaId
+     * @throws WxErrorException
+     */
     @Override
     public void replyMpNews(String toUser, String mediaId) throws WxErrorException {
         wxService.getKefuService().sendKefuMessage(WxMpKefuMessage.MPNEWS().toUser(toUser).mediaId(mediaId).build());

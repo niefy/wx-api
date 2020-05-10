@@ -46,12 +46,14 @@ public interface WeixinMsgService {
     void replyMusic(String toUser, String mediaId) throws WxErrorException;
 
     /**
-     * 回复图文消息
+     * 回复图文消息（点击跳转到外链）
+     * 图文消息条数限制在1条以内
      */
     void replyNews(String toUser, String newsIds) throws WxErrorException;
 
     /**
-     * 回复公众号文章消息
+     * 回复公众号文章消息（点击跳转到图文消息页面）
+     * 图文消息条数限制在1条以内
      */
     void replyMpNews(String toUser, String mediaId) throws WxErrorException;
 

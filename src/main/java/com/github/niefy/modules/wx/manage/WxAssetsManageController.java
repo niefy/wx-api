@@ -51,7 +51,7 @@ public class WxAssetsManageController {
      * @throws WxErrorException
      */
     @GetMapping("/materialFileBatchGet")
-    @RequiresPermissions("wx:material:list")
+    @RequiresPermissions("wx:wxassets:list")
     public R materialFileBatchGet(@RequestParam(defaultValue = "image") String type,
                                   @RequestParam(defaultValue = "1") int page) throws WxErrorException {
         WxMpMaterialFileBatchGetResult res = wxAssetsService.materialFileBatchGet(type,page);
@@ -66,7 +66,7 @@ public class WxAssetsManageController {
      * @throws WxErrorException
      */
     @GetMapping("/materialNewsBatchGet")
-    @RequiresPermissions("wx:material:list")
+    @RequiresPermissions("wx:wxassets:list")
     public R materialNewsBatchGet(@RequestParam(defaultValue = "1") int page) throws WxErrorException {
         WxMpMaterialNewsBatchGetResult res = wxAssetsService.materialNewsBatchGet(page);
         return R.ok().put(res);
@@ -80,7 +80,7 @@ public class WxAssetsManageController {
      * @throws WxErrorException
      */
     @PostMapping("/materialNewsUpload")
-    @RequiresPermissions("wx:material:save")
+    @RequiresPermissions("wx:wxassets:save")
     public R materialNewsUpload(@RequestBody WxMpMaterialNews.WxMpMaterialNewsArticle mpMaterialNewsArticle) throws WxErrorException {
         WxMpMaterialUploadResult res = wxAssetsService.materialNewsUpload(mpMaterialNewsArticle);
         return R.ok().put(res);
@@ -97,7 +97,7 @@ public class WxAssetsManageController {
      * @throws IOException
      */
     @PostMapping("/materialFileUpload")
-    @RequiresPermissions("wx:material:save")
+    @RequiresPermissions("wx:wxassets:save")
     public R materialFileUpload(MultipartFile file, String fileName, String mediaType) throws WxErrorException, IOException {
         if (file == null) return R.error("文件不得为空");
         WxMpMaterialUploadResult res = wxAssetsService.materialFileUpload(mediaType,fileName,file);
@@ -113,7 +113,7 @@ public class WxAssetsManageController {
      * @throws IOException
      */
     @PostMapping("/materialDelete")
-    @RequiresPermissions("wx:material:delete")
+    @RequiresPermissions("wx:wxassets:delete")
     public R materialDelete(@RequestBody MaterialFileDeleteForm form) throws WxErrorException, IOException {
         boolean res = wxAssetsService.materialDelete(form.getMediaId());
         return R.ok().put(res);
