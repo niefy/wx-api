@@ -1,14 +1,14 @@
 # wx-api
 微信公众号管理项目，基于Spring Boot2.1快速公众号开发种子项目，包含公众号菜单管理、自动回复、素材管理等
 
-### [☁项目前端](https://github.com/niefy/wx-manage) | [📖使用文档](https://github.com/niefy/wx-manage/wiki) | [📊功能投票](https://wj.qq.com/s2/5896407/a381) | [🕓版本更新记录](https://github.com/niefy/wx-manage/wiki/更新记录-versions)
+### [☁项目前端](https://github.com/niefy/wx-manage) | [📖使用文档](https://github.com/niefy/wx-manage/wiki) | [📊功能投票](https://wj.qq.com/s2/5896407/a381) | [🕓版本更新记录](https://github.com/niefy/wx-manage/wiki/更新记录-versions) | [Github仓库](https://github.com/niefy/wx-api) | [码云仓库](https://gitee.com/niefy/wx-api)
 
-# 项目说明
+## 项目说明
 - wx-api是一个轻量级的公众号开发种子项目，可快速接入微信公众号管理功能
 - 管理后台前端项目wx-manage：https://github.com/niefy/wx-manage
 - 微信登录、微信分享、CMS前端示例：https://github.com/niefy/wx-client
 
-# 技术选型
+## 技术选型
 - 核心框架：Spring Boot
 - 安全框架：Apache Shiro
 - 持久层框架：[MyBatis-Plus](https://baomidou.oschina.io/mybatis-plus-doc/#/quick-start)
@@ -17,11 +17,11 @@
 - 页面交互：Vue2.x、ElementUI、TinyMce Editor、Vuex
 
 
-# 公众号开发准备
+## 公众号开发准备
 - 微信公众号启用开发模式（开发测试可使用[微信公众号测试号](https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login)）
 - 后端服务必需配置域名和80端口（开发测试可使用[内网穿透工具ngrok](https://blog.csdn.net/chain_fei/article/details/79152692)）
 
-# 后端部署
+## 开发环境部署
 - 通过git下载源码
 - idea、eclipse需安装lombok插件，不然会提示找不到entity的get set方法
 - 创建数据库wx，数据库字符集utf8mb4，编码规则utf8mb4_general_ci（如未正确设置可能影响昵称表情及特殊符号存储）
@@ -44,14 +44,12 @@
 - 进入公众号后台填写授权回调页面域名（如未配置会受影响微信登录）
     - http://xxx.ngrok.io
 
-# 管理后台前端部署
+## 管理后台前端部署
 - 本项目是前后端分离的，还需要部署前端，才能运行起来
 - 前端下载地址：https://github.com/niefy/wx-manage
 - 前端部署完毕，就可以访问项目了，账号：admin，密码：123456
 
-# 用户界面前端部署
-- 本项目是前后端分离的，还需要部署前端，才能运行起来
-- 前端下载地址：https://github.com/niefy/wx-client
+## [生产环境部署步骤](https://github.com/niefy/wx-manage/wiki/生产环境部署文档)
 
 ## 截图
 ![公众号菜单](https://s1.ax1x.com/2020/04/10/GTq6sI.png)
@@ -65,7 +63,7 @@
 ![系统菜单管理](https://s1.ax1x.com/2020/04/18/JnKk7V.jpg)
 ![管理员列表](https://s1.ax1x.com/2020/04/18/JnKimq.jpg)
 
-# 开发进度
+## 开发进度
 - [x] 公众号菜单管理
     - [x] 与微信端公众号一致的可视化界面
     - [x] 支持配置链接、点击事件、小程序等多种菜单
@@ -79,9 +77,8 @@
 - [x] 公众号带参二维码管理
     - [x] 可配置临时带参二维码、永久带参二维码
 - [x] 公众号素材管理
-    - [x] 上传图片、语音、视频素材,获取素材media_id
-    - [x] 获取公众号图文素材
-    - [ ] 添加公众号图文素材
+    - [x] 图片、语音、视频、图文素材管理
+    - [x] 支持需要素材ID时从素材库选择
 - [X] 公众号粉丝管理
     - [x] 同步粉丝列表
     - [x] 关注/取关信息更新
@@ -101,6 +98,9 @@
 - [x] 微信端
     - [x] 微信授权登录
     - [x] 微信分享
+- [ ] 消息管理
+    - [ ] 消息、事件列表
+    - [ ] 消息回复
 - [ ] 微信卡券
 - [ ] 客服管理
 
