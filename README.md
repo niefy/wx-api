@@ -1,5 +1,5 @@
 # wx-api
-微信公众号管理项目，基于Spring Boot2.1快速公众号开发种子项目，包含公众号菜单管理、自动回复、素材管理等
+微信公众号管理项目，基于Spring Boot快速公众号开发种子项目，包含公众号菜单管理、自动回复、素材管理等
 
 ### [☁项目前端](https://github.com/niefy/wx-manage) | [📖使用文档](https://github.com/niefy/wx-manage/wiki) | [📊功能投票](https://wj.qq.com/s2/5896407/a381) | [🕓版本更新记录](https://github.com/niefy/wx-manage/wiki/更新记录-versions) | [Github仓库](https://github.com/niefy/wx-api) | [码云仓库](https://gitee.com/niefy/wx-api)
 
@@ -58,7 +58,8 @@
 ![模板消息发送](https://s1.ax1x.com/2020/04/18/JnKEkT.jpg)
 ![粉丝管理](https://s1.ax1x.com/2020/04/18/JnKVtU.jpg)
 ![带参二维码](https://s1.ax1x.com/2020/04/18/JnKF00.jpg)
-![媒体素材](https://s1.ax1x.com/2020/04/18/JnKmp4.jpg)
+![素材管理](https://s1.ax1x.com/2020/05/20/Y7djHI.jpg)
+![公众号消息](https://s1.ax1x.com/2020/05/20/Y7dXDA.jpg)
 ![文章编辑](https://s1.ax1x.com/2020/04/10/GTqrzd.png)
 ![系统菜单管理](https://s1.ax1x.com/2020/04/18/JnKk7V.jpg)
 ![管理员列表](https://s1.ax1x.com/2020/04/18/JnKimq.jpg)
