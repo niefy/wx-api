@@ -3,11 +3,14 @@ package com.github.niefy.modules.wx.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.niefy.common.validator.Assert;
+import com.github.niefy.config.TaskExcutor;
 import com.github.niefy.modules.wx.entity.Article;
 import com.github.niefy.modules.wx.entity.MsgReplyRule;
+import com.github.niefy.modules.wx.entity.WxMsg;
 import com.github.niefy.modules.wx.service.ArticleService;
 import com.github.niefy.modules.wx.service.MsgReplyRuleService;
-import com.github.niefy.modules.wx.service.WeixinMsgService;
+import com.github.niefy.modules.wx.service.MsgReplyService;
+import com.github.niefy.modules.wx.service.WxMsgService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
@@ -15,12 +18,12 @@ import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 微信公众号消息处理
@@ -30,13 +33,17 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class WeixinMsgServiceImpl implements WeixinMsgService {
+public class MsgReplyServiceImpl implements MsgReplyService {
     @Autowired
     MsgReplyRuleService msgReplyRuleService;
     @Autowired
     WxMpService wxService;
     @Autowired
     ArticleService articleService;
+    @Value("${wx.mp.autoReplyInterval:1000}")
+    Long autoReplyInterval;
+    @Autowired
+    WxMsgService wxMsgService;
 
     /**
      * 根据规则配置通过微信客服消息接口自动回复消息
@@ -47,24 +54,16 @@ public class WeixinMsgServiceImpl implements WeixinMsgService {
      * @return 是否已自动回复，无匹配规则则不自动回复
      */
     @Override
-    public boolean wxReplyMsg(boolean exactMatch, String toUser, String keywords) {
+    public boolean tryAutoReply(boolean exactMatch, String toUser, String keywords) {
         try {
             List<MsgReplyRule> rules = msgReplyRuleService.getMatchedRules(exactMatch, keywords);
             if (rules.isEmpty()) return false;
+            long delay = 0;
             for (MsgReplyRule rule : rules) {
-                String replyType = rule.getReplyType();
-                String replyContent = rule.getReplyContent();
-                if (WxConsts.KefuMsgType.TEXT.equals(replyType)) this.replyText(toUser, replyContent);
-                else if (WxConsts.KefuMsgType.IMAGE.equals(replyType)) this.replyImage(toUser, replyContent);
-                else if (WxConsts.KefuMsgType.VOICE.equals(replyType)) this.replyVoice(toUser, replyContent);
-                else if (WxConsts.KefuMsgType.VIDEO.equals(replyType)) this.replyVideo(toUser, replyContent);
-                else if (WxConsts.KefuMsgType.MUSIC.equals(replyType)) this.replyMusic(toUser, replyContent);
-                else if (WxConsts.KefuMsgType.NEWS.equals(replyType)) this.replyNews(toUser, replyContent);
-                else if (WxConsts.KefuMsgType.MPNEWS.equals(replyType)) this.replyMpNews(toUser, replyContent);
-                else if (WxConsts.KefuMsgType.WXCARD.equals(replyType)) this.replyWxCard(toUser, replyContent);
-                else if (WxConsts.KefuMsgType.MINIPROGRAMPAGE.equals(replyType))
-                    this.replyMiniProgram(toUser, replyContent);
-                else if (WxConsts.KefuMsgType.MSGMENU.equals(replyType)) this.replyMsgMenu(toUser, replyContent);
+                TaskExcutor.schedule(() -> {
+                    this.reply(toUser,rule.getReplyType(),rule.getReplyContent());
+                }, delay, TimeUnit.MILLISECONDS);
+                delay += autoReplyInterval;
             }
             return true;
         } catch (Exception e) {
@@ -76,21 +75,33 @@ public class WeixinMsgServiceImpl implements WeixinMsgService {
     @Override
     public void replyText(String toUser, String content) throws WxErrorException {
         wxService.getKefuService().sendKefuMessage(WxMpKefuMessage.TEXT().toUser(toUser).content(content).build());
+
+        JSONObject json = new JSONObject().fluentPut("content",content);
+        wxMsgService.addWxMsg(WxMsg.buildOutMsg(WxConsts.KefuMsgType.TEXT,toUser,json));
     }
 
     @Override
     public void replyImage(String toUser, String mediaId) throws WxErrorException {
         wxService.getKefuService().sendKefuMessage(WxMpKefuMessage.IMAGE().toUser(toUser).mediaId(mediaId).build());
+
+        JSONObject json = new JSONObject().fluentPut("mediaId",mediaId);
+        wxMsgService.addWxMsg(WxMsg.buildOutMsg(WxConsts.KefuMsgType.IMAGE,toUser,json));
     }
 
     @Override
     public void replyVoice(String toUser, String mediaId) throws WxErrorException {
         wxService.getKefuService().sendKefuMessage(WxMpKefuMessage.VOICE().toUser(toUser).mediaId(mediaId).build());
+
+        JSONObject json = new JSONObject().fluentPut("mediaId",mediaId);
+        wxMsgService.addWxMsg(WxMsg.buildOutMsg(WxConsts.KefuMsgType.VOICE,toUser,json));
     }
 
     @Override
     public void replyVideo(String toUser, String mediaId) throws WxErrorException {
         wxService.getKefuService().sendKefuMessage(WxMpKefuMessage.VIDEO().toUser(toUser).mediaId(mediaId).build());
+
+        JSONObject json = new JSONObject().fluentPut("mediaId",mediaId);
+        wxMsgService.addWxMsg(WxMsg.buildOutMsg(WxConsts.KefuMsgType.VIDEO,toUser,json));
     }
 
     @Override
@@ -104,6 +115,8 @@ public class WeixinMsgServiceImpl implements WeixinMsgService {
                 .description(json.getString("description"))
                 .thumbMediaId(json.getString("thumb_media_id"))
                 .build());
+
+        wxMsgService.addWxMsg(WxMsg.buildOutMsg(WxConsts.KefuMsgType.IMAGE,toUser,json));
     }
 
     /**
@@ -117,10 +130,11 @@ public class WeixinMsgServiceImpl implements WeixinMsgService {
         Assert.isBlank(articleIdStr,"文章ID不得为空");
         int articleId = Integer.parseInt(articleIdStr);
         Article a = articleService.findById(articleId);
-        List<WxMpKefuMessage.WxArticle> newsList = new ArrayList<WxMpKefuMessage.WxArticle>(){{
-            add(new WxMpKefuMessage.WxArticle(a.getTitle(),a.getSummary(),a.getTargetLink(),a.getImage()));
-        }};
+        WxMpKefuMessage.WxArticle wxArticle = new WxMpKefuMessage.WxArticle(a.getTitle(),a.getSummary(),a.getTargetLink(),a.getImage());
+        List<WxMpKefuMessage.WxArticle> newsList = new ArrayList<WxMpKefuMessage.WxArticle>(){{add(wxArticle);}};
         wxService.getKefuService().sendKefuMessage(WxMpKefuMessage.NEWS().toUser(toUser).articles(newsList).build());
+
+        wxMsgService.addWxMsg(WxMsg.buildOutMsg(WxConsts.KefuMsgType.NEWS,toUser,(JSONObject)JSONObject.toJSON(wxArticle)));
     }
 
     /**
@@ -132,11 +146,17 @@ public class WeixinMsgServiceImpl implements WeixinMsgService {
     @Override
     public void replyMpNews(String toUser, String mediaId) throws WxErrorException {
         wxService.getKefuService().sendKefuMessage(WxMpKefuMessage.MPNEWS().toUser(toUser).mediaId(mediaId).build());
+
+        JSONObject json = new JSONObject().fluentPut("mediaId",mediaId);
+        wxMsgService.addWxMsg(WxMsg.buildOutMsg(WxConsts.KefuMsgType.MPNEWS,toUser,json));
     }
 
     @Override
     public void replyWxCard(String toUser, String cardId) throws WxErrorException {
         wxService.getKefuService().sendKefuMessage(WxMpKefuMessage.WXCARD().toUser(toUser).cardId(cardId).build());
+
+        JSONObject json = new JSONObject().fluentPut("cardId",cardId);
+        wxMsgService.addWxMsg(WxMsg.buildOutMsg(WxConsts.KefuMsgType.WXCARD,toUser,json));
     }
 
     @Override
@@ -150,6 +170,8 @@ public class WeixinMsgServiceImpl implements WeixinMsgService {
                 .pagePath(json.getString("pagepath"))
                 .thumbMediaId(json.getString("thumb_media_id"))
                 .build());
+
+        wxMsgService.addWxMsg(WxMsg.buildOutMsg(WxConsts.KefuMsgType.IMAGE,toUser,json));
     }
 
     @Override
@@ -162,6 +184,8 @@ public class WeixinMsgServiceImpl implements WeixinMsgService {
                 .headContent(json.getString("head_content"))
                 .tailContent(json.getString("tail_content"))
                 .msgMenus(msgMenus).build());
+
+        wxMsgService.addWxMsg(WxMsg.buildOutMsg(WxConsts.KefuMsgType.IMAGE,toUser,json));
     }
 
 }

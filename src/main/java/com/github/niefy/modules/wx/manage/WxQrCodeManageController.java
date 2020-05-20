@@ -4,7 +4,7 @@ import com.github.niefy.modules.wx.form.WxQrCodeForm;
 import com.github.niefy.modules.wx.service.WxQrCodeService;
 import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.common.utils.R;
-import com.github.niefy.modules.wx.entity.WxQrCodeEntity;
+import com.github.niefy.modules.wx.entity.WxQrCode;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -56,7 +56,7 @@ public class WxQrCodeManageController {
     @GetMapping("/info/{id}")
     @RequiresPermissions("wx:wxqrcode:info")
     public R info(@PathVariable("id") Long id) {
-        WxQrCodeEntity wxQrCode = wxQrCodeService.getById(id);
+        WxQrCode wxQrCode = wxQrCodeService.getById(id);
 
         return R.ok().put("wxQrCode", wxQrCode);
     }

@@ -1,7 +1,7 @@
 package com.github.niefy.modules.wx.service.impl;
 
 import com.github.niefy.modules.wx.dao.WxQrCodeMapper;
-import com.github.niefy.modules.wx.entity.WxQrCodeEntity;
+import com.github.niefy.modules.wx.entity.WxQrCode;
 import com.github.niefy.modules.wx.form.WxQrCodeForm;
 import com.github.niefy.modules.wx.service.WxQrCodeService;
 import lombok.RequiredArgsConstructor;
@@ -23,15 +23,15 @@ import org.springframework.util.StringUtils;
 
 @Service("wxQrCodeService")
 @RequiredArgsConstructor
-public class WxQrCodeServiceImpl extends ServiceImpl<WxQrCodeMapper, WxQrCodeEntity> implements WxQrCodeService {
+public class WxQrCodeServiceImpl extends ServiceImpl<WxQrCodeMapper, WxQrCode> implements WxQrCodeService {
     private final WxMpService wxService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         String sceneStr = (String) params.get("sceneStr");
-        IPage<WxQrCodeEntity> page = this.page(
-            new Query<WxQrCodeEntity>().getPage(params),
-            new QueryWrapper<WxQrCodeEntity>()
+        IPage<WxQrCode> page = this.page(
+            new Query<WxQrCode>().getPage(params),
+            new QueryWrapper<WxQrCode>()
                 .like(!StringUtils.isEmpty(sceneStr), "scene_str", sceneStr)
         );
 
@@ -52,13 +52,13 @@ public class WxQrCodeServiceImpl extends ServiceImpl<WxQrCodeMapper, WxQrCodeEnt
         } else {//创建永久二维码
             ticket = wxService.getQrcodeService().qrCodeCreateLastTicket(form.getSceneStr());
         }
-        WxQrCodeEntity wxQrCodeEntity = new WxQrCodeEntity(form);
-        wxQrCodeEntity.setTicket(ticket.getTicket());
-        wxQrCodeEntity.setUrl(ticket.getUrl());
+        WxQrCode wxQrCode = new WxQrCode(form);
+        wxQrCode.setTicket(ticket.getTicket());
+        wxQrCode.setUrl(ticket.getUrl());
         if (form.getIsTemp()) {
-            wxQrCodeEntity.setExpireTime(new Date(new Date().getTime() + ticket.getExpireSeconds() * 1000L));
+            wxQrCode.setExpireTime(new Date(new Date().getTime() + ticket.getExpireSeconds() * 1000L));
         }
-        this.save(wxQrCodeEntity);
+        this.save(wxQrCode);
         return ticket;
     }
 

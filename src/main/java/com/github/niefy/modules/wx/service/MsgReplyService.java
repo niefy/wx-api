@@ -1,14 +1,17 @@
 package com.github.niefy.modules.wx.service;
 
+import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.error.WxErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 公众号消息处理
  * 官方文档：https://developers.weixin.qq.com/doc/offiaccount/Message_Management/Service_Center_messages.html#7
  * WxJava客服消息文档：https://github.com/Wechat-Group/WxJava/wiki/MP_主动发送消息（客服消息）
  */
-public interface WeixinMsgService {
-
+public interface MsgReplyService {
+    static Logger logger = LoggerFactory.getLogger(MsgReplyService.class);
 
     /**
      * 根据规则配置通过微信客服消息接口自动回复消息
@@ -18,7 +21,24 @@ public interface WeixinMsgService {
      * @param keywords   匹配关键词
      * @return 是否已自动回复，无匹配规则则不自动回复
      */
-    boolean wxReplyMsg(boolean exactMatch, String toUser, String keywords);
+    boolean tryAutoReply(boolean exactMatch, String toUser, String keywords);
+
+    default void reply(String toUser,String replyType, String replyContent){
+        try {
+            if (WxConsts.KefuMsgType.TEXT.equals(replyType)) this.replyText(toUser, replyContent);
+            else if (WxConsts.KefuMsgType.IMAGE.equals(replyType)) this.replyImage(toUser, replyContent);
+            else if (WxConsts.KefuMsgType.VOICE.equals(replyType)) this.replyVoice(toUser, replyContent);
+            else if (WxConsts.KefuMsgType.VIDEO.equals(replyType)) this.replyVideo(toUser, replyContent);
+            else if (WxConsts.KefuMsgType.MUSIC.equals(replyType)) this.replyMusic(toUser, replyContent);
+            else if (WxConsts.KefuMsgType.NEWS.equals(replyType)) this.replyNews(toUser, replyContent);
+            else if (WxConsts.KefuMsgType.MPNEWS.equals(replyType)) this.replyMpNews(toUser, replyContent);
+            else if (WxConsts.KefuMsgType.WXCARD.equals(replyType)) this.replyWxCard(toUser, replyContent);
+            else if (WxConsts.KefuMsgType.MINIPROGRAMPAGE.equals(replyType)) this.replyMiniProgram(toUser, replyContent);
+            else if (WxConsts.KefuMsgType.MSGMENU.equals(replyType)) this.replyMsgMenu(toUser, replyContent);
+        } catch (Exception e) {
+            logger.error("自动回复出错：", e);
+        }
+    };
 
     /**
      * 回复文字消息

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.github.niefy.modules.wx.service.WxUserService;
-import com.github.niefy.modules.wx.service.WeixinMsgService;
+import com.github.niefy.modules.wx.service.MsgReplyService;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -20,7 +20,7 @@ import org.springframework.util.StringUtils;
 @Component
 public class SubscribeHandler extends AbstractHandler {
     @Autowired
-    WeixinMsgService weixinMsgService;
+    MsgReplyService msgReplyService;
     @Autowired
     WxUserService userService;
 
@@ -32,10 +32,10 @@ public class SubscribeHandler extends AbstractHandler {
 
         userService.refreshUserInfo(wxMessage.getFromUser());
 
-        weixinMsgService.wxReplyMsg(true, wxMessage.getFromUser(), wxMessage.getEvent());
+        msgReplyService.tryAutoReply(true, wxMessage.getFromUser(), wxMessage.getEvent());
 
         if (!StringUtils.isEmpty(wxMessage.getEventKey())) {// 处理特殊事件，如用户扫描带参二维码关注
-            weixinMsgService.wxReplyMsg(true, wxMessage.getFromUser(), wxMessage.getEventKey());
+            msgReplyService.tryAutoReply(true, wxMessage.getFromUser(), wxMessage.getEventKey());
         }
         return null;
     }
@@ -46,9 +46,9 @@ public class SubscribeHandler extends AbstractHandler {
     protected WxMpXmlOutMessage handleSpecial(WxMpXmlMessage wxMessage) throws Exception {
         this.logger.info("特殊请求-新关注用户 OPENID: " + wxMessage.getFromUser());
         //对关注事件和扫码事件分别处理
-        weixinMsgService.wxReplyMsg(true, wxMessage.getFromUser(), wxMessage.getEvent());
+        msgReplyService.tryAutoReply(true, wxMessage.getFromUser(), wxMessage.getEvent());
         if (!StringUtils.isEmpty(wxMessage.getEventKey())) {
-            weixinMsgService.wxReplyMsg(true, wxMessage.getFromUser(), wxMessage.getEventKey());
+            msgReplyService.tryAutoReply(true, wxMessage.getFromUser(), wxMessage.getEventKey());
         }
         return null;
     }

@@ -58,3 +58,8 @@ renren:
         # token有效时长，7天，单位秒
         expire: 604800
         header: token
+
+wx:
+    mp:
+        # 自动回复消息发送间隔（毫秒），适当增加间隔可提升用户体验
+        autoReplyInterval: 1000

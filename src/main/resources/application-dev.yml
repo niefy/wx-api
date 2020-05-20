@@ -40,8 +40,8 @@ spring:
 wx:
     mp:
         configs:
-            -   appid:
-                secret: 
+            -   appid: wx7b6ca33b71fbbf27
+                secret: d4624c36b6795d1d99dcf0547af5443d
                 token: my_weixin_token_
                 aesKey:
     pay:

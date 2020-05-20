@@ -18,7 +18,7 @@ import lombok.Data;
  */
 @Data
 @TableName("wx_qr_code")
-public class WxQrCodeEntity implements Serializable {
+public class WxQrCode implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -51,10 +51,10 @@ public class WxQrCodeEntity implements Serializable {
      */
     private Date createTime;
 
-    public WxQrCodeEntity() {
+    public WxQrCode() {
     }
 
-    public WxQrCodeEntity(WxQrCodeForm form) {
+    public WxQrCode(WxQrCodeForm form) {
         this.isTemp = form.getIsTemp();
         this.sceneStr = form.getSceneStr();
         this.createTime = new Date();

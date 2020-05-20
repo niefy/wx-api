@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,7 +27,9 @@ public class MsgReplyRuleServiceImpl extends ServiceImpl<MsgReplyRuleMapper, Msg
         String matchValue = (String) params.get("matchValue");
         IPage<MsgReplyRule> page = this.page(
             new Query<MsgReplyRule>().getPage(params),
-            new QueryWrapper<MsgReplyRule>().like(!StringUtils.isEmpty(matchValue), "match_value", matchValue)
+            new QueryWrapper<MsgReplyRule>()
+                    .like(!StringUtils.isEmpty(matchValue), "match_value", matchValue)
+                    .orderByDesc("update_time")
         );
 
         return new PageUtils(page);
@@ -70,7 +73,7 @@ public class MsgReplyRuleServiceImpl extends ServiceImpl<MsgReplyRuleMapper, Msg
                 .eq("status", 1)
                 .isNotNull("match_value")
                 .ne("match_value", "")
-                .last("and effect_time_end>= CURRENT_TIME AND effect_time_start<=CURRENT_TIME"));
+                .orderByDesc("priority"));
     }
 
     /**
@@ -82,9 +85,12 @@ public class MsgReplyRuleServiceImpl extends ServiceImpl<MsgReplyRuleMapper, Msg
      */
     @Override
     public List<MsgReplyRule> getMatchedRules(boolean exactMatch, String keywords) {
+        LocalTime now = LocalTime.now();
         return this.getValidRules().stream()
-            .filter(rule -> isMatch(exactMatch || rule.isExactMatch(), rule.getMatchValue().split(","), keywords))
-            .collect(Collectors.toList());
+                .filter(rule->null == rule.getEffectTimeStart() || rule.getEffectTimeStart().isBefore(now))// 检测是否在有效时段，effectTimeStart为null则一直有效
+                .filter(rule->null == rule.getEffectTimeEnd() || rule.getEffectTimeEnd().isAfter(now)) // 检测是否在有效时段，effectTimeEnd为null则一直有效
+                .filter(rule->isMatch(exactMatch || rule.isExactMatch(),rule.getMatchValue().split(","),keywords)) //检测是否符合匹配规则
+                .collect(Collectors.toList());
     }
 
     /**

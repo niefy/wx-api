@@ -1,6 +1,7 @@
 package com.github.niefy.modules.wx.manage;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -35,6 +36,16 @@ public class WxUserManageController {
         PageUtils page = new PageUtils(userService.queryPage(params));
 
         return R.ok().put("page", page);
+    }
+
+    /**
+     * 列表
+     */
+    @PostMapping("/listByIds")
+    @RequiresPermissions("wx:wxuser:list")
+    public R listByIds(@RequestBody String[] openids){
+        List<WxUser> users = userService.listByIds(Arrays.asList(openids));
+        return R.ok().put(users);
     }
 
 

@@ -1,15 +1,16 @@
 package com.github.niefy.modules.wx.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.github.niefy.common.utils.Json;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.sql.Time;
+import java.time.LocalTime;
+import java.util.Date;
 
 /**
  * @author Nifury
@@ -33,8 +34,10 @@ public class MsgReplyRule implements Serializable {
     private boolean status;
     @TableField(value = "`desc`")
     private String desc;
-    private Time effectTimeStart;
-    private Time effectTimeEnd;
+    private LocalTime effectTimeStart;
+    private LocalTime effectTimeEnd;
+    private int priority;
+    private Date updateTime;
 
     @Override
     public String toString() {
