@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.6.RELEASE</version>
+		<version>2.3.0.RELEASE</version>
 	</parent>
 
 	<properties>
@@ -30,9 +30,9 @@
 		<shiro.version>1.5.3</shiro.version>
 		<jwt.version>0.9.1</jwt.version>
 		<kaptcha.version>0.0.9</kaptcha.version>
-		<qiniu.version>7.2.28</qiniu.version>
+		<qiniu.version>7.2.29</qiniu.version>
 		<aliyun.oss.version>3.9.1</aliyun.oss.version>
-		<qcloud.cos.version>5.6.22</qcloud.cos.version>
+		<qcloud.cos.version>5.6.23</qcloud.cos.version>
 		<swagger.version>2.9.2</swagger.version>
 		<joda.time.version>2.10.6</joda.time.version>
 		<fastjson.version>1.2.68</fastjson.version>
