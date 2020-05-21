@@ -32,7 +32,7 @@ public class TemplateMsgLogServiceImpl extends ServiceImpl<TemplateMsgLogMapper,
     /**
      * 未保存的队列
      */
-    private static ConcurrentLinkedQueue<TemplateMsgLog> logsQueue = new ConcurrentLinkedQueue<>();
+    private static final ConcurrentLinkedQueue<TemplateMsgLog> logsQueue = new ConcurrentLinkedQueue<>();
 
     /**
      * 添加访问log到队列中，队列数据会定时批量插入到数据库

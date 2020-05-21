@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -26,7 +27,7 @@ public class WxMsgServiceImpl extends ServiceImpl<WxMsgMapper, WxMsg> implements
     /**
      * 未保存的队列
      */
-    private static ConcurrentLinkedQueue<WxMsg> logsQueue = new ConcurrentLinkedQueue<>();
+    private static final ConcurrentLinkedQueue<WxMsg> logsQueue = new ConcurrentLinkedQueue<>();
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -36,7 +37,7 @@ public class WxMsgServiceImpl extends ServiceImpl<WxMsgMapper, WxMsg> implements
         IPage<WxMsg> page = this.page(
                 new Query<WxMsg>().getPage(params),
                 new QueryWrapper<WxMsg>()
-                        .in(StringUtils.isNotEmpty(msgTypes),"msg_type",msgTypes.split(","))
+                        .in(StringUtils.isNotEmpty(msgTypes),"msg_type", Arrays.asList(msgTypes.split(",")))
                         .eq(StringUtils.isNotEmpty(openid),"openid",openid)
                         .ge(StringUtils.isNotEmpty(startTime),"create_time",startTime)
         );
