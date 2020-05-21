@@ -24,6 +24,11 @@ public class WxUserTagsController {
             return R.error("none_openid");
         }
         WxUser wxUser = wxUserService.getById(openid);
+        if(wxUser==null){
+            wxUser=wxUserService.refreshUserInfo(openid);
+            if(wxUser==null)
+                return R.error("not_subscribed");
+        }
         return R.ok().put(wxUser.getTagidList());
     }
 
