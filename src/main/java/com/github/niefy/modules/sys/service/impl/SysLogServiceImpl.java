@@ -33,7 +33,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogDao, SysLogEntity> impl
     /**
      * 未保存的日志队列
      */
-    private static ConcurrentLinkedQueue<SysLogEntity> SysLogsQueue = new ConcurrentLinkedQueue<>();
+    private static final ConcurrentLinkedQueue<SysLogEntity> SysLogsQueue = new ConcurrentLinkedQueue<>();
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {

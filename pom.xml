@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.6.RELEASE</version>
+		<version>2.3.0.RELEASE</version>
 	</parent>
 
 	<properties>
@@ -37,7 +37,7 @@
 		<joda.time.version>2.10.6</joda.time.version>
 		<fastjson.version>1.2.68</fastjson.version>
 		<lombok.version>1.18.10</lombok.version>
-		<weixin-java.version>3.7.0</weixin-java.version>
+		<weixin-java.version>3.8.0</weixin-java.version>
 	</properties>
 
 	<dependencies>
@@ -57,6 +57,10 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

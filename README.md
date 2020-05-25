@@ -6,7 +6,6 @@
 ## 项目说明
 - wx-api是一个轻量级的公众号开发种子项目，可快速接入微信公众号管理功能
 - 管理后台前端项目wx-manage：https://github.com/niefy/wx-manage
-- 微信登录、微信分享、CMS前端示例：https://github.com/niefy/wx-client
 
 ## 技术选型
 - 核心框架：Spring Boot
