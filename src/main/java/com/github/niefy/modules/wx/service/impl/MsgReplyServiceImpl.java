@@ -2,12 +2,9 @@ package com.github.niefy.modules.wx.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.github.niefy.common.validator.Assert;
 import com.github.niefy.config.TaskExcutor;
-import com.github.niefy.modules.wx.entity.Article;
 import com.github.niefy.modules.wx.entity.MsgReplyRule;
 import com.github.niefy.modules.wx.entity.WxMsg;
-import com.github.niefy.modules.wx.service.ArticleService;
 import com.github.niefy.modules.wx.service.MsgReplyRuleService;
 import com.github.niefy.modules.wx.service.MsgReplyService;
 import com.github.niefy.modules.wx.service.WxMsgService;
@@ -38,8 +35,6 @@ public class MsgReplyServiceImpl implements MsgReplyService {
     MsgReplyRuleService msgReplyRuleService;
     @Autowired
     WxMpService wxService;
-    @Autowired
-    ArticleService articleService;
     @Value("${wx.mp.autoReplyInterval:1000}")
     Long autoReplyInterval;
     @Autowired
@@ -126,15 +121,12 @@ public class MsgReplyServiceImpl implements MsgReplyService {
      * @throws WxErrorException
      */
     @Override
-    public void replyNews(String toUser, String articleIdStr) throws WxErrorException {
-        Assert.isBlank(articleIdStr,"文章ID不得为空");
-        int articleId = Integer.parseInt(articleIdStr);
-        Article a = articleService.findById(articleId);
-        WxMpKefuMessage.WxArticle wxArticle = new WxMpKefuMessage.WxArticle(a.getTitle(),a.getSummary(),a.getTargetLink(),a.getImage());
+    public void replyNews(String toUser, String newsInfoJson) throws WxErrorException {
+        WxMpKefuMessage.WxArticle wxArticle = JSON.parseObject(newsInfoJson, WxMpKefuMessage.WxArticle.class);
         List<WxMpKefuMessage.WxArticle> newsList = new ArrayList<WxMpKefuMessage.WxArticle>(){{add(wxArticle);}};
         wxService.getKefuService().sendKefuMessage(WxMpKefuMessage.NEWS().toUser(toUser).articles(newsList).build());
 
-        wxMsgService.addWxMsg(WxMsg.buildOutMsg(WxConsts.KefuMsgType.NEWS,toUser,(JSONObject)JSONObject.toJSON(wxArticle)));
+        wxMsgService.addWxMsg(WxMsg.buildOutMsg(WxConsts.KefuMsgType.NEWS,toUser,JSON.parseObject(newsInfoJson)));
     }
 
     /**

@@ -69,7 +69,7 @@ public interface MsgReplyService {
      * 回复图文消息（点击跳转到外链）
      * 图文消息条数限制在1条以内
      */
-    void replyNews(String toUser, String newsIds) throws WxErrorException;
+    void replyNews(String toUser, String newsInfoJson) throws WxErrorException;
 
     /**
      * 回复公众号文章消息（点击跳转到图文消息页面）

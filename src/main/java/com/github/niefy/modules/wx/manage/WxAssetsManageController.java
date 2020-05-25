@@ -1,12 +1,9 @@
 package com.github.niefy.modules.wx.manage;
 
-import com.github.niefy.modules.wx.dto.PageSizeConstant;
+import com.github.niefy.common.utils.R;
 import com.github.niefy.modules.wx.form.MaterialFileDeleteForm;
 import com.github.niefy.modules.wx.service.WxAssetsService;
-import com.github.niefy.common.utils.R;
-import lombok.RequiredArgsConstructor;
 import me.chanjar.weixin.common.error.WxErrorException;
-import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.material.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
@@ -15,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -95,7 +91,7 @@ public class WxAssetsManageController {
      */
     @PostMapping("/materialNewsUpload")
     @RequiresPermissions("wx:wxassets:save")
-    public R materialNewsUpload(@RequestBody List<WxMpMaterialNews.WxMpMaterialNewsArticle> articles) throws WxErrorException {
+    public R materialNewsUpload(@RequestBody List<WxMpNewsArticle> articles) throws WxErrorException {
         if(articles.isEmpty())return R.error("图文列表不得为空");
         WxMpMaterialUploadResult res = wxAssetsService.materialNewsUpload(articles);
         return R.ok().put(res);

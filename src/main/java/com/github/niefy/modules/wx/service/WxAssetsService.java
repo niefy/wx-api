@@ -45,7 +45,7 @@ public interface WxAssetsService {
      * @return
      * @throws WxErrorException
      */
-    WxMpMaterialUploadResult materialNewsUpload(List<WxMpMaterialNews.WxMpMaterialNewsArticle> articles)throws WxErrorException;
+    WxMpMaterialUploadResult materialNewsUpload(List<WxMpNewsArticle> articles)throws WxErrorException;
 
     /**
      * 更新图文素材中的某篇文章
