@@ -13,7 +13,7 @@ debug: false
 
 spring:
     profiles:
-        active: dev
+        active: @profile.active@ #此处由maven的环境选择决定，参考：https://www.jianshu.com/p/b7c75b0c364c
     # jackson时间格式化
     jackson:
         time-zone: GMT+8
