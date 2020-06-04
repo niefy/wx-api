@@ -36,8 +36,6 @@ public class WxAuthController {
     private final WxMpService wxService;
     @Value("${wx.mp.configs[0].appid}")
     private String appId;
-    @Value("${server.baseAddress}")
-    private String appBaseAddress;
 
     @GetMapping("/getCode")
     @CrossOrigin
@@ -48,7 +46,10 @@ public class WxAuthController {
         logger.info("获取微信授权code,redirect=" + redirect);
         logger.info("获取微信授权code,state=" + state);
         if (StringUtils.isEmpty(code) && !StringUtils.isEmpty(redirect)) {
-            String authUrl = wxService.oauth2buildAuthorizationUrl(appBaseAddress + request.getRequestURI(), WxConsts.OAuth2Scope.SNSAPI_BASE, URLEncoder.encode(redirect, "utf-8"));
+            String wxClientOrigin = request.getHeader(Constant.WX_CLIENT_ORIGIN_HEADER);
+            if(StringUtils.isEmpty(wxClientOrigin))
+                return "header中缺少参数："+Constant.WX_CLIENT_ORIGIN_HEADER;
+            String authUrl = wxService.oauth2buildAuthorizationUrl(wxClientOrigin + request.getRequestURI(), WxConsts.OAuth2Scope.SNSAPI_BASE, URLEncoder.encode(redirect, "utf-8"));
             logger.info("获取微信授权code,重定向到" + authUrl);
             response.sendRedirect(authUrl);
             return null;
@@ -100,12 +101,10 @@ public class WxAuthController {
     @GetMapping("/getShareSignature")
     public R getShareSignature(HttpServletRequest request, HttpServletResponse response) throws WxErrorException {
         // 1.拼接url（当前网页的URL，不包含#及其后面部分）
-        String wxShareUrl = request.getHeader("Referer");
-        if (!StringUtils.isEmpty(wxShareUrl)) {
-            wxShareUrl = wxShareUrl.split("#")[0];
-        } else {
-            return R.error("地址不正确，微信分享加载失败");
-        }
+        String wxShareUrl = request.getHeader(Constant.WX_CLIENT_HREF_HEADER);
+        if (StringUtils.isEmpty(wxShareUrl))
+            return R.error("header中缺少"+Constant.WX_CLIENT_HREF_HEADER+"参数，微信分享加载失败");
+        wxShareUrl = wxShareUrl.split("#")[0];
         Map<String, String> wxMap = new TreeMap<>();
         String wxNoncestr = UUID.randomUUID().toString();
         String wxTimestamp = (System.currentTimeMillis() / 1000) + "";
