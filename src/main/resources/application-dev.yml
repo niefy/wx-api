@@ -37,7 +37,7 @@ wx:
     mp:
         configs:
             -   appid:
-                secret: 
+                secret:
                 token: my_weixin_token_
                 aesKey:
     pay:
