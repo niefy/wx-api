@@ -34,6 +34,16 @@ public class Constant {
     public static final String ASC = "asc";
 
     /**
+     *  升序
+     */
+    public static final String WX_CLIENT_ORIGIN_HEADER = "wx-client-origin";
+
+    /**
+     *  升序
+     */
+    public static final String WX_CLIENT_HREF_HEADER = "wx-client-href";
+
+    /**
      * 菜单类型
      * @author chenshun
      * @email sunlightcs@gmail.com
