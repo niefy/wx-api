@@ -1,7 +1,3 @@
-server:
-    baseAddress: http://xxx.ngrok.io
-    uploadBaseDir: /usr/share/nginx/html/
-
 spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
