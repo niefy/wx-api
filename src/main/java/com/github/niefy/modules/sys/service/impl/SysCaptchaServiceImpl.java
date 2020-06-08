@@ -14,7 +14,7 @@ import com.github.niefy.common.exception.RRException;
 import com.github.niefy.common.utils.DateUtils;
 import com.github.niefy.modules.sys.dao.SysCaptchaDao;
 import com.github.niefy.modules.sys.entity.SysCaptchaEntity;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

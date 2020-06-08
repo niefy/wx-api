@@ -18,7 +18,7 @@ import com.github.niefy.modules.sys.service.SysRoleService;
 import com.github.niefy.modules.sys.service.SysUserRoleService;
 import com.github.niefy.modules.sys.service.SysUserService;
 import com.github.niefy.common.exception.RRException;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
