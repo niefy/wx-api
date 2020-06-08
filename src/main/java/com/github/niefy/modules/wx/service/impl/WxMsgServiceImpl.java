@@ -1,7 +1,7 @@
 package com.github.niefy.modules.wx.service.impl;
 
 import com.github.niefy.modules.wx.entity.TemplateMsgLog;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 

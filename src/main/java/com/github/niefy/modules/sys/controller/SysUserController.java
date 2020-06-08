@@ -6,23 +6,23 @@
 package com.github.niefy.modules.sys.controller;
 
 import com.github.niefy.common.annotation.SysLog;
-import com.github.niefy.common.validator.group.AddGroup;
-import com.github.niefy.common.validator.group.UpdateGroup;
-import com.github.niefy.modules.sys.entity.SysUserEntity;
-import com.github.niefy.modules.sys.service.SysUserService;
 import com.github.niefy.common.utils.Constant;
 import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.common.utils.R;
 import com.github.niefy.common.validator.Assert;
 import com.github.niefy.common.validator.ValidatorUtils;
+import com.github.niefy.common.validator.group.AddGroup;
+import com.github.niefy.common.validator.group.UpdateGroup;
+import com.github.niefy.modules.sys.entity.SysUserEntity;
 import com.github.niefy.modules.sys.form.PasswordForm;
 import com.github.niefy.modules.sys.service.SysUserRoleService;
-import org.apache.commons.lang.ArrayUtils;
+import com.github.niefy.modules.sys.service.SysUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -136,11 +136,10 @@ public class SysUserController extends AbstractController {
     @PostMapping("/delete")
     @RequiresPermissions("sys:user:delete")
     public R delete(@RequestBody Long[] userIds) {
-        if (ArrayUtils.contains(userIds, 1L)) {
+        if (Arrays.stream(userIds).filter(id->id.intValue()==Constant.SUPER_ADMIN).findAny().isPresent()) {
             return R.error("系统管理员不能删除");
         }
-
-        if (ArrayUtils.contains(userIds, getUserId())) {
+        if (Arrays.stream(userIds).filter(id->getUserId().equals(id)).findAny().isPresent()) {
             return R.error("当前用户不能删除");
         }
 

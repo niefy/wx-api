@@ -8,7 +8,7 @@ package com.github.niefy.modules.sys.oauth2;
 import com.alibaba.fastjson.JSON;
 import com.github.niefy.common.utils.R;
 import com.github.niefy.common.utils.HttpContextUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;

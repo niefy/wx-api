@@ -13,7 +13,7 @@ import com.github.niefy.modules.sys.entity.SysMenuEntity;
 import com.github.niefy.modules.sys.entity.SysUserEntity;
 import com.github.niefy.modules.sys.entity.SysUserTokenEntity;
 import com.github.niefy.modules.sys.service.ShiroService;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

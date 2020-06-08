@@ -6,7 +6,7 @@
 package com.github.niefy.common.validator;
 
 import com.github.niefy.common.exception.RRException;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 数据校验

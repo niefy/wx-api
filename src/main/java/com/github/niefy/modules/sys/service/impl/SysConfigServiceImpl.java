@@ -15,7 +15,7 @@ import com.github.niefy.common.exception.RRException;
 import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.common.utils.Query;
 import com.github.niefy.modules.sys.dao.SysConfigDao;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
