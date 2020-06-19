@@ -35,7 +35,8 @@ public class MsgHandler extends AbstractHandler {
 
         String textContent = wxMessage.getContent();
         String fromUser = wxMessage.getFromUser();
-        boolean autoReplyed = msgReplyService.tryAutoReply(false, fromUser, textContent);
+        String appid = wxMessage.getToUser();
+        boolean autoReplyed = msgReplyService.tryAutoReply(appid,false, fromUser, textContent);
         //当用户输入关键词如“你好”，“客服”等，并且有客服在线时，把消息转发给在线客服
         if ("人工".equals(textContent) || !autoReplyed) {
             wxMsgService.addWxMsg(WxMsg.buildOutMsg(WxConsts.KefuMsgType.TRANSFER_CUSTOMER_SERVICE,fromUser,null));

@@ -32,19 +32,3 @@ spring:
                 wall:
                     config:
                         multi-statement-allow: true
-## 微信公众号配置
-wx:
-    mp:
-        configs:
-            -   appid:
-                secret:
-                token: my_weixin_token_
-                aesKey:
-    pay:
-        appId:  #微信公众号或者小程序等的appid
-        mchId:  #微信支付商户号
-        mchKey:  #微信支付商户密钥
-        subAppId: #服务商模式下的子商户公众账号ID
-        subMchId: #服务商模式下的子商户号
-        keyPath: classpath:/cert/wx-pay-cert.p12 # p12证书的位置，可以指定绝对路径，也可以指定类路径（以classpath:开头）
-        useSandBoxEnv: true #是否使用微信支付沙箱测试环境

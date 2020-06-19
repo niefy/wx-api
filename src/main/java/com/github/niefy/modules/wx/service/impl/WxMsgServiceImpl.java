@@ -34,9 +34,11 @@ public class WxMsgServiceImpl extends ServiceImpl<WxMsgMapper, WxMsg> implements
         String msgTypes = (String)params.get("msgTypes");
         String startTime = (String)params.get("startTime");
         String openid = (String)params.get("openid");
+        String appid = (String) params.get("appid");
         IPage<WxMsg> page = this.page(
                 new Query<WxMsg>().getPage(params),
                 new QueryWrapper<WxMsg>()
+                        .eq(!org.springframework.util.StringUtils.isEmpty(appid), "appid", appid)
                         .in(StringUtils.isNotEmpty(msgTypes),"msg_type", Arrays.asList(msgTypes.split(",")))
                         .eq(StringUtils.isNotEmpty(openid),"openid",openid)
                         .ge(StringUtils.isNotEmpty(startTime),"create_time",startTime)

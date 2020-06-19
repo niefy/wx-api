@@ -28,7 +28,6 @@
 		<aliyun.oss.version>3.9.1</aliyun.oss.version>
 		<qcloud.cos.version>5.6.24</qcloud.cos.version>
 		<swagger.version>2.9.2</swagger.version>
-		<joda.time.version>2.10.6</joda.time.version>
 		<fastjson.version>1.2.70</fastjson.version>
 		<lombok.version>1.18.10</lombok.version>
 		<weixin-java.version>3.8.0</weixin-java.version>
@@ -49,32 +48,13 @@
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>com.github.binarywang</groupId>
 			<artifactId>weixin-java-mp</artifactId>
 			<version>${weixin-java.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.binarywang</groupId>
-			<artifactId>weixin-java-pay</artifactId>
-			<version>${weixin-java.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.velocity</groupId>
-			<artifactId>velocity-engine-core</artifactId>
-			<version>2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.baomidou</groupId>
@@ -147,11 +127,6 @@
 					<artifactId>slf4j-log4j12</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-			<version>${joda.time.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>

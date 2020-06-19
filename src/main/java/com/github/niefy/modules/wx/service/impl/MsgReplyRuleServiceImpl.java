@@ -25,9 +25,13 @@ public class MsgReplyRuleServiceImpl extends ServiceImpl<MsgReplyRuleMapper, Msg
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         String matchValue = (String) params.get("matchValue");
+        String appid = (String) params.get("appid");
         IPage<MsgReplyRule> page = this.page(
             new Query<MsgReplyRule>().getPage(params),
             new QueryWrapper<MsgReplyRule>()
+                    .eq(!StringUtils.isEmpty(appid), "appid", appid)
+                    .or()
+                    .apply("appid is null or appid = ''")
                     .like(!StringUtils.isEmpty(matchValue), "match_value", matchValue)
                     .orderByDesc("update_time")
         );
@@ -79,16 +83,19 @@ public class MsgReplyRuleServiceImpl extends ServiceImpl<MsgReplyRuleMapper, Msg
     /**
      * 筛选符合条件的回复规则
      *
+     *
+     * @param appid 公众号appid
      * @param exactMatch 是否精确匹配
      * @param keywords   关键词
      * @return 规则列表
      */
     @Override
-    public List<MsgReplyRule> getMatchedRules(boolean exactMatch, String keywords) {
+    public List<MsgReplyRule> getMatchedRules(String appid, boolean exactMatch, String keywords) {
         LocalTime now = LocalTime.now();
         return this.getValidRules().stream()
-                .filter(rule->null == rule.getEffectTimeStart() || rule.getEffectTimeStart().isBefore(now))// 检测是否在有效时段，effectTimeStart为null则一直有效
-                .filter(rule->null == rule.getEffectTimeEnd() || rule.getEffectTimeEnd().isAfter(now)) // 检测是否在有效时段，effectTimeEnd为null则一直有效
+                .filter(rule->StringUtils.isEmpty(rule.getAppid()) || appid.equals(rule.getAppid())) // 检测是否是对应公众号的规则，如果appid为空则为通用规则
+                .filter(rule->null == rule.getEffectTimeStart() || rule.getEffectTimeStart().toLocalTime().isBefore(now))// 检测是否在有效时段，effectTimeStart为null则一直有效
+                .filter(rule->null == rule.getEffectTimeEnd() || rule.getEffectTimeEnd().toLocalTime().isAfter(now)) // 检测是否在有效时段，effectTimeEnd为null则一直有效
                 .filter(rule->isMatch(exactMatch || rule.isExactMatch(),rule.getMatchValue().split(","),keywords)) //检测是否符合匹配规则
                 .collect(Collectors.toList());
     }

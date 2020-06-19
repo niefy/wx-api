@@ -2,14 +2,13 @@ package com.github.niefy.modules.wx.service;
 
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
+import me.chanjar.weixin.mp.util.WxMpConfigStorageHolder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * 程序发送模板消息demo
@@ -26,6 +25,7 @@ class TemplateMsgServiceTest {
      */
     @Test
     void sendTemplateMsg() {
+        String appid = WxMpConfigStorageHolder.get();
         List<WxMpTemplateData> data  = new ArrayList<>();
         data.add(new WxMpTemplateData("first","模板消息测试"));
         data.add(new WxMpTemplateData("keywords1","xxxxx"));
@@ -37,6 +37,6 @@ class TemplateMsgServiceTest {
             .toUser("用户openid")
             .data(data)
             .build();
-        templateMsgService.sendTemplateMsg(wxMpTemplateMessage);
+        templateMsgService.sendTemplateMsg(wxMpTemplateMessage,appid);
     }
 }

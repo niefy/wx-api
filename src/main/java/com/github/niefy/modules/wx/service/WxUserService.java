@@ -23,13 +23,13 @@ public interface WxUserService extends IService<WxUser> {
      * @param openid
      * @return
      */
-    WxUser refreshUserInfo(String openid);
+    WxUser refreshUserInfo(String openid,String appid);
 
     /**
      * 异步批量更新用户信息
      * @param openidList
      */
-    void refreshUserInfoAsync(String[] openidList);
+    void refreshUserInfoAsync(String[] openidList,String appid);
 
     /**
      * 数据存在时更新，否则新增
@@ -47,12 +47,12 @@ public interface WxUserService extends IService<WxUser> {
     /**
      * 同步用户列表
      */
-    void syncWxUsers();
+    void syncWxUsers(String appid);
     
     /**
      * 通过传入的openid列表，同步用户列表
      * @param openids
      */
-    void syncWxUsers(List<String> openids) throws WxErrorException;
+    void syncWxUsers(List<String> openids,String appid) throws WxErrorException;
 
 }

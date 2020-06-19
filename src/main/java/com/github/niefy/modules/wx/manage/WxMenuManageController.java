@@ -9,6 +9,7 @@ import me.chanjar.weixin.mp.bean.menu.WxMpMenu;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -22,12 +23,15 @@ import org.springframework.web.bind.annotation.*;
 public class WxMenuManageController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
     private final WxMpService wxService;
+    @Autowired
+    private WxMpService wxMpService;
 
     /**
      * 获取公众号菜单
      */
     @GetMapping("/getMenu")
-    public R getMenu() throws WxErrorException {
+    public R getMenu(@CookieValue String appid) throws WxErrorException {
+        wxMpService.switchoverTo(appid);
         WxMpMenu wxMpMenu = wxService.getMenuService().menuGet();
         return R.ok().put(wxMpMenu);
     }
@@ -37,7 +41,8 @@ public class WxMenuManageController {
      */
     @PostMapping("/updateMenu")
     @RequiresPermissions("wx:menu:save")
-    public R updateMenu(@RequestBody WxMenu wxMenu) throws WxErrorException {
+    public R updateMenu(@CookieValue String appid,@RequestBody WxMenu wxMenu) throws WxErrorException {
+        wxMpService.switchoverTo(appid);
         wxService.getMenuService().menuCreate(wxMenu);
         return R.ok();
     }

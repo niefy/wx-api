@@ -16,12 +16,14 @@ public interface MsgReplyService {
     /**
      * 根据规则配置通过微信客服消息接口自动回复消息
      *
+     *
+     * @param appid
      * @param exactMatch 是否精确匹配
      * @param toUser     用户openid
      * @param keywords   匹配关键词
      * @return 是否已自动回复，无匹配规则则不自动回复
      */
-    boolean tryAutoReply(boolean exactMatch, String toUser, String keywords);
+    boolean tryAutoReply(String appid, boolean exactMatch, String toUser, String keywords);
 
     default void reply(String toUser,String replyType, String replyContent){
         try {

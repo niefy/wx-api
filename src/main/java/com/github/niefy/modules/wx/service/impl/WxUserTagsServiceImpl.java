@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.tag.WxUserTag;
+import me.chanjar.weixin.mp.util.WxMpConfigStorageHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -52,25 +53,29 @@ public class WxUserTagsServiceImpl implements WxUserTagsService {
     @Override
     public void batchTagging(Long tagid, String[] openidList) throws WxErrorException {
         wxService.getUserTagService().batchTagging(tagid,openidList);
-        wxUserService.refreshUserInfoAsync(openidList);//标签更新后更新对应用户信息
+        String appid = WxMpConfigStorageHolder.get();
+        wxUserService.refreshUserInfoAsync(openidList,appid);//标签更新后更新对应用户信息
     }
 
     @Override
     public void batchUnTagging(Long tagid, String[] openidList) throws WxErrorException {
         wxService.getUserTagService().batchUntagging(tagid,openidList);
-        wxUserService.refreshUserInfoAsync(openidList);//标签更新后更新对应用户信息
+        String appid = WxMpConfigStorageHolder.get();
+        wxUserService.refreshUserInfoAsync(openidList,appid);//标签更新后更新对应用户信息
     }
 
     @Override
     public void tagging(Long tagid, String openid) throws WxErrorException {
         wxService.getUserTagService().batchTagging(tagid,new String[]{openid});
-        wxUserService.refreshUserInfo(openid);
+        String appid = WxMpConfigStorageHolder.get();
+        wxUserService.refreshUserInfo(openid,appid);
     }
 
     @Override
     public void untagging(Long tagid, String openid) throws WxErrorException {
         wxService.getUserTagService().batchUntagging(tagid,new String[]{openid});
-        wxUserService.refreshUserInfo(openid);
+        String appid = WxMpConfigStorageHolder.get();
+        wxUserService.refreshUserInfo(openid,appid);
     }
 
 }

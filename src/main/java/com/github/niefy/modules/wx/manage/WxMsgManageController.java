@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.github.niefy.modules.wx.form.WxMsgReplyForm;
 import com.github.niefy.modules.wx.service.MsgReplyService;
+import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,13 +30,16 @@ public class WxMsgManageController {
     private WxMsgService wxMsgService;
     @Autowired
     private MsgReplyService msgReplyService;
+    @Autowired
+    private WxMpService wxMpService;
 
     /**
      * 列表
      */
     @GetMapping("/list")
     @RequiresPermissions("wx:wxmsg:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@CookieValue String appid,@RequestParam Map<String, Object> params){
+        params.put("appid",appid);
         PageUtils page = wxMsgService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -47,7 +51,7 @@ public class WxMsgManageController {
      */
     @GetMapping("/info/{id}")
     @RequiresPermissions("wx:wxmsg:info")
-    public R info(@PathVariable("id") Long id){
+    public R info(@CookieValue String appid,@PathVariable("id") Long id){
 		WxMsg wxMsg = wxMsgService.getById(id);
 
         return R.ok().put("wxMsg", wxMsg);
@@ -58,7 +62,7 @@ public class WxMsgManageController {
      */
     @PostMapping("/reply")
     @RequiresPermissions("wx:wxmsg:save")
-    public R reply(@RequestBody WxMsgReplyForm form){
+    public R reply(@CookieValue String appid,@RequestBody WxMsgReplyForm form){
 
         msgReplyService.reply(form.getOpenid(),form.getReplyType(),form.getReplyContent());
         return R.ok();
@@ -69,7 +73,7 @@ public class WxMsgManageController {
      */
     @PostMapping("/delete")
     @RequiresPermissions("wx:wxmsg:delete")
-    public R delete(@RequestBody Long[] ids){
+    public R delete(@CookieValue String appid,@RequestBody Long[] ids){
 		wxMsgService.removeByIds(Arrays.asList(ids));
 
         return R.ok();

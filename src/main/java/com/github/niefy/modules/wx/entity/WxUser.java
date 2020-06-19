@@ -25,6 +25,7 @@ public class WxUser implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableId(type = IdType.INPUT)
     private String openid;
+    private String appid;
     private String phone;
     private String nickname;
     private int sex;
@@ -47,8 +48,9 @@ public class WxUser implements Serializable {
         this.openid = openid;
     }
 
-    public WxUser(WxMpUser wxMpUser) {
+    public WxUser(WxMpUser wxMpUser,String appid) {
         this.openid = wxMpUser.getOpenId();
+        this.appid = appid;
 		this.subscribe=wxMpUser.getSubscribe();
 		if(wxMpUser.getSubscribe()){
 			this.nickname = wxMpUser.getNickname();

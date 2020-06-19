@@ -27,8 +27,9 @@ public class MenuHandler extends AbstractHandler {
         if (WxConsts.EventType.VIEW.equals(wxMessage.getEvent())) {
             return null;
         }
+        String appid = wxMessage.getToUser();
         logger.info("菜单事件：" + wxMessage.getEventKey());
-        msgReplyService.tryAutoReply(true, wxMessage.getFromUser(), wxMessage.getEventKey());
+        msgReplyService.tryAutoReply(appid, true, wxMessage.getFromUser(), wxMessage.getEventKey());
         return null;
     }
 

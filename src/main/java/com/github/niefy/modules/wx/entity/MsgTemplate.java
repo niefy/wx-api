@@ -18,11 +18,12 @@ import java.util.Date;
  * @date 2017-9-27
  */
 @Data
-@TableName("msg_template")
+@TableName("wx_msg_template")
 public class MsgTemplate implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableId(type = IdType.AUTO)
     private long id;
+    private String appid;
     private String templateId;
     @TableField(value = "`name`")
     private String name;
@@ -37,7 +38,8 @@ public class MsgTemplate implements Serializable {
     public MsgTemplate() {
 
     }
-    public MsgTemplate(WxMpTemplate mpTemplate) {
+    public MsgTemplate(WxMpTemplate mpTemplate,String appid) {
+        this.appid = appid;
         this.templateId=mpTemplate.getTemplateId();
         this.title=mpTemplate.getTitle();
         this.name=mpTemplate.getTemplateId();

@@ -18,12 +18,13 @@ import java.util.Date;
  * @date 2017-9-27
  */
 @Data
-@TableName("template_msg_log")
+@TableName("wx_template_msg_log")
 public class TemplateMsgLog implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @TableId(type = IdType.AUTO)
     private int logId;
+    private String appid;
     private String touser;
     private String templateId;
     private JSONArray data;
@@ -35,7 +36,8 @@ public class TemplateMsgLog implements Serializable {
     public TemplateMsgLog() {
     }
 
-    public TemplateMsgLog(WxMpTemplateMessage msg, String sendResult) {
+    public TemplateMsgLog(WxMpTemplateMessage msg,String appid, String sendResult) {
+        this.appid = appid;
         this.touser = msg.getToUser();
         this.templateId = msg.getTemplateId();
         this.url = msg.getUrl();

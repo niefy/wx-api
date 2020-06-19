@@ -1,37 +1,26 @@
 package com.github.niefy.modules.wx.service.impl;
 
-import com.github.niefy.modules.wx.entity.MsgTemplate;
-import com.github.niefy.modules.wx.form.TemplateMsgBatchForm;
-import com.github.niefy.modules.wx.form.TemplateMsgForm;
-import com.github.niefy.modules.wx.service.MsgTemplateService;
-import com.github.niefy.modules.wx.service.TemplateMsgLogService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.github.niefy.common.exception.RRException;
 import com.github.niefy.config.TaskExcutor;
 import com.github.niefy.modules.wx.entity.TemplateMsgLog;
 import com.github.niefy.modules.wx.entity.WxUser;
+import com.github.niefy.modules.wx.form.TemplateMsgBatchForm;
+import com.github.niefy.modules.wx.service.MsgTemplateService;
+import com.github.niefy.modules.wx.service.TemplateMsgLogService;
 import com.github.niefy.modules.wx.service.TemplateMsgService;
 import com.github.niefy.modules.wx.service.WxUserService;
-
 import lombok.RequiredArgsConstructor;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * @author Nifury
@@ -54,7 +43,7 @@ public class TemplateMsgServiceImpl implements TemplateMsgService {
      */
     @Override
     @Async
-    public void sendTemplateMsg(WxMpTemplateMessage msg) {
+    public void sendTemplateMsg(WxMpTemplateMessage msg,String appid) {
         TaskExcutor.submit(() -> {
             String result;
             try {
@@ -64,14 +53,14 @@ public class TemplateMsgServiceImpl implements TemplateMsgService {
             }
 
             //保存发送日志
-            TemplateMsgLog log = new TemplateMsgLog(msg, result);
+            TemplateMsgLog log = new TemplateMsgLog(msg,appid, result);
             templateMsgLogService.addLog(log);
         });
     }
 
     @Override
 	@Async
-    public void sendMsgBatch(TemplateMsgBatchForm form) {
+    public void sendMsgBatch(TemplateMsgBatchForm form, String appid) {
 		logger.info("批量发送模板消息任务开始,参数：{}",form.toString());
 		WxMpTemplateMessage.WxMpTemplateMessageBuilder builder = WxMpTemplateMessage.builder()
 				.templateId(form.getTemplateId())
@@ -88,7 +77,7 @@ public class TemplateMsgServiceImpl implements TemplateMsgService {
 			logger.info("批量发送模板消息任务,使用查询条件，处理第{}页，总用户数：{}",currentPage,wxUserIPage.getTotal());
 			wxUserIPage.getRecords().forEach(user->{
 				WxMpTemplateMessage msg = builder.toUser(user.getOpenid()).build();
-				this.sendTemplateMsg(msg);
+				this.sendTemplateMsg(msg,appid);
 			});
 			currentPage=wxUserIPage.getCurrent()+1L;
 			totalPages=wxUserIPage.getPages();

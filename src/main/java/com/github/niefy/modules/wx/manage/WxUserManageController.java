@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,13 +27,16 @@ import com.github.niefy.common.utils.R;
 public class WxUserManageController {
     @Autowired
     private WxUserService userService;
+    @Autowired
+    private WxMpService wxMpService;
 
     /**
      * 列表
      */
     @GetMapping("/list")
     @RequiresPermissions("wx:wxuser:list")
-    public R list(@RequestParam Map<String, Object> params) {
+    public R list(@CookieValue String appid,@RequestParam Map<String, Object> params) {
+        params.put("appid",appid);
         PageUtils page = new PageUtils(userService.queryPage(params));
 
         return R.ok().put("page", page);
@@ -43,7 +47,7 @@ public class WxUserManageController {
      */
     @PostMapping("/listByIds")
     @RequiresPermissions("wx:wxuser:list")
-    public R listByIds(@RequestBody String[] openids){
+    public R listByIds(@CookieValue String appid,@RequestBody String[] openids){
         List<WxUser> users = userService.listByIds(Arrays.asList(openids));
         return R.ok().put(users);
     }
@@ -54,7 +58,7 @@ public class WxUserManageController {
      */
     @GetMapping("/info/{openid}")
     @RequiresPermissions("wx:wxuser:info")
-    public R info(@PathVariable("openid") String openid) {
+    public R info(@CookieValue String appid,@PathVariable("openid") String openid) {
         WxUser WxUser = userService.getById(openid);
 
         return R.ok().put("WxUser", WxUser);
@@ -65,8 +69,9 @@ public class WxUserManageController {
      */
     @PostMapping("/syncWxUsers")
     @RequiresPermissions("wx:wxuser:save")
-    public R syncWxUsers() {
-        userService.syncWxUsers();
+    public R syncWxUsers(@CookieValue String appid) {
+        wxMpService.switchoverTo(appid);
+        userService.syncWxUsers(appid);
 
         return R.ok("任务已建立");
     }
@@ -78,7 +83,7 @@ public class WxUserManageController {
      */
     @PostMapping("/delete")
     @RequiresPermissions("wx:wxuser:delete")
-    public R delete(@RequestBody String[] ids) {
+    public R delete(@CookieValue String appid,@RequestBody String[] ids) {
         userService.removeByIds(Arrays.asList(ids));
 
         return R.ok();

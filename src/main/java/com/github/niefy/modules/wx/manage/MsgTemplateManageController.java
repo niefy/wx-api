@@ -6,6 +6,7 @@ import java.util.Map;
 import com.github.niefy.modules.wx.entity.MsgTemplate;
 import com.github.niefy.modules.wx.form.TemplateMsgBatchForm;
 
+import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,13 +33,16 @@ public class MsgTemplateManageController {
     private MsgTemplateService msgTemplateService;
     @Autowired
     private TemplateMsgService templateMsgService;
+    @Autowired
+    private WxMpService wxMpService;
 
     /**
      * 列表
      */
     @GetMapping("/list")
     @RequiresPermissions("wx:msgtemplate:list")
-    public R list(@RequestParam Map<String, Object> params) {
+    public R list(@CookieValue String appid,@RequestParam Map<String, Object> params) {
+        params.put("appid",appid);
         PageUtils page = msgTemplateService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -104,8 +108,9 @@ public class MsgTemplateManageController {
      */
     @PostMapping("/syncWxTemplate")
     @RequiresPermissions("wx:msgtemplate:save")
-    public R syncWxTemplate() throws WxErrorException {
-        msgTemplateService.syncWxTemplate();
+    public R syncWxTemplate(@CookieValue String appid) throws WxErrorException {
+        this.wxMpService.switchoverTo(appid);
+        msgTemplateService.syncWxTemplate(appid);
         return R.ok();
     }
 
@@ -115,8 +120,9 @@ public class MsgTemplateManageController {
      */
     @PostMapping("/sendMsgBatch")
     @RequiresPermissions("wx:msgtemplate:save")
-    public R sendMsgBatch(@RequestBody TemplateMsgBatchForm form) throws WxErrorException {
-        templateMsgService.sendMsgBatch(form);
+    public R sendMsgBatch(@CookieValue String appid,@RequestBody TemplateMsgBatchForm form) throws WxErrorException {
+        this.wxMpService.switchoverTo(appid);
+        templateMsgService.sendMsgBatch(form, appid);
         return R.ok();
     }
 

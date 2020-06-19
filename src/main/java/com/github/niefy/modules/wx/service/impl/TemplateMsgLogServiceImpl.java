@@ -10,6 +10,7 @@ import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.common.utils.Query;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,11 @@ public class TemplateMsgLogServiceImpl extends ServiceImpl<TemplateMsgLogMapper,
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        String appid = (String) params.get("appid");
         IPage<TemplateMsgLog> page = this.page(
             new Query<TemplateMsgLog>().getPage(params),
             new QueryWrapper<TemplateMsgLog>()
+                    .eq(!StringUtils.isEmpty(appid), "appid", appid)
         );
 
         return new PageUtils(page);
