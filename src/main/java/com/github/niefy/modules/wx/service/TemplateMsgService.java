@@ -9,11 +9,12 @@ public interface TemplateMsgService {
      * 发送微信模版消息
      */
     @Async
-    void sendTemplateMsg(WxMpTemplateMessage msg);
+    void sendTemplateMsg(WxMpTemplateMessage msg,String appid);
 
     /**
      * 批量消息发送
      * @param form
+     * @param appid
      */
-    void sendMsgBatch(TemplateMsgBatchForm form);
+    void sendMsgBatch(TemplateMsgBatchForm form,String appid);
 }

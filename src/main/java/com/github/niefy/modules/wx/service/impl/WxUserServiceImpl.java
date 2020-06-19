@@ -44,9 +44,11 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
     public IPage<WxUser> queryPage(Map<String, Object> params) {
         String openid = (String) params.get("openid");
         String nickname = (String) params.get("nickname");
+		String appid = (String) params.get("appid");
         return this.page(
             new Query<WxUser>().getPage(params),
             new QueryWrapper<WxUser>()
+				.eq(!StringUtils.isEmpty(appid), "appid", appid)
                 .eq(!StringUtils.isEmpty(openid), "openid", openid)
                 .like(!StringUtils.isEmpty(nickname), "nickname", nickname)
         );
@@ -59,7 +61,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
      * @return
      */
     @Override
-    public WxUser refreshUserInfo(String openid) {
+    public WxUser refreshUserInfo(String openid,String appid) {
         try {
 			// 获取微信用户基本信息
 			logger.info("更新用户信息，openid={}",openid);
@@ -68,7 +70,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 				logger.error("获取不到用户信息，无法更新,openid:{}",openid);
 				return null;
 			}
-			WxUser user = new WxUser(userWxInfo);
+			WxUser user = new WxUser(userWxInfo,appid);
 			this.saveOrUpdate(user);
 			return user;
 		} catch (Exception e) {
@@ -83,10 +85,10 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 	 */
 	@Override
 	@Async
-	public void refreshUserInfoAsync(String[] openidList) {
+	public void refreshUserInfoAsync(String[] openidList,String appid) {
 		logger.info("批量更新用户信息：任务开始");
 		for(String openid:openidList){
-			TaskExcutor.submit(()->this.refreshUserInfo(openid));
+			TaskExcutor.submit(()->this.refreshUserInfo(openid,appid));
 		}
 		logger.info("批量更新用户信息：任务全部添加到线程池");
 	}
@@ -114,7 +116,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 	 */
     @Override
 	@Async
-    public void syncWxUsers() {
+    public void syncWxUsers(String appid) {
     	if(syncWxUserTaskRunning)return;//同步较慢，防止个多线程重复执行同步任务
 		syncWxUserTaskRunning=true;
 		logger.info("同步公众号粉丝列表：任务开始");
@@ -127,7 +129,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 				WxMpUserList wxMpUserList = wxMpUserService.userList(nextOpenid);//拉取openid列表，每次最多1万个
 				logger.info("拉取openid列表：第{}页，数量：{}",page++,wxMpUserList.getCount());
 				List<String> openids = wxMpUserList.getOpenids();
-				this.syncWxUsers(openids);
+				this.syncWxUsers(openids,appid);
 				nextOpenid=wxMpUserList.getNextOpenid();
 				hasMore=!StringUtils.isEmpty(nextOpenid);
 			}
@@ -143,7 +145,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 	 * @param openids
 	 */
 	@Override
-	public void syncWxUsers(List<String> openids) throws WxErrorException {
+	public void syncWxUsers(List<String> openids,String appid) throws WxErrorException {
 		if(openids.size()<1)return;
 		final String batch=openids.get(0).substring(20);//截取首个openid的一部分做批次号（打印日志时使用，无实际意义）
 		WxMpUserService wxMpUserService = wxService.getUserService();
@@ -161,7 +163,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 					logger.error("同步出错，批次：【{}--{}-{}】，错误信息：{}",batch, finalStart, finalEnd,e);
 				}
 				if(wxMpUsers!=null && !wxMpUsers.isEmpty()){
-					List<WxUser> wxUsers=wxMpUsers.parallelStream().map(WxUser::new).collect(Collectors.toList());
+					List<WxUser> wxUsers=wxMpUsers.parallelStream().map(item->new WxUser(item,appid)).collect(Collectors.toList());
 					this.saveOrUpdateBatch(wxUsers);
 				}
 			});

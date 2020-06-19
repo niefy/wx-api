@@ -12,7 +12,6 @@ import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,9 +31,7 @@ public class WxAuthController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     SysLogService sysLogService;
-    private final WxMpService wxService;
-    @Value("${wx.mp.configs[0].appid}")
-    private String appId;
+    private final WxMpService wxMpService;
 
     /**
      * 使用微信授权code换取openid
@@ -46,9 +43,11 @@ public class WxAuthController {
      */
     @PostMapping("/codeToOpenid")
     @CrossOrigin
-    public R codeToOpenid(HttpServletRequest request, HttpServletResponse response, @RequestBody WxH5OuthrizeForm form) {
+    public R codeToOpenid(HttpServletRequest request, HttpServletResponse response,
+                          @CookieValue String appid, @RequestBody WxH5OuthrizeForm form) {
         try {
-            WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxService.oauth2getAccessToken(form.getCode());
+            this.wxMpService.switchoverTo(appid);
+            WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(form.getCode());
             String openid = wxMpOAuth2AccessToken.getOpenId();
             CookieUtil.setCookie(response, "openid", openid, 365 * 24 * 60 * 60);
             String openidToken = MD5Util.getMD5AndSalt(openid);
@@ -70,15 +69,17 @@ public class WxAuthController {
      */
     @PostMapping("/codeToUserInfo")
     @CrossOrigin
-    public R codeToUserInfo(HttpServletRequest request, HttpServletResponse response, @RequestBody WxH5OuthrizeForm form) {
+    public R codeToUserInfo(HttpServletRequest request, HttpServletResponse response,
+                            @CookieValue String appid,  @RequestBody WxH5OuthrizeForm form) {
         try {
-            WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxService.oauth2getAccessToken(form.getCode());
-            WxMpUser userInfo = wxService.oauth2getUserInfo(wxMpOAuth2AccessToken,"zh_CN");
+            this.wxMpService.switchoverTo(appid);
+            WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(form.getCode());
+            WxMpUser userInfo = wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken,"zh_CN");
             String openid = userInfo.getOpenId();
             CookieUtil.setCookie(response, "openid", openid, 365 * 24 * 60 * 60);
             String openidToken = MD5Util.getMD5AndSalt(openid);
             CookieUtil.setCookie(response, "openidToken", openidToken, 365 * 24 * 60 * 60);
-            return R.ok().put(new WxUser(userInfo));
+            return R.ok().put(new WxUser(userInfo,appid));
         } catch (WxErrorException e) {
             logger.error("code换取用户信息失败", e);
             return R.error(e.getError().getErrorMsg());
@@ -94,7 +95,8 @@ public class WxAuthController {
      * @return
      */
     @GetMapping("/getShareSignature")
-    public R getShareSignature(HttpServletRequest request, HttpServletResponse response) throws WxErrorException {
+    public R getShareSignature(HttpServletRequest request, HttpServletResponse response,@CookieValue String appid) throws WxErrorException {
+        this.wxMpService.switchoverTo(appid);
         // 1.拼接url（当前网页的URL，不包含#及其后面部分）
         String wxShareUrl = request.getHeader(Constant.WX_CLIENT_HREF_HEADER);
         if (StringUtils.isEmpty(wxShareUrl))
@@ -105,7 +107,7 @@ public class WxAuthController {
         String wxTimestamp = (System.currentTimeMillis() / 1000) + "";
         wxMap.put("noncestr", wxNoncestr);
         wxMap.put("timestamp", wxTimestamp);
-        wxMap.put("jsapi_ticket", wxService.getJsapiTicket());
+        wxMap.put("jsapi_ticket", wxMpService.getJsapiTicket());
         wxMap.put("url", wxShareUrl);
 
         // 加密获取signature
@@ -115,7 +117,7 @@ public class WxAuthController {
         // signature
         String wxSignature = SHA1Util.sha1(wxSignString);
         Map<String, String> resMap = new TreeMap<>();
-        resMap.put("appId", appId);
+        resMap.put("appId", appid);
         resMap.put("wxTimestamp", wxTimestamp);
         resMap.put("wxNoncestr", wxNoncestr);
         resMap.put("wxSignature", wxSignature);

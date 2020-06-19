@@ -32,6 +32,6 @@ public interface MsgTemplateService extends IService<MsgTemplate> {
      * 同步公众号已添加的消息模板
      * @throws WxErrorException
      */
-    void syncWxTemplate() throws WxErrorException;
+    void syncWxTemplate(String appid) throws WxErrorException;
 }
 

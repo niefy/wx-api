@@ -35,9 +35,11 @@ public interface MsgReplyRuleService extends IService<MsgReplyRule> {
     /**
      * 筛选符合条件的回复规则
      *
+     *
+     * @param appid
      * @param exactMatch 是否精确匹配
      * @param keywords   关键词
      * @return 规则列表
      */
-    List<MsgReplyRule> getMatchedRules(boolean exactMatch, String keywords);
+    List<MsgReplyRule> getMatchedRules(String appid, boolean exactMatch, String keywords);
 }

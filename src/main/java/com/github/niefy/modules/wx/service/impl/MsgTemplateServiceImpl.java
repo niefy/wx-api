@@ -32,9 +32,11 @@ public class MsgTemplateServiceImpl extends ServiceImpl<MsgTemplateMapper, MsgTe
     public PageUtils queryPage(Map<String, Object> params) {
         String title = (String) params.get("title");
         String name = (String) params.get("name");
+        String appid = (String) params.get("appid");
         IPage<MsgTemplate> page = this.page(
             new Query<MsgTemplate>().getPage(params),
             new QueryWrapper<MsgTemplate>()
+                .eq(!StringUtils.isEmpty(appid), "appid", appid)
                 .like(!StringUtils.isEmpty(title), "title", title)
                 .like(!StringUtils.isEmpty(name), "name", name)
         );
@@ -52,9 +54,9 @@ public class MsgTemplateServiceImpl extends ServiceImpl<MsgTemplateMapper, MsgTe
     }
 
     @Override
-    public void syncWxTemplate() throws WxErrorException {
+    public void syncWxTemplate(String appid) throws WxErrorException {
         List<WxMpTemplate> wxMpTemplateList= wxService.getTemplateMsgService().getAllPrivateTemplate();
-        List<MsgTemplate> templates = wxMpTemplateList.stream().map(MsgTemplate::new).collect(Collectors.toList());
+        List<MsgTemplate> templates = wxMpTemplateList.stream().map(item->new MsgTemplate(item,appid)).collect(Collectors.toList());
         this.saveBatch(templates);
     }
 

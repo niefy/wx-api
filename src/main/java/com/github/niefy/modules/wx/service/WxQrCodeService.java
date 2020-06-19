@@ -23,9 +23,11 @@ public interface WxQrCodeService extends IService<WxQrCode> {
     /**
      * 创建公众号带参二维码
      *
+     *
+     * @param appid
      * @param form
      * @return
      */
-    WxMpQrCodeTicket createQrCode(WxQrCodeForm form) throws WxErrorException;
+    WxMpQrCodeTicket createQrCode(String appid, WxQrCodeForm form) throws WxErrorException;
 }
 

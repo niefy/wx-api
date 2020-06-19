@@ -3,6 +3,7 @@ package com.github.niefy.modules.wx.manage;
 import java.util.Arrays;
 import java.util.Map;
 
+import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +26,16 @@ import com.github.niefy.common.utils.R;
 public class TemplateMsgLogManageController {
     @Autowired
     private TemplateMsgLogService templateMsgLogService;
+    @Autowired
+    private WxMpService wxMpService;
 
     /**
      * 列表
      */
     @GetMapping("/list")
     @RequiresPermissions("wx:templatemsglog:list")
-    public R list(@RequestParam Map<String, Object> params) {
+    public R list(@CookieValue String appid,@RequestParam Map<String, Object> params) {
+        params.put("appid",appid);
         PageUtils page = templateMsgLogService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -43,7 +47,7 @@ public class TemplateMsgLogManageController {
      */
     @GetMapping("/info/{logId}")
     @RequiresPermissions("wx:templatemsglog:info")
-    public R info(@PathVariable("logId") Integer logId) {
+    public R info(@CookieValue String appid,@PathVariable("logId") Integer logId) {
         TemplateMsgLog templateMsgLog = templateMsgLogService.getById(logId);
 
         return R.ok().put("templateMsgLog", templateMsgLog);
@@ -54,7 +58,7 @@ public class TemplateMsgLogManageController {
      */
     @PostMapping("/save")
     @RequiresPermissions("wx:templatemsglog:save")
-    public R save(@RequestBody TemplateMsgLog templateMsgLog) {
+    public R save(@CookieValue String appid,@RequestBody TemplateMsgLog templateMsgLog) {
         templateMsgLogService.save(templateMsgLog);
 
         return R.ok();
@@ -65,7 +69,7 @@ public class TemplateMsgLogManageController {
      */
     @PostMapping("/update")
     @RequiresPermissions("wx:templatemsglog:update")
-    public R update(@RequestBody TemplateMsgLog templateMsgLog) {
+    public R update(@CookieValue String appid,@RequestBody TemplateMsgLog templateMsgLog) {
         templateMsgLogService.updateById(templateMsgLog);
 
         return R.ok();
@@ -76,7 +80,7 @@ public class TemplateMsgLogManageController {
      */
     @PostMapping("/delete")
     @RequiresPermissions("wx:templatemsglog:delete")
-    public R delete(@RequestBody Integer[] logIds) {
+    public R delete(@CookieValue String appid,@RequestBody Integer[] logIds) {
         templateMsgLogService.removeByIds(Arrays.asList(logIds));
 
         return R.ok();

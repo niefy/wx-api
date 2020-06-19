@@ -26,6 +26,7 @@ public class WxQrCode implements Serializable {
      */
     @TableId
     private Long id;
+    private String appid;
     /**
      * 二维码类型
      */
@@ -54,7 +55,8 @@ public class WxQrCode implements Serializable {
     public WxQrCode() {
     }
 
-    public WxQrCode(WxQrCodeForm form) {
+    public WxQrCode(WxQrCodeForm form,String appid) {
+        this.appid = appid;
         this.isTemp = form.getIsTemp();
         this.sceneStr = form.getSceneStr();
         this.createTime = new Date();

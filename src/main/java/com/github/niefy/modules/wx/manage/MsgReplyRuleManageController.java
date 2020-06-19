@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import com.github.niefy.modules.wx.service.MsgReplyRuleService;
 import com.github.niefy.modules.wx.dto.RegexConstant;
 import me.chanjar.weixin.common.api.WxConsts;
+import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,13 +29,16 @@ import com.github.niefy.common.utils.R;
 public class MsgReplyRuleManageController {
     @Autowired
     private MsgReplyRuleService msgReplyRuleService;
+    @Autowired
+    private WxMpService wxMpService;
 
     /**
      * 列表
      */
     @GetMapping("/list")
     @RequiresPermissions("wx:msgreplyrule:list")
-    public R list(@RequestParam Map<String, Object> params) {
+    public R list(@CookieValue String appid,@RequestParam Map<String, Object> params) {
+        params.put("appid",appid);
         PageUtils page = msgReplyRuleService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -58,10 +62,6 @@ public class MsgReplyRuleManageController {
     @PostMapping("/save")
     @RequiresPermissions("wx:msgreplyrule:save")
     public R save(@RequestBody MsgReplyRule msgReplyRule) {
-        if (WxConsts.KefuMsgType.NEWS.equals(msgReplyRule.getReplyType()) &&
-            !Pattern.matches(RegexConstant.NUMBER_ARRAY, msgReplyRule.getReplyContent())) {
-            return R.error("图文消息ID格式不正确");
-        }
         msgReplyRuleService.save(msgReplyRule);
 
         return R.ok();

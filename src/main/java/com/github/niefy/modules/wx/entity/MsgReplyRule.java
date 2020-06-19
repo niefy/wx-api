@@ -9,7 +9,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.time.LocalTime;
+import java.sql.Time;
 import java.util.Date;
 
 /**
@@ -17,11 +17,12 @@ import java.util.Date;
  * @date 2017-11-1
  */
 @Data
-@TableName("msg_reply_rule")
+@TableName("wx_msg_reply_rule")
 public class MsgReplyRule implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableId(type = IdType.AUTO)
     private int ruleId;
+    private String appid;
     @NotEmpty(message = "规则名称不得为空")
     private String ruleName;
     @NotEmpty(message = "匹配关键词不得为空")
@@ -34,8 +35,8 @@ public class MsgReplyRule implements Serializable {
     private boolean status;
     @TableField(value = "`desc`")
     private String desc;
-    private LocalTime effectTimeStart;
-    private LocalTime effectTimeEnd;
+    private Time effectTimeStart;
+    private Time effectTimeEnd;
     private int priority;
     private Date updateTime;
 
