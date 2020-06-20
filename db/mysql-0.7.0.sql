@@ -120,7 +120,7 @@ INSERT INTO `sys_menu` VALUES (27, 1, '参数管理', 'sys/config', 'sys:config:
 INSERT INTO `sys_menu` VALUES (29, 9, '系统日志', 'sys/log', 'sys:log:list', 1, 'log', 7);
 INSERT INTO `sys_menu` VALUES (30, 1, '文件上传', 'oss/oss', 'sys:oss:all', 1, 'oss', 6);
 INSERT INTO `sys_menu` VALUES (32, 6, '公众号菜单', 'wx/wx-menu', '', 1, 'log', 0);
-INSERT INTO `sys_menu` VALUES (33, 6, '素材管理', 'wx/wx-assets', '', 1, 'el-icon-picture-outline', 0);
+INSERT INTO `sys_menu` VALUES (33, 6, '素材管理', 'wx/wx-assets', '', 1, '', 0);
 INSERT INTO `sys_menu` VALUES (41, 7, '文章公告', 'wx/article', NULL, 1, 'config', 6);
 INSERT INTO `sys_menu` VALUES (42, 41, '查看', NULL, 'wx:article:list,wx:article:info', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (43, 41, '新增', NULL, 'wx:article:save', 2, NULL, 6);
@@ -150,7 +150,7 @@ INSERT INTO `sys_menu` VALUES (109, 108, '查看', NULL, 'wx:wxuser:list,wx:wxus
 INSERT INTO `sys_menu` VALUES (110, 108, '删除', NULL, 'wx:wxuser:delete', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (111, 108, '同步', '', 'wx:wxuser:save', 2, '', 6);
 INSERT INTO `sys_menu` VALUES (112, 33, '删除', '', 'wx:wxassets:delete', 2, '', 0);
-INSERT INTO `sys_menu` VALUES (113, 6, '公众号消息', 'wx/wx-msg', NULL, 1, 'el-icon-chat-square', 6);
+INSERT INTO `sys_menu` VALUES (113, 6, '公众号消息', 'wx/wx-msg', NULL, 1, '', 6);
 INSERT INTO `sys_menu` VALUES (114, 113, '查看', NULL, 'wx:wxmsg:list,wx:wxmsg:info', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (115, 113, '新增', NULL, 'wx:wxmsg:save', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (117, 113, '删除', NULL, 'wx:wxmsg:delete', 2, NULL, 6);
