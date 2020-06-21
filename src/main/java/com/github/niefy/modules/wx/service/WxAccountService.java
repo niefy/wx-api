@@ -22,9 +22,6 @@ public interface WxAccountService extends IService<WxAccount> {
     boolean save(WxAccount entity);
 
     @Override
-    boolean updateById(WxAccount entity);
-
-    @Override
     boolean removeByIds(Collection<? extends Serializable> idList);
 }
 
