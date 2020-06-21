@@ -9,10 +9,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 文章抽象：帮助中心文章、公告、资讯文章等分别存储到不同的表
+ * cms文章
  */
 @Data
-@TableName("article")
+@TableName("cms_article")
 public class Article implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableId(type = IdType.AUTO)

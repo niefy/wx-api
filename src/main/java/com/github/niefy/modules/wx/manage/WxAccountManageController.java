@@ -59,17 +59,6 @@ public class WxAccountManageController {
     }
 
     /**
-     * 修改
-     */
-    @PostMapping("/update")
-    @RequiresPermissions("wx:wxaccount:update")
-    public R update(@RequestBody WxAccount wxAccount){
-		wxAccountService.updateById(wxAccount);
-
-        return R.ok();
-    }
-
-    /**
      * 删除
      */
     @PostMapping("/delete")

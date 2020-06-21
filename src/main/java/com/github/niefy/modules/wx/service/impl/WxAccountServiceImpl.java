@@ -62,25 +62,20 @@ public class WxAccountServiceImpl extends ServiceImpl<WxAccountMapper, WxAccount
     @Override
     public boolean save(WxAccount entity) {
         Assert.notNull(entity,"WxAccount不得为空");
-
-        // 更新wxMpService配置
-        logger.info("同步添加公众号配置");
-        this.addAccountToRuntime(entity);
-
-        return SqlHelper.retBool(this.baseMapper.insert(entity));
-    }
-
-    @Override
-    public boolean updateById(WxAccount entity) {
-        Assert.notNull(entity,"WxAccount不得为空");
-
-        // 更新wxMpService配置
-        logger.info("同步更新公众号配置");
         String appid = entity.getAppid();
-        wxMpService.removeConfigStorage(appid);
-        this.addAccountToRuntime(entity);
+        if(this.isAccountInRuntime(appid)){ //已有此appid信息，更新
+            logger.info("更新公众号配置");
+            wxMpService.removeConfigStorage(appid);
+            this.addAccountToRuntime(entity);
 
-        return SqlHelper.retBool(this.baseMapper.updateById(entity));
+            return SqlHelper.retBool(this.baseMapper.updateById(entity));
+        }else {//已有此appid信息，新增
+            logger.info("新增公众号配置");
+            this.addAccountToRuntime(entity);
+
+            return SqlHelper.retBool(this.baseMapper.insert(entity));
+        }
+
     }
 
     @Override
@@ -96,6 +91,18 @@ public class WxAccountServiceImpl extends ServiceImpl<WxAccountMapper, WxAccount
         return SqlHelper.retBool(this.baseMapper.deleteBatchIds(idList));
     }
 
+    /**
+     * 判断当前账号是存在
+     * @param appid
+     * @return
+     */
+    private boolean isAccountInRuntime(String appid){
+        try {
+            return wxMpService.switchover(appid);
+        }catch (NullPointerException e){// sdk bug，未添加任何账号时configStorageMap为null会出错
+            return false;
+        }
+    }
     /**
      * 添加账号到当前程序，如首次添加需初始化configStorageMap
      * @param entity
