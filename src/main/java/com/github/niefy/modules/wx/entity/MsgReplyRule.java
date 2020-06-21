@@ -13,6 +13,7 @@ import java.sql.Time;
 import java.util.Date;
 
 /**
+ * 自动回复规则
  * @author Nifury
  * @date 2017-11-1
  */

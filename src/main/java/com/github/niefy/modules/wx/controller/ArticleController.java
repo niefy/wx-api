@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * 文章、公告
+ * cms文章
  */
 @RestController
 @RequestMapping("/article")
