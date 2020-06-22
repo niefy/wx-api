@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * 模板消息模板
  * @author Nifury
  * @date 2017-9-27
  */

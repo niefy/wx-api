@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 /**
+ * 微信消息
  * @author Binary Wang
  */
 @RequiredArgsConstructor
