@@ -5,6 +5,6 @@
 
 
     <update id="addOpenCount">
-        UPDATE article SET open_count=open_count+1 WHERE id=#{id}
+        UPDATE cms_article SET open_count=open_count+1 WHERE id=#{id}
     </update>
 </mapper>
