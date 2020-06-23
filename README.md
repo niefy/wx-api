@@ -21,7 +21,8 @@
 
 
 ## 截图
-![公众号菜单](https://s1.ax1x.com/2020/04/10/GTq6sI.png)
+![公众号账号](https://s1.ax1x.com/2020/06/23/NUTQAg.png)
+![公众号菜单](https://s1.ax1x.com/2020/06/23/NUTlNQ.png)
 ![自动回复](https://s1.ax1x.com/2020/04/10/GTqyQA.png)
 ![模板消息配置](https://s1.ax1x.com/2020/04/18/JnKZhF.jpg)
 ![模板消息发送](https://s1.ax1x.com/2020/04/18/JnKEkT.jpg)

@@ -56,7 +56,9 @@ public class WxMpPortalController {
 //		logger.debug("\n接收微信请求：[openid=[{}], [signature=[{}], encType=[{}], msgSignature=[{}],"
 //						+ " timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] ",
 //				openid, signature, encType, msgSignature, timestamp, nonce, requestBody);
-
+        if (!this.wxService.switchover(appid)) {
+            throw new IllegalArgumentException(String.format("未找到对应appid=[%s]的配置，请核实！", appid));
+        }
         if (!wxService.checkSignature(timestamp, nonce, signature)) {
             throw new IllegalArgumentException("非法请求，可能属于伪造的请求！");
         }
