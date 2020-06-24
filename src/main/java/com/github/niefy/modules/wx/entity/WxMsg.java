@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
+import me.chanjar.weixin.mp.util.WxMpConfigStorageHolder;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -57,7 +58,7 @@ public class WxMsg implements Serializable {
 	}
 	public WxMsg(WxMpXmlMessage wxMessage) {
 		this.openid=wxMessage.getFromUser();
-		this.appid=wxMessage.getToUser();
+		this.appid= WxMpConfigStorageHolder.get();
 		this.inOut = WxMsgInOut.IN;
 		this.msgType = wxMessage.getMsgType();
 		this.detail = new JSONObject();
