@@ -56,9 +56,6 @@ public class WxMpPortalController {
 //		logger.debug("\n接收微信请求：[openid=[{}], [signature=[{}], encType=[{}], msgSignature=[{}],"
 //						+ " timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] ",
 //				openid, signature, encType, msgSignature, timestamp, nonce, requestBody);
-        if (!this.wxService.switchover(appid)) {
-            throw new IllegalArgumentException(String.format("未找到对应appid=[%s]的配置，请核实！", appid));
-        }
         if (!wxService.checkSignature(timestamp, nonce, signature)) {
             throw new IllegalArgumentException("非法请求，可能属于伪造的请求！");
         }
@@ -67,7 +64,7 @@ public class WxMpPortalController {
         if (encType == null) {
             // 明文传输的消息
             WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(requestBody);
-            WxMpXmlOutMessage outMessage = this.route(inMessage);
+            WxMpXmlOutMessage outMessage = this.route(appid,inMessage);
             if (outMessage == null) {
                 return "";
             }
@@ -78,7 +75,7 @@ public class WxMpPortalController {
             WxMpXmlMessage inMessage = WxMpXmlMessage.fromEncryptedXml(requestBody, wxService.getWxMpConfigStorage(),
                 timestamp, nonce, msgSignature);
             logger.debug("\n消息解密后内容为：\n{} ", inMessage.toString());
-            WxMpXmlOutMessage outMessage = this.route(inMessage);
+            WxMpXmlOutMessage outMessage = this.route(appid,inMessage);
             if (outMessage == null) {
                 return "";
             }
@@ -90,9 +87,9 @@ public class WxMpPortalController {
         return out;
     }
 
-    private WxMpXmlOutMessage route(WxMpXmlMessage message) {
+    private WxMpXmlOutMessage route(String appid,WxMpXmlMessage message) {
         try {
-            return this.messageRouter.route(message);
+            return this.messageRouter.route(appid,message);
         } catch (Exception e) {
             logger.error("路由消息时出现异常！", e);
         }
