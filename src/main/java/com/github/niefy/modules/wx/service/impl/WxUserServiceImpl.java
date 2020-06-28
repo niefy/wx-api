@@ -65,6 +65,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
         try {
 			// 获取微信用户基本信息
 			logger.info("更新用户信息，openid={}",openid);
+			wxService.switchover(appid);
 			WxMpUser userWxInfo = wxService.getUserService().userInfo(openid, null);
 			if (userWxInfo == null) {
 				logger.error("获取不到用户信息，无法更新,openid:{}",openid);
@@ -88,6 +89,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 	public void refreshUserInfoAsync(String[] openidList,String appid) {
 		logger.info("批量更新用户信息：任务开始");
 		for(String openid:openidList){
+			wxService.switchover(appid);
 			TaskExcutor.submit(()->this.refreshUserInfo(openid,appid));
 		}
 		logger.info("批量更新用户信息：任务全部添加到线程池");
@@ -120,6 +122,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
     	if(syncWxUserTaskRunning)return;//同步较慢，防止个多线程重复执行同步任务
 		syncWxUserTaskRunning=true;
 		logger.info("同步公众号粉丝列表：任务开始");
+		wxService.switchover(appid);
 		boolean hasMore=true;
 		String nextOpenid=null;
 		WxMpUserService wxMpUserService = wxService.getUserService();
@@ -131,12 +134,12 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 				List<String> openids = wxMpUserList.getOpenids();
 				this.syncWxUsers(openids,appid);
 				nextOpenid=wxMpUserList.getNextOpenid();
-				hasMore=!StringUtils.isEmpty(nextOpenid);
+				hasMore=!StringUtils.isEmpty(nextOpenid) && wxMpUserList.getCount()>=10000;
 			}
 		} catch (WxErrorException e) {
 			logger.error("同步公众号粉丝出错:",e);
 		}
-		logger.info("同步公众号粉丝列表：任务已全部添加到线程池");
+		logger.info("同步公众号粉丝列表：完成");
 		syncWxUserTaskRunning=false;
 	}
 
@@ -156,6 +159,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 			final List<String> subOpenids=openids.subList(finalStart,finalEnd);
 			TaskExcutor.submit(()->{//使用线程池同步数据，否则大量粉丝数据需同步时会很慢
 				logger.info("同步批次:【{}--{}-{}】，数量：{}",batch, finalStart, finalEnd,subOpenids.size());
+				wxService.switchover(appid);
 				List<WxMpUser> wxMpUsers = null;//批量获取用户信息，每次最多100个
 				try {
 					wxMpUsers = wxMpUserService.userInfoList(subOpenids);
