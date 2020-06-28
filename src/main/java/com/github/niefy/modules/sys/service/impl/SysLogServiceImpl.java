@@ -8,22 +8,14 @@ package com.github.niefy.modules.sys.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.github.niefy.common.utils.IPUtils;
-import com.github.niefy.modules.sys.dao.SysLogDao;
-import com.github.niefy.common.utils.CookieUtil;
 import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.common.utils.Query;
+import com.github.niefy.modules.sys.dao.SysLogDao;
 import com.github.niefy.modules.sys.entity.SysLogEntity;
 import com.github.niefy.modules.sys.service.SysLogService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -45,31 +37,5 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogDao, SysLogEntity> impl
         );
 
         return new PageUtils(page);
-    }
-
-    /**
-     * 添加系统日志到队列中，队列数据会定时批量插入到数据库
-     * @param params
-     */
-    public void addLog(String method, String params) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String openid = CookieUtil.getCookieValue(request, "openid");
-        String ip = IPUtils.getIpAddr(request);
-        SysLogEntity sysLog = new SysLogEntity(openid, method, params, ip);
-        SysLogsQueue.offer(sysLog);
-    }
-
-    /**
-     * 定时将日志插入到数据库
-     */
-    @Scheduled(cron = "0 0/5 * * * ?")
-    synchronized void batchAddSysLog() {
-        List<SysLogEntity> logs = new ArrayList<>();
-        while (!SysLogsQueue.isEmpty()) {
-            logs.add(SysLogsQueue.poll());
-        }
-        if (!logs.isEmpty()) {
-            this.saveBatch(logs);
-        }
     }
 }

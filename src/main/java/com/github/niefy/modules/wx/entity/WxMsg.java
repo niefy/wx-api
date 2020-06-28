@@ -92,6 +92,7 @@ public class WxMsg implements Serializable {
 	}
 	public static WxMsg buildOutMsg(String msgType,String openid,JSONObject detail){
 		WxMsg wxMsg = new WxMsg();
+		wxMsg.appid= WxMpConfigStorageHolder.get();
 		wxMsg.msgType = msgType;
 		wxMsg.openid = openid;
 		wxMsg.detail = detail;

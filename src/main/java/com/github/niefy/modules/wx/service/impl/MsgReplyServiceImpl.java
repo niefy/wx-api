@@ -58,6 +58,7 @@ public class MsgReplyServiceImpl implements MsgReplyService {
             long delay = 0;
             for (MsgReplyRule rule : rules) {
                 TaskExcutor.schedule(() -> {
+                    wxMpService.switchover(appid);
                     this.reply(toUser,rule.getReplyType(),rule.getReplyContent());
                 }, delay, TimeUnit.MILLISECONDS);
                 delay += autoReplyInterval;
@@ -119,7 +120,7 @@ public class MsgReplyServiceImpl implements MsgReplyService {
     /**
      * 发送图文消息（点击跳转到外链） 图文消息条数限制在1条以内
      * @param toUser
-     * @param articleIdStr
+     * @param newsInfoJson
      * @throws WxErrorException
      */
     @Override
