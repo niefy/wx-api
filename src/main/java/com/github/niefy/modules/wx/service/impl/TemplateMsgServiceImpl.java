@@ -47,6 +47,7 @@ public class TemplateMsgServiceImpl implements TemplateMsgService {
         TaskExcutor.submit(() -> {
             String result;
             try {
+                wxService.switchover(appid);
                 result = wxService.getTemplateMsgService().sendTemplateMsg(msg);
             } catch (WxErrorException e) {
                 result = e.getMessage();
@@ -62,6 +63,7 @@ public class TemplateMsgServiceImpl implements TemplateMsgService {
 	@Async
     public void sendMsgBatch(TemplateMsgBatchForm form, String appid) {
 		logger.info("批量发送模板消息任务开始,参数：{}",form.toString());
+        wxService.switchover(appid);
 		WxMpTemplateMessage.WxMpTemplateMessageBuilder builder = WxMpTemplateMessage.builder()
 				.templateId(form.getTemplateId())
 				.url(form.getUrl())

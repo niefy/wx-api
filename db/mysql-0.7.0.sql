@@ -137,6 +137,7 @@ INSERT INTO `sys_menu` VALUES (73, 71, '新增', NULL, 'wx:msgtemplate:save', 2,
 INSERT INTO `sys_menu` VALUES (74, 71, '修改', NULL, 'wx:msgtemplate:update', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (75, 71, '删除', NULL, 'wx:msgtemplate:delete', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (81, 9, '模版消息发送记录', 'wx/template-msg-log', NULL, 1, 'config', 6);
+INSERT INTO `sys_menu` VALUES (84, 81, '列表', NULL, 'wx:templatemsglog:list', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (85, 81, '删除', NULL, 'wx:templatemsglog:delete', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (99, 32, '更新公众号菜单', '', 'wx:menu:save', 2, '', 0);
 INSERT INTO `sys_menu` VALUES (100, 33, '查看', '', 'wx:wxassets:list', 2, '', 0);
