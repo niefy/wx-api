@@ -10,7 +10,7 @@ public interface TemplateMsgLogService extends IService<TemplateMsgLog> {
     PageUtils queryPage(Map<String, Object> params);
 
     /**
-     * 添加访问log到队列中，队列数据会定时批量插入到数据库
+     * 记录log，异步入库
      *
      * @param log
      */

@@ -28,21 +28,21 @@ public class WxMpMessageRouterConfiguration {
     public WxMpMessageRouter messageRouter(WxMpService wxMpService) {
         final WxMpMessageRouter newRouter = new WxMpMessageRouter(wxMpService);
 
-        // 记录所有事件的日志 （异步执行）
-        newRouter.rule().handler(this.logHandler).next();
+        // 记录所有事件的日志
+        newRouter.rule().async(false).handler(this.logHandler).next();
 
         // 接收客服会话管理事件
-        newRouter.rule().async(true).msgType(EVENT).event(KF_CREATE_SESSION).handler(this.kfSessionHandler).end();
+        newRouter.rule().async(false).msgType(EVENT).event(KF_CREATE_SESSION).handler(this.kfSessionHandler).end();
         // 自定义菜单事件
-        newRouter.rule().async(true).msgType(EVENT).event(EventType.CLICK).handler(this.menuHandler).end();
+        newRouter.rule().async(false).msgType(EVENT).event(EventType.CLICK).handler(this.menuHandler).end();
         // 关注事件
-        newRouter.rule().async(true).msgType(EVENT).event(SUBSCRIBE).handler(this.subscribeHandler).end();
+        newRouter.rule().async(false).msgType(EVENT).event(SUBSCRIBE).handler(this.subscribeHandler).end();
         // 取消关注事件
-        newRouter.rule().async(true).msgType(EVENT).event(UNSUBSCRIBE).handler(this.unsubscribeHandler).end();
+        newRouter.rule().async(false).msgType(EVENT).event(UNSUBSCRIBE).handler(this.unsubscribeHandler).end();
         //扫描带参二维码事件
-        newRouter.rule().async(true).msgType(EVENT).event(SCAN).handler(this.scanHandler).end();
+        newRouter.rule().async(false).msgType(EVENT).event(SCAN).handler(this.scanHandler).end();
         //其他事件
-        newRouter.rule().async(true).msgType(EVENT).handler(this.nullHandler).end();
+        newRouter.rule().async(false).msgType(EVENT).handler(this.nullHandler).end();
 
         // 默认
         newRouter.rule().async(false).handler(this.msgHandler).end();

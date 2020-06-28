@@ -17,9 +17,9 @@ public interface WxMsgService extends IService<WxMsg> {
     PageUtils queryPage(Map<String, Object> params);
 
     /**
-     * 保存消息到数据库（会先添加到队列，再使用定时任务写入）
-     * @param log
+     * 记录msg，异步入库
+     * @param msg
      */
-    void addWxMsg(WxMsg log);
+    void addWxMsg(WxMsg msg);
 }
 
