@@ -387,10 +387,6 @@ public final class HTMLFilter {
                     paramName = paramNames.get(ii).toLowerCase();
                     paramValue = paramValues.get(ii);
 
-//          debug( "paramName='" + paramName + "'" );
-//          debug( "paramValue='" + paramValue + "'" );
-//          debug( "allowed? " + vAllowed.get( name ).contains( paramName ) );
-
                     if (allowedAttribute(name, paramName)) {
                         if (inArray(paramName, vProtocolAtts)) {
                             paramValue = processParamProtocol(paramValue);
@@ -438,9 +434,9 @@ public final class HTMLFilter {
             final String protocol = m.group(1);
             if (!inArray(protocol, vAllowedProtocols)) {
                 // bad protocol, turn into local anchor link instead
-                s = "#" + s.substring(protocol.length() + 1, s.length());
+                s = "#" + s.substring(protocol.length() + 1);
                 if (s.startsWith("#//")) {
-                    s = "#" + s.substring(3, s.length());
+                    s = "#" + s.substring(3);
                 }
             }
         }

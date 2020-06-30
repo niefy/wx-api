@@ -1,6 +1,7 @@
 package com.github.niefy.common.utils;
 
 import java.security.MessageDigest;
+import java.util.Objects;
 
 /**
  * MD5加密工具类
@@ -47,7 +48,7 @@ public class MD5Util {
      * @return 校验结果
      */
     public static boolean checkMD5(String str, String md5) {
-        return getMD5(str).equalsIgnoreCase(md5);
+        return Objects.requireNonNull(getMD5(str)).equalsIgnoreCase(md5);
     }
 
     /**
@@ -58,7 +59,7 @@ public class MD5Util {
      * @return 加盐md5
      */
     public static String getMD5AndSalt(String str, String salt) {
-        return getMD5(getMD5(str).concat(salt));
+        return getMD5(Objects.requireNonNull(getMD5(str)).concat(salt));
     }
 
     /**
@@ -69,6 +70,6 @@ public class MD5Util {
      * @return 加盐md5
      */
     public static String getMD5AndSalt(String str) {
-        return getMD5(getMD5(str).concat(DEFAULT_MD_5_SALT));
+        return getMD5(Objects.requireNonNull(getMD5(str)).concat(DEFAULT_MD_5_SALT));
     }
 }

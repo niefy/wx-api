@@ -31,7 +31,6 @@ public class ArticleController {
     @GetMapping("/detail")
     public R getArticle(int articleId) {
         Article article = articleService.findById(articleId);
-        //sysLogService.addLog(SysOperationEnum.查看文章,"articleId:"+articleId);
         return R.ok().put(article);
     }
 
@@ -44,7 +43,9 @@ public class ArticleController {
     @GetMapping("/category")
     public R getQuestions(String type, String category) {
         ArticleTypeEnum articleType = ArticleTypeEnum.of(type);
-        if (articleType == null) return R.error("文章类型有误");
+        if (articleType == null) {
+            return R.error("文章类型有误");
+        }
         List<Article> articles = articleService.selectCategory(articleType, category);
         return R.ok().put(articles);
     }
@@ -61,8 +62,12 @@ public class ArticleController {
                           @RequestParam(required = false) String category,
                           @RequestParam(required = false) String keywords) {
         ArticleTypeEnum articleType = ArticleTypeEnum.of(type);
-        if (articleType == null) return R.error("文章类型有误");
-        if (StringUtils.isEmpty(keywords)) return R.error("关键词不得为空");
+        if (articleType == null) {
+            return R.error("文章类型有误");
+        }
+        if (StringUtils.isEmpty(keywords)) {
+            return R.error("关键词不得为空");
+        }
         List<Article> articles = articleService.search(articleType, category, keywords);
         return R.ok().put(articles);
     }

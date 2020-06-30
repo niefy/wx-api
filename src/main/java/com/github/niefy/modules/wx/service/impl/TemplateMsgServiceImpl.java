@@ -70,7 +70,9 @@ public class TemplateMsgServiceImpl implements TemplateMsgService {
 				.miniProgram(form.getMiniprogram())
 				.data(form.getData());
 		Map<String, Object> filterParams = form.getWxUserFilterParams();
-		if(filterParams==null)filterParams=new HashMap<>();
+		if(filterParams==null) {
+            filterParams=new HashMap<>(8);
+        }
 		long currentPage=1L,totalPages=Long.MAX_VALUE;
 		filterParams.put("limit","500");//每页查询500条
 		while (currentPage<=totalPages){

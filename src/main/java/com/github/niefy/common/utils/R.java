@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- * 版权所有，侵权必究！
- */
-
 package com.github.niefy.common.utils;
 
 import org.apache.http.HttpStatus;
@@ -53,6 +48,7 @@ public class R extends HashMap<String, Object> {
         return new R();
     }
 
+    @Override
     public R put(String key, Object value) {
         super.put(key, value);
         return this;

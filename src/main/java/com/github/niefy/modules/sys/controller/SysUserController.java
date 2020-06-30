@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- * 版权所有，侵权必究！
- */
-
 package com.github.niefy.modules.sys.controller;
 
 import com.github.niefy.common.annotation.SysLog;
@@ -136,10 +131,10 @@ public class SysUserController extends AbstractController {
     @PostMapping("/delete")
     @RequiresPermissions("sys:user:delete")
     public R delete(@RequestBody Long[] userIds) {
-        if (Arrays.stream(userIds).filter(id->id.intValue()==Constant.SUPER_ADMIN).findAny().isPresent()) {
+        if (Arrays.stream(userIds).anyMatch(id->id.intValue()==Constant.SUPER_ADMIN)) {
             return R.error("系统管理员不能删除");
         }
-        if (Arrays.stream(userIds).filter(id->getUserId().equals(id)).findAny().isPresent()) {
+        if (Arrays.stream(userIds).anyMatch(id->getUserId().equals(id))) {
             return R.error("当前用户不能删除");
         }
 

@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- * 版权所有，侵权必究！
- */
-
 package com.github.niefy.modules.sys.controller;
 
 import com.github.niefy.common.annotation.SysLog;
@@ -18,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -39,7 +35,7 @@ public class SysMenuController extends AbstractController {
     public R nav() {
         List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(getUserId());
         Set<String> permissions = shiroService.getUserPermissions(getUserId());
-        return R.ok().put("menuList", menuList).put("permissions", permissions);
+        return Objects.requireNonNull(R.ok().put("menuList", menuList)).put("permissions", permissions);
     }
 
     /**
@@ -181,7 +177,6 @@ public class SysMenuController extends AbstractController {
             if (parentType != Constant.MenuType.MENU.getValue()) {
                 throw new RRException("上级菜单只能为菜单类型");
             }
-            return;
         }
     }
 }

@@ -111,10 +111,16 @@ public class MsgReplyRuleServiceImpl extends ServiceImpl<MsgReplyRuleMapper, Msg
      * @return
      */
     public static boolean isMatch(boolean exactMatch, String[] ruleWords, String checkWords) {
-        if (StringUtils.isEmpty(checkWords)) return false;
+        if (StringUtils.isEmpty(checkWords)) {
+            return false;
+        }
         for (String words : ruleWords) {
-            if (exactMatch && words.equals(checkWords)) return true;//精确匹配，需关键词与规则词语一致
-            if (!exactMatch && checkWords.contains(words)) return true;//模糊匹配
+            if (exactMatch && words.equals(checkWords)) {
+                return true;//精确匹配，需关键词与规则词语一致
+            }
+            if (!exactMatch && checkWords.contains(words)) {
+                return true;//模糊匹配
+            }
         }
         return false;
     }

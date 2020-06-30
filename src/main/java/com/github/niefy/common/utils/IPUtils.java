@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- * 版权所有，侵权必究！
- */
-
 package com.github.niefy.common.utils;
 
 import com.alibaba.druid.util.StringUtils;
@@ -45,13 +40,6 @@ public class IPUtils {
         } catch (Exception e) {
             logger.error("IPUtils ERROR ", e);
         }
-
-//        //使用代理，则获取第一个IP地址
-//        if(StringUtils.isEmpty(ip) && ip.length() > 15) {
-//			if(ip.indexOf(",") > 0) {
-//				ip = ip.substring(0, ip.indexOf(","));
-//			}
-//		}
 
         return ip;
     }

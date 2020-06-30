@@ -10,6 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface ArticleService extends IService<Article> {
+    /**
+     * 分页查询用户数据
+     * @param params 查询参数
+     * @return PageUtils 分页结果
+     */
     PageUtils queryPage(Map<String, Object> params);
 
     /**
@@ -26,6 +31,7 @@ public interface ArticleService extends IService<Article> {
      * @param article
      */
 
+    @Override
     boolean save(Article article);
 
     /**

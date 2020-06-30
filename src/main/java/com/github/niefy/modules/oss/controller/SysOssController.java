@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- * 版权所有，侵权必究！
- */
-
 package com.github.niefy.modules.oss.controller;
 
 import com.alibaba.fastjson.JSON;
@@ -28,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 文件上传
@@ -104,8 +100,8 @@ public class SysOssController {
         }
 
         //上传文件
-        String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-        String url = OSSFactory.build().uploadSuffix(file.getBytes(), suffix);
+        String suffix = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
+        String url = Objects.requireNonNull(OSSFactory.build()).uploadSuffix(file.getBytes(), suffix);
 
         //保存文件信息
         SysOssEntity ossEntity = new SysOssEntity();

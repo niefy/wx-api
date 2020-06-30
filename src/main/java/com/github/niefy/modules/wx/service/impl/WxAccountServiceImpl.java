@@ -84,9 +84,7 @@ public class WxAccountServiceImpl extends ServiceImpl<WxAccountMapper, WxAccount
 
         // 更新wxMpService配置
         logger.info("同步移除公众号配置");
-        idList.forEach(id->{
-            wxMpService.removeConfigStorage((String) id);
-        });
+        idList.forEach(id-> wxMpService.removeConfigStorage((String) id));
 
         return SqlHelper.retBool(this.baseMapper.deleteBatchIds(idList));
     }
@@ -114,7 +112,7 @@ public class WxAccountServiceImpl extends ServiceImpl<WxAccountMapper, WxAccount
             wxMpService.addConfigStorage(appid,config);
         }catch (NullPointerException e){
             logger.info("需初始化configStorageMap...");
-            Map<String, WxMpConfigStorage> configStorages = new HashMap<>();
+            Map<String, WxMpConfigStorage> configStorages = new HashMap<>(4);
             configStorages.put(appid,config);
             wxMpService.setMultiConfigStorages(configStorages,appid);
         }

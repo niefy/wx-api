@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- * 版权所有，侵权必究！
- */
-
 package com.github.niefy.modules.sys.oauth2;
 
 import com.github.niefy.modules.sys.entity.SysUserEntity;
@@ -69,7 +64,6 @@ public class OAuth2Realm extends AuthorizingRealm {
             throw new LockedAccountException("账号已被锁定,请联系管理员");
         }
 
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, accessToken, getName());
-        return info;
+        return new SimpleAuthenticationInfo(user, accessToken, getName());
     }
 }

@@ -2,14 +2,11 @@ package com.github.niefy.modules.wx.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.common.utils.Query;
 import com.github.niefy.config.TaskExcutor;
 import com.github.niefy.modules.wx.dao.WxUserMapper;
 import com.github.niefy.modules.wx.entity.WxUser;
-import com.github.niefy.modules.wx.dto.PageSizeConstant;
 import com.github.niefy.modules.wx.service.WxUserService;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -102,7 +99,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
      */
     @Override
     public void updateOrInsert(WxUser user) {
-        Integer updateCount = userMapper.updateById(user);
+        int updateCount = userMapper.updateById(user);
         if (updateCount < 1) {
             userMapper.insert(user);
         }
@@ -119,7 +116,9 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
     @Override
 	@Async
     public void syncWxUsers(String appid) {
-    	if(syncWxUserTaskRunning)return;//同步较慢，防止个多线程重复执行同步任务
+    	if(syncWxUserTaskRunning) {
+            return;//同步较慢，防止个多线程重复执行同步任务
+        }
 		syncWxUserTaskRunning=true;
 		logger.info("同步公众号粉丝列表：任务开始");
 		wxService.switchover(appid);
@@ -148,8 +147,10 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 	 * @param openids
 	 */
 	@Override
-	public void syncWxUsers(List<String> openids,String appid) throws WxErrorException {
-		if(openids.size()<1)return;
+	public void syncWxUsers(List<String> openids,String appid) {
+		if(openids.size()<1) {
+            return;
+        }
 		final String batch=openids.get(0).substring(20);//截取首个openid的一部分做批次号（打印日志时使用，无实际意义）
 		WxMpUserService wxMpUserService = wxService.getUserService();
 		int start=0,batchSize=openids.size(),end=Math.min(100,batchSize);

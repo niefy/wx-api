@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @CacheConfig(cacheNames = {"wxAssetsServiceCache"})
@@ -83,7 +84,7 @@ public class WxAssetsServiceImpl implements WxAssetsService {
     public WxMpMaterialUploadResult materialFileUpload(String mediaType, String fileName, MultipartFile file) throws WxErrorException, IOException {
         log.info("上传媒体素材：{}",fileName);
         String originalFilename=file.getOriginalFilename();
-        File tempFile = File.createTempFile(fileName+"--", originalFilename.substring(originalFilename.lastIndexOf(".")));
+        File tempFile = File.createTempFile(fileName+"--", Objects.requireNonNull(originalFilename).substring(originalFilename.lastIndexOf(".")));
         file.transferTo(tempFile);
         WxMpMaterial wxMaterial = new WxMpMaterial();
         wxMaterial.setFile(tempFile);

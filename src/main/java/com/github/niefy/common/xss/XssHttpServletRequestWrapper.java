@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- * 版权所有，侵权必究！
- */
-
 package com.github.niefy.common.xss;
 
 import org.apache.commons.io.IOUtils;
@@ -68,7 +63,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
             }
 
             @Override
-            public int read() throws IOException {
+            public int read() {
                 return bis.read();
             }
         };

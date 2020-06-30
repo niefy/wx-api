@@ -99,8 +99,9 @@ public class WxAuthController {
         this.wxMpService.switchoverTo(appid);
         // 1.拼接url（当前网页的URL，不包含#及其后面部分）
         String wxShareUrl = request.getHeader(Constant.WX_CLIENT_HREF_HEADER);
-        if (StringUtils.isEmpty(wxShareUrl))
+        if (StringUtils.isEmpty(wxShareUrl)) {
             return R.error("header中缺少"+Constant.WX_CLIENT_HREF_HEADER+"参数，微信分享加载失败");
+        }
         wxShareUrl = wxShareUrl.split("#")[0];
         Map<String, String> wxMap = new TreeMap<>();
         String wxNoncestr = UUID.randomUUID().toString();

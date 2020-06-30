@@ -1,7 +1,6 @@
 package com.github.niefy.modules.wx.handler;
 
 import com.github.niefy.modules.wx.service.MsgReplyService;
-import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
@@ -22,7 +21,7 @@ public class ScanHandler extends AbstractHandler {
 
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map,
-                                    WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
+                                    WxMpService wxMpService, WxSessionManager wxSessionManager) {
         //扫码事件处理
         this.logger.info("用户扫描带参二维码 OPENID: " + wxMpXmlMessage.getFromUser());
         String appid = WxMpConfigStorageHolder.get();

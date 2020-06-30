@@ -60,7 +60,7 @@ public class WxQrCodeServiceImpl extends ServiceImpl<WxQrCodeMapper, WxQrCode> i
         wxQrCode.setTicket(ticket.getTicket());
         wxQrCode.setUrl(ticket.getUrl());
         if (form.getIsTemp()) {
-            wxQrCode.setExpireTime(new Date(new Date().getTime() + ticket.getExpireSeconds() * 1000L));
+            wxQrCode.setExpireTime(new Date(System.currentTimeMillis() + ticket.getExpireSeconds() * 1000L));
         }
         this.save(wxQrCode);
         return ticket;

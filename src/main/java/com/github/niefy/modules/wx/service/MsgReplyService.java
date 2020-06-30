@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
  * WxJava客服消息文档：https://github.com/Wechat-Group/WxJava/wiki/MP_主动发送消息（客服消息）
  */
 public interface MsgReplyService {
-    static Logger logger = LoggerFactory.getLogger(MsgReplyService.class);
+    Logger logger = LoggerFactory.getLogger(MsgReplyService.class);
 
     /**
      * 根据规则配置通过微信客服消息接口自动回复消息
@@ -27,16 +27,27 @@ public interface MsgReplyService {
 
     default void reply(String toUser,String replyType, String replyContent){
         try {
-            if (WxConsts.KefuMsgType.TEXT.equals(replyType)) this.replyText(toUser, replyContent);
-            else if (WxConsts.KefuMsgType.IMAGE.equals(replyType)) this.replyImage(toUser, replyContent);
-            else if (WxConsts.KefuMsgType.VOICE.equals(replyType)) this.replyVoice(toUser, replyContent);
-            else if (WxConsts.KefuMsgType.VIDEO.equals(replyType)) this.replyVideo(toUser, replyContent);
-            else if (WxConsts.KefuMsgType.MUSIC.equals(replyType)) this.replyMusic(toUser, replyContent);
-            else if (WxConsts.KefuMsgType.NEWS.equals(replyType)) this.replyNews(toUser, replyContent);
-            else if (WxConsts.KefuMsgType.MPNEWS.equals(replyType)) this.replyMpNews(toUser, replyContent);
-            else if (WxConsts.KefuMsgType.WXCARD.equals(replyType)) this.replyWxCard(toUser, replyContent);
-            else if (WxConsts.KefuMsgType.MINIPROGRAMPAGE.equals(replyType)) this.replyMiniProgram(toUser, replyContent);
-            else if (WxConsts.KefuMsgType.MSGMENU.equals(replyType)) this.replyMsgMenu(toUser, replyContent);
+            if (WxConsts.KefuMsgType.TEXT.equals(replyType)) {
+                this.replyText(toUser, replyContent);
+            } else if (WxConsts.KefuMsgType.IMAGE.equals(replyType)) {
+                this.replyImage(toUser, replyContent);
+            } else if (WxConsts.KefuMsgType.VOICE.equals(replyType)) {
+                this.replyVoice(toUser, replyContent);
+            } else if (WxConsts.KefuMsgType.VIDEO.equals(replyType)) {
+                this.replyVideo(toUser, replyContent);
+            } else if (WxConsts.KefuMsgType.MUSIC.equals(replyType)) {
+                this.replyMusic(toUser, replyContent);
+            } else if (WxConsts.KefuMsgType.NEWS.equals(replyType)) {
+                this.replyNews(toUser, replyContent);
+            } else if (WxConsts.KefuMsgType.MPNEWS.equals(replyType)) {
+                this.replyMpNews(toUser, replyContent);
+            } else if (WxConsts.KefuMsgType.WXCARD.equals(replyType)) {
+                this.replyWxCard(toUser, replyContent);
+            } else if (WxConsts.KefuMsgType.MINIPROGRAMPAGE.equals(replyType)) {
+                this.replyMiniProgram(toUser, replyContent);
+            } else if (WxConsts.KefuMsgType.MSGMENU.equals(replyType)) {
+                this.replyMsgMenu(toUser, replyContent);
+            }
         } catch (Exception e) {
             logger.error("自动回复出错：", e);
         }
