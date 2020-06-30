@@ -51,7 +51,7 @@ public interface MsgReplyService {
         } catch (Exception e) {
             logger.error("自动回复出错：", e);
         }
-    };
+    }
 
     /**
      * 回复文字消息

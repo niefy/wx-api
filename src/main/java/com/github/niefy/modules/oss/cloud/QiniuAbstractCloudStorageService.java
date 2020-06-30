@@ -15,11 +15,11 @@ import java.io.InputStream;
  * 七牛云存储
  * @author Mark sunlightcs@gmail.com
  */
-public class QiniuCloudStorageService extends CloudStorageService {
+public class QiniuAbstractCloudStorageService extends AbstractCloudStorageService {
     private UploadManager uploadManager;
     private String token;
 
-    public QiniuCloudStorageService(CloudStorageConfig config) {
+    public QiniuAbstractCloudStorageService(CloudStorageConfig config) {
         this.config = config;
 
         //初始化

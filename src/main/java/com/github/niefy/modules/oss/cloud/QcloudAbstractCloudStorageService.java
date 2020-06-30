@@ -21,10 +21,11 @@ import java.io.InputStream;
  * @author Mark sunlightcs@gmail.com
  */
 @Slf4j
-public class QcloudCloudStorageService extends CloudStorageService {
+public class QcloudAbstractCloudStorageService extends AbstractCloudStorageService {
     private COSClient client;
+    private static final String SEPARTOR="/";
 
-    public QcloudCloudStorageService(CloudStorageConfig config) {
+    public QcloudAbstractCloudStorageService(CloudStorageConfig config) {
         this.config = config;
 
         //初始化
@@ -45,8 +46,8 @@ public class QcloudCloudStorageService extends CloudStorageService {
     @Override
     public String upload(byte[] data, String path) {
         //腾讯云必需要以"/"开头
-        if (!path.startsWith("/")) {
-            path = "/" + path;
+        if (!path.startsWith(SEPARTOR)) {
+            path = SEPARTOR + path;
         }
         ObjectMetadata objectMetadata = new ObjectMetadata();
         // 设置输入流长度为500

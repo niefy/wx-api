@@ -28,6 +28,7 @@ public class MsgHandler extends AbstractHandler {
     MsgReplyService msgReplyService;
     @Autowired
     WxMsgService wxMsgService;
+    private static final String TRANSFER_CUSTOMER_SERVICE_KEY = "人工";
 
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
@@ -39,7 +40,7 @@ public class MsgHandler extends AbstractHandler {
         String appid = WxMpConfigStorageHolder.get();
         boolean autoReplyed = msgReplyService.tryAutoReply(appid,false, fromUser, textContent);
         //当用户输入关键词如“你好”，“客服”等，并且有客服在线时，把消息转发给在线客服
-        if ("人工".equals(textContent) || !autoReplyed) {
+        if (TRANSFER_CUSTOMER_SERVICE_KEY.equals(textContent) || !autoReplyed) {
             wxMsgService.addWxMsg(WxMsg.buildOutMsg(WxConsts.KefuMsgType.TRANSFER_CUSTOMER_SERVICE,fromUser,null));
             return WxMpXmlOutMessage
                 .TRANSFER_CUSTOMER_SERVICE().fromUser(wxMessage.getToUser())

@@ -14,7 +14,7 @@ public class MD5Util {
      *
      * @return md5加密后的字符串
      */
-    public static String getMD5(String s) {
+    public static String getMd5(String s) {
         char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
         try {
             byte[] btInput = s.getBytes();
@@ -47,8 +47,8 @@ public class MD5Util {
      * @param md5 基准md5
      * @return 校验结果
      */
-    public static boolean checkMD5(String str, String md5) {
-        return Objects.requireNonNull(getMD5(str)).equalsIgnoreCase(md5);
+    public static boolean checkMd5(String str, String md5) {
+        return Objects.requireNonNull(getMd5(str)).equalsIgnoreCase(md5);
     }
 
     /**
@@ -58,8 +58,8 @@ public class MD5Util {
      * @param salt 盐
      * @return 加盐md5
      */
-    public static String getMD5AndSalt(String str, String salt) {
-        return getMD5(Objects.requireNonNull(getMD5(str)).concat(salt));
+    public static String getMd5AndSalt(String str, String salt) {
+        return getMd5(Objects.requireNonNull(getMd5(str)).concat(salt));
     }
 
     /**
@@ -69,7 +69,7 @@ public class MD5Util {
      * @param str 待加密的字符串
      * @return 加盐md5
      */
-    public static String getMD5AndSalt(String str) {
-        return getMD5(Objects.requireNonNull(getMD5(str)).concat(DEFAULT_MD_5_SALT));
+    public static String getMd5AndSalt(String str) {
+        return getMd5(Objects.requireNonNull(getMd5(str)).concat(DEFAULT_MD_5_SALT));
     }
 }

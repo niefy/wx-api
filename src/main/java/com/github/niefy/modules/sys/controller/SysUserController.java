@@ -4,7 +4,6 @@ import com.github.niefy.common.annotation.SysLog;
 import com.github.niefy.common.utils.Constant;
 import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.common.utils.R;
-import com.github.niefy.common.validator.Assert;
 import com.github.niefy.common.validator.ValidatorUtils;
 import com.github.niefy.common.validator.group.AddGroup;
 import com.github.niefy.common.validator.group.UpdateGroup;
@@ -15,6 +14,7 @@ import com.github.niefy.modules.sys.service.SysUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -63,7 +63,7 @@ public class SysUserController extends AbstractController {
     @SysLog("修改密码")
     @PostMapping("/password")
     public R password(@RequestBody PasswordForm form) {
-        Assert.isBlank(form.getNewPassword(), "新密码不为能空");
+        Assert.hasText(form.getNewPassword(), "新密码不为能空");
 
         //sha256加密
         String password = new Sha256Hash(form.getPassword(), getUser().getSalt()).toHex();

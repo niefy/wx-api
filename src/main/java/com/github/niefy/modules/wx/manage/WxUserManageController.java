@@ -59,9 +59,9 @@ public class WxUserManageController {
     @GetMapping("/info/{openid}")
     @RequiresPermissions("wx:wxuser:info")
     public R info(@CookieValue String appid,@PathVariable("openid") String openid) {
-        WxUser WxUser = userService.getById(openid);
+        WxUser wxUser = userService.getById(openid);
 
-        return R.ok().put("WxUser", WxUser);
+        return R.ok().put("wxUser", wxUser);
     }
 
     /**

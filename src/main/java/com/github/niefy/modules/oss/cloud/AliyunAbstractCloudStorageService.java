@@ -11,10 +11,10 @@ import java.io.InputStream;
  * 阿里云存储
  * @author Mark sunlightcs@gmail.com
  */
-public class AliyunCloudStorageService extends CloudStorageService {
+public class AliyunAbstractCloudStorageService extends AbstractCloudStorageService {
     private OSS client;
 
-    public AliyunCloudStorageService(CloudStorageConfig config) {
+    public AliyunAbstractCloudStorageService(CloudStorageConfig config) {
         this.config = config;
 
         //初始化

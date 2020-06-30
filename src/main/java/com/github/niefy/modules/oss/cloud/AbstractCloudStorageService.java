@@ -11,7 +11,7 @@ import java.util.UUID;
  * 云存储(支持七牛、阿里云、腾讯云、又拍云)
  * @author Mark sunlightcs@gmail.com
  */
-public abstract class CloudStorageService {
+public abstract class AbstractCloudStorageService {
     /** 云存储配置信息 */
     CloudStorageConfig config;
 
