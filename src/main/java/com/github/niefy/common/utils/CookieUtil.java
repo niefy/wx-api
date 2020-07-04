@@ -17,8 +17,7 @@ public class CookieUtil {
     public static void setCookie(HttpServletResponse response, String cookieName, String cookieValue,
                                  int maxAge) {
         Cookie cookie = new Cookie(cookieName, cookieValue);
-        //cookie.setDomain(domain);
-        maxAge = maxAge > 0 ? maxAge : 0;
+        maxAge = Math.max(maxAge, 0);
         cookie.setMaxAge(maxAge);
         cookie.setPath("/");
         response.addCookie(cookie);

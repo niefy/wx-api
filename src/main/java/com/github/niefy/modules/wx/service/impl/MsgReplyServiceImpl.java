@@ -54,7 +54,9 @@ public class MsgReplyServiceImpl implements MsgReplyService {
     public boolean tryAutoReply(String appid, boolean exactMatch, String toUser, String keywords) {
         try {
             List<MsgReplyRule> rules = msgReplyRuleService.getMatchedRules(appid,exactMatch, keywords);
-            if (rules.isEmpty()) return false;
+            if (rules.isEmpty()) {
+                return false;
+            }
             long delay = 0;
             for (MsgReplyRule rule : rules) {
                 TaskExcutor.schedule(() -> {

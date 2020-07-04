@@ -90,7 +90,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
                     .eq("category", article.getCategory())
                     .eq("sub_category", article.getSubCategory())
             );
-            if (count > 0) throw new RRException("同目录下文章[" + title + "]已存在，不可重复添加");
+            if (count > 0) {
+                throw new RRException("同目录下文章[" + title + "]已存在，不可重复添加");
+            }
             article.setCreateTime(new Date());
             articleMapper.insert(article);
         }

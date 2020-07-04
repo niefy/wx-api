@@ -99,7 +99,9 @@ public class WxAssetsManageController {
     @PostMapping("/materialNewsUpload")
     @RequiresPermissions("wx:wxassets:save")
     public R materialNewsUpload(@CookieValue String appid,@RequestBody List<WxMpNewsArticle> articles) throws WxErrorException {
-        if(articles.isEmpty())return R.error("图文列表不得为空");
+        if(articles.isEmpty()) {
+            return R.error("图文列表不得为空");
+        }
         wxMpService.switchoverTo(appid);
         WxMpMaterialUploadResult res = wxAssetsService.materialNewsUpload(articles);
         return R.ok().put(res);
@@ -115,7 +117,9 @@ public class WxAssetsManageController {
     @PostMapping("/materialArticleUpdate")
     @RequiresPermissions("wx:wxassets:save")
     public R materialArticleUpdate(@CookieValue String appid,@RequestBody WxMpMaterialArticleUpdate form) throws WxErrorException {
-        if(form.getArticles()==null)return R.error("文章不得为空");
+        if(form.getArticles()==null) {
+            return R.error("文章不得为空");
+        }
         wxMpService.switchoverTo(appid);
         wxAssetsService.materialArticleUpdate(form);
         return R.ok();
@@ -134,7 +138,9 @@ public class WxAssetsManageController {
     @PostMapping("/materialFileUpload")
     @RequiresPermissions("wx:wxassets:save")
     public R materialFileUpload(@CookieValue String appid,MultipartFile file, String fileName, String mediaType) throws WxErrorException, IOException {
-        if (file == null) return R.error("文件不得为空");
+        if (file == null) {
+            return R.error("文件不得为空");
+        }
         wxMpService.switchoverTo(appid);
         WxMpMaterialUploadResult res = wxAssetsService.materialFileUpload(mediaType,fileName,file);
         return R.ok().put(res);
@@ -146,11 +152,10 @@ public class WxAssetsManageController {
      * @param form
      * @return
      * @throws WxErrorException
-     * @throws IOException
      */
     @PostMapping("/materialDelete")
     @RequiresPermissions("wx:wxassets:delete")
-    public R materialDelete(@CookieValue String appid,@RequestBody MaterialFileDeleteForm form) throws WxErrorException, IOException {
+    public R materialDelete(@CookieValue String appid,@RequestBody MaterialFileDeleteForm form) throws WxErrorException {
         wxMpService.switchoverTo(appid);
         boolean res = wxAssetsService.materialDelete(form.getMediaId());
         return R.ok().put(res);

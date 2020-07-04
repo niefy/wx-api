@@ -17,7 +17,11 @@ import java.util.Map;
  * @date 2019-11-12 18:30:15
  */
 public interface MsgTemplateService extends IService<MsgTemplate> {
-
+    /**
+     * 分页查询用户数据
+     * @param params 查询参数
+     * @return PageUtils 分页结果
+     */
     PageUtils queryPage(Map<String, Object> params);
 
     /**

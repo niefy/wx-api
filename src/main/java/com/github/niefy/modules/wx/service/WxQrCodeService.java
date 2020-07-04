@@ -17,7 +17,11 @@ import java.util.Map;
  * @date 2020-01-02 11:11:55
  */
 public interface WxQrCodeService extends IService<WxQrCode> {
-
+    /**
+     * 分页查询用户数据
+     * @param params 查询参数
+     * @return PageUtils 分页结果
+     */
     PageUtils queryPage(Map<String, Object> params);
 
     /**

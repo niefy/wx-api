@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- * 版权所有，侵权必究！
- */
-
 package com.github.niefy.modules.sys.controller;
 
 import com.github.niefy.common.utils.R;
@@ -60,7 +55,7 @@ public class SysLoginController extends AbstractController {
      * 登录
      */
     @PostMapping("/sys/login")
-    public Map<String, Object> login(@RequestBody SysLoginForm form) throws IOException {
+    public Map<String, Object> login(@RequestBody SysLoginForm form) {
         boolean captcha = sysCaptchaService.validate(form.getUuid(), form.getCaptcha());
         if (!captcha) {
             return R.error("验证码不正确");
@@ -80,8 +75,7 @@ public class SysLoginController extends AbstractController {
         }
 
         //生成token，并保存到数据库
-        R r = sysUserTokenService.createToken(user.getUserId());
-        return r;
+        return sysUserTokenService.createToken(user.getUserId());
     }
 
 

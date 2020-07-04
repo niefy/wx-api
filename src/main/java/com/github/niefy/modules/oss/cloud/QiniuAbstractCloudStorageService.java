@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- * 版权所有，侵权必究！
- */
-
 package com.github.niefy.modules.oss.cloud;
 
 import com.github.niefy.common.exception.RRException;
@@ -20,11 +15,11 @@ import java.io.InputStream;
  * 七牛云存储
  * @author Mark sunlightcs@gmail.com
  */
-public class QiniuCloudStorageService extends CloudStorageService {
+public class QiniuAbstractCloudStorageService extends AbstractCloudStorageService {
     private UploadManager uploadManager;
     private String token;
 
-    public QiniuCloudStorageService(CloudStorageConfig config) {
+    public QiniuAbstractCloudStorageService(CloudStorageConfig config) {
         this.config = config;
 
         //初始化

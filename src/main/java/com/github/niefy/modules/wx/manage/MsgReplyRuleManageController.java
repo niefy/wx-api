@@ -2,11 +2,8 @@ package com.github.niefy.modules.wx.manage;
 
 import java.util.Arrays;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import com.github.niefy.modules.wx.service.MsgReplyRuleService;
-import com.github.niefy.modules.wx.dto.RegexConstant;
-import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;

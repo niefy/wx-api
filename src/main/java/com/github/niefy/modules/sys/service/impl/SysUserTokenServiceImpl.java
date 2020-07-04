@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- * 版权所有，侵权必究！
- */
-
 package com.github.niefy.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,6 +9,7 @@ import com.github.niefy.modules.sys.entity.SysUserTokenEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Objects;
 
 
 @Service("sysUserTokenService")
@@ -52,9 +48,7 @@ public class SysUserTokenServiceImpl extends ServiceImpl<SysUserTokenDao, SysUse
             this.updateById(tokenEntity);
         }
 
-        R r = R.ok().put("token", token).put("expire", EXPIRE);
-
-        return r;
+        return Objects.requireNonNull(R.ok().put("token", token)).put("expire", EXPIRE);
     }
 
     @Override

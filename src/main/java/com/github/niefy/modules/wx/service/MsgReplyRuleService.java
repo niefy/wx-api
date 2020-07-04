@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface MsgReplyRuleService extends IService<MsgReplyRule> {
+    /**
+     * 分页查询用户数据
+     * @param params 查询参数
+     * @return PageUtils 分页结果
+     */
     PageUtils queryPage(Map<String, Object> params);
 
     /**
@@ -16,6 +21,7 @@ public interface MsgReplyRuleService extends IService<MsgReplyRule> {
      * @param msgReplyRule
      */
 
+    @Override
     boolean save(MsgReplyRule msgReplyRule);
 
     /**

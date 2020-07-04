@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- * 版权所有，侵权必究！
- */
-
 package com.github.niefy.modules.sys.controller;
 
 import com.github.niefy.common.annotation.SysLog;
@@ -55,13 +50,13 @@ public class SysRoleController extends AbstractController {
     @GetMapping("/select")
     @RequiresPermissions("sys:role:select")
     public R select() {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(4);
 
         //如果不是超级管理员，则只查询自己所拥有的角色列表
         if (getUserId() != Constant.SUPER_ADMIN) {
             map.put("create_user_id", getUserId());
         }
-        List<SysRoleEntity> list = (List<SysRoleEntity>) sysRoleService.listByMap(map);
+        List<SysRoleEntity> list = sysRoleService.listByMap(map);
 
         return R.ok().put("list", list);
     }

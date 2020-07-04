@@ -34,14 +34,15 @@ public class WxUserTagsController {
         WxUser wxUser = wxUserService.getById(openid);
         if(wxUser==null){
             wxUser=wxUserService.refreshUserInfo(openid,appid);
-            if(wxUser==null)
+            if(wxUser==null) {
                 return R.error("not_subscribed");
+            }
         }
         return R.ok().put(wxUser.getTagidList());
     }
 
     @PostMapping("/tagging")
-    public R tagging(@CookieValue String appid,@CookieValue String openid , @RequestBody WxUserTaggingForm form) throws WxErrorException {
+    public R tagging(@CookieValue String appid,@CookieValue String openid , @RequestBody WxUserTaggingForm form) {
         this.wxMpService.switchoverTo(appid);
         try {
             wxUserTagsService.tagging(form.getTagid(),openid);

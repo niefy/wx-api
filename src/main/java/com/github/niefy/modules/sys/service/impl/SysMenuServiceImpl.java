@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- * 版权所有，侵权必究！
- */
-
 package com.github.niefy.modules.sys.service.impl;
 
 
@@ -90,7 +85,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
      * 递归
      */
     private List<SysMenuEntity> getMenuTreeList(List<SysMenuEntity> menuList, List<Long> menuIdList) {
-        List<SysMenuEntity> subMenuList = new ArrayList<SysMenuEntity>();
+        List<SysMenuEntity> subMenuList = new ArrayList<>();
 
         for (SysMenuEntity entity : menuList) {
             //目录

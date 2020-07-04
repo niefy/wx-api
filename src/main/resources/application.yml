@@ -25,8 +25,10 @@ spring:
             enabled: true
     mvc:
         throw-exception-if-no-handler-found: true
-#  resources:
-#    add-mappings: false
+    task:
+        scheduling:
+            pool:
+                size: 5
 
 
 #mybatis

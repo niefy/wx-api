@@ -70,19 +70,22 @@ public class TemplateMsgServiceImpl implements TemplateMsgService {
 				.miniProgram(form.getMiniprogram())
 				.data(form.getData());
 		Map<String, Object> filterParams = form.getWxUserFilterParams();
-		if(filterParams==null)filterParams=new HashMap<>();
+		if(filterParams==null) {
+            filterParams=new HashMap<>(8);
+        }
 		long currentPage=1L,totalPages=Long.MAX_VALUE;
-		filterParams.put("limit","500");//每页查询500条
+		filterParams.put("limit","500");
 		while (currentPage<=totalPages){
 			filterParams.put("page",String.valueOf(currentPage));
-			IPage<WxUser> wxUserIPage = wxUserService.queryPage(filterParams);//按条件查询用户
-			logger.info("批量发送模板消息任务,使用查询条件，处理第{}页，总用户数：{}",currentPage,wxUserIPage.getTotal());
-			wxUserIPage.getRecords().forEach(user->{
+            //按条件查询用户
+			IPage<WxUser> wxUsers = wxUserService.queryPage(filterParams);
+			logger.info("批量发送模板消息任务,使用查询条件，处理第{}页，总用户数：{}",currentPage,wxUsers.getTotal());
+			wxUsers.getRecords().forEach(user->{
 				WxMpTemplateMessage msg = builder.toUser(user.getOpenid()).build();
 				this.sendTemplateMsg(msg,appid);
 			});
-			currentPage=wxUserIPage.getCurrent()+1L;
-			totalPages=wxUserIPage.getPages();
+			currentPage=wxUsers.getCurrent()+1L;
+			totalPages=wxUsers.getPages();
 		}
 		logger.info("批量发送模板消息任务结束");
     }

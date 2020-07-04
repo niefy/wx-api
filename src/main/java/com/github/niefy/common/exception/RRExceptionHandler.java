@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- * 版权所有，侵权必究！
- */
-
 package com.github.niefy.common.exception;
 
 import com.github.niefy.common.utils.R;
@@ -27,7 +22,7 @@ public class RRExceptionHandler {
      * 处理自定义异常
      */
     @ExceptionHandler(RRException.class)
-    public R handleRRException(RRException e) {
+    public R handleRrException(RRException e) {
         R r = new R();
         r.put("code", e.getCode());
         r.put("msg", e.getMessage());

@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- * 版权所有，侵权必究！
- */
-
 package com.github.niefy.modules.oss.cloud;
 
 
@@ -22,16 +17,16 @@ public final class OSSFactory {
         OSSFactory.sysConfigService = (SysConfigService) SpringContextUtils.getBean("sysConfigService");
     }
 
-    public static CloudStorageService build() {
+    public static AbstractCloudStorageService build() {
         //获取云存储配置信息
         CloudStorageConfig config = sysConfigService.getConfigObject(ConfigConstant.CLOUD_STORAGE_CONFIG_KEY, CloudStorageConfig.class);
 
         if (config.getType() == Constant.CloudService.QINIU.getValue()) {
-            return new QiniuCloudStorageService(config);
+            return new QiniuAbstractCloudStorageService(config);
         } else if (config.getType() == Constant.CloudService.ALIYUN.getValue()) {
-            return new AliyunCloudStorageService(config);
+            return new AliyunAbstractCloudStorageService(config);
         } else if (config.getType() == Constant.CloudService.QCLOUD.getValue()) {
-            return new QcloudCloudStorageService(config);
+            return new QcloudAbstractCloudStorageService(config);
         }
 
         return null;

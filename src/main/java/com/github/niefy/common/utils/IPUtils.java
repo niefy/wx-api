@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- * 版权所有，侵权必究！
- */
-
 package com.github.niefy.common.utils;
 
 import com.alibaba.druid.util.StringUtils;
@@ -17,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class IPUtils {
     private static Logger logger = LoggerFactory.getLogger(IPUtils.class);
+    private static final String UNKNOWN = "unknown";
 
     /**
      * 获取IP地址
@@ -27,31 +23,24 @@ public class IPUtils {
         String ip = null;
         try {
             ip = request.getHeader("x-forwarded-for");
-            if (StringUtils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+            if (StringUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
                 ip = request.getHeader("Proxy-Client-IP");
             }
-            if (StringUtils.isEmpty(ip) || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            if (StringUtils.isEmpty(ip) || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
                 ip = request.getHeader("WL-Proxy-Client-IP");
             }
-            if (StringUtils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+            if (StringUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
                 ip = request.getHeader("HTTP_CLIENT_IP");
             }
-            if (StringUtils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+            if (StringUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
                 ip = request.getHeader("HTTP_X_FORWARDED_FOR");
             }
-            if (StringUtils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+            if (StringUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
                 ip = request.getRemoteAddr();
             }
         } catch (Exception e) {
             logger.error("IPUtils ERROR ", e);
         }
-
-//        //使用代理，则获取第一个IP地址
-//        if(StringUtils.isEmpty(ip) && ip.length() > 15) {
-//			if(ip.indexOf(",") > 0) {
-//				ip = ip.substring(0, ip.indexOf(","));
-//			}
-//		}
 
         return ip;
     }

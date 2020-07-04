@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- * 版权所有，侵权必究！
- */
-
 package com.github.niefy.modules.sys.oauth2;
 
 import com.alibaba.fastjson.JSON;
@@ -31,7 +26,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
+    protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
         //获取请求token
         String token = getRequestToken((HttpServletRequest) request);
 
@@ -44,11 +39,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        if (((HttpServletRequest) request).getMethod().equals(RequestMethod.OPTIONS.name())) {
-            return true;
-        }
-
-        return false;
+        return ((HttpServletRequest) request).getMethod().equals(RequestMethod.OPTIONS.name());
     }
 
     @Override

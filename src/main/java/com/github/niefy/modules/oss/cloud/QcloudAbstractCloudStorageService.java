@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- * 版权所有，侵权必究！
- */
-
 package com.github.niefy.modules.oss.cloud;
 
 
@@ -13,7 +8,6 @@ import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.model.ObjectMetadata;
 import com.qcloud.cos.model.PutObjectRequest;
-import com.qcloud.cos.model.PutObjectResult;
 import com.qcloud.cos.region.Region;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -27,10 +21,11 @@ import java.io.InputStream;
  * @author Mark sunlightcs@gmail.com
  */
 @Slf4j
-public class QcloudCloudStorageService extends CloudStorageService {
+public class QcloudAbstractCloudStorageService extends AbstractCloudStorageService {
     private COSClient client;
+    private static final String SEPARTOR="/";
 
-    public QcloudCloudStorageService(CloudStorageConfig config) {
+    public QcloudAbstractCloudStorageService(CloudStorageConfig config) {
         this.config = config;
 
         //初始化
@@ -51,8 +46,8 @@ public class QcloudCloudStorageService extends CloudStorageService {
     @Override
     public String upload(byte[] data, String path) {
         //腾讯云必需要以"/"开头
-        if (!path.startsWith("/")) {
-            path = "/" + path;
+        if (!path.startsWith(SEPARTOR)) {
+            path = SEPARTOR + path;
         }
         ObjectMetadata objectMetadata = new ObjectMetadata();
         // 设置输入流长度为500

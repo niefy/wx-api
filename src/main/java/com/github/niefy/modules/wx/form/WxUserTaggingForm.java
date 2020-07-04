@@ -1,7 +1,6 @@
 package com.github.niefy.modules.wx.form;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
 

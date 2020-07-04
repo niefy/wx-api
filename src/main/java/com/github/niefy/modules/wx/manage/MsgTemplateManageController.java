@@ -120,7 +120,7 @@ public class MsgTemplateManageController {
      */
     @PostMapping("/sendMsgBatch")
     @RequiresPermissions("wx:msgtemplate:save")
-    public R sendMsgBatch(@CookieValue String appid,@RequestBody TemplateMsgBatchForm form) throws WxErrorException {
+    public R sendMsgBatch(@CookieValue String appid,@RequestBody TemplateMsgBatchForm form) {
         this.wxMpService.switchoverTo(appid);
         templateMsgService.sendMsgBatch(form, appid);
         return R.ok();
