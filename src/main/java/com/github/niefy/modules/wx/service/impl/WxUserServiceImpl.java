@@ -42,12 +42,16 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
         String openid = (String) params.get("openid");
         String nickname = (String) params.get("nickname");
 		String appid = (String) params.get("appid");
+		String city = (String) params.get("city");
+		String qrSceneStr = (String) params.get("qrSceneStr");
         return this.page(
             new Query<WxUser>().getPage(params),
             new QueryWrapper<WxUser>()
 				.eq(!StringUtils.isEmpty(appid), "appid", appid)
                 .eq(!StringUtils.isEmpty(openid), "openid", openid)
                 .like(!StringUtils.isEmpty(nickname), "nickname", nickname)
+				.eq(!StringUtils.isEmpty(city), "city", city)
+				.eq(!StringUtils.isEmpty(qrSceneStr), "qrSceneStr", qrSceneStr)
         );
     }
 
