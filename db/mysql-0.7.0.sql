@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS `article`;
 DROP TABLE IF EXISTS `cms_article`;
 CREATE TABLE `cms_article`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `type` tinyint(1) NULL DEFAULT 1 COMMENT '文章类型[1:普通文章，2:弹出通知，3：滚动公告,4:图片通知]',
+  `type` tinyint(1) NULL DEFAULT 1 COMMENT '文章类型[1:普通文章,5:帮助中心]',
   `title` varchar(1024) CHARACTER SET utf8 NOT NULL COMMENT '标题',
   `summary` varchar(1024) CHARACTER SET utf8 NULL DEFAULT NULL COMMENT '文章摘要',
   `tags` varchar(255) CHARACTER SET utf8 NULL DEFAULT NULL COMMENT '文章标签',
@@ -121,7 +121,7 @@ INSERT INTO `sys_menu` VALUES (29, 9, '系统日志', 'sys/log', 'sys:log:list',
 INSERT INTO `sys_menu` VALUES (30, 1, '文件上传', 'oss/oss', 'sys:oss:all', 1, 'oss', 6);
 INSERT INTO `sys_menu` VALUES (32, 6, '公众号菜单', 'wx/wx-menu', '', 1, 'log', 0);
 INSERT INTO `sys_menu` VALUES (33, 6, '素材管理', 'wx/wx-assets', '', 1, '', 0);
-INSERT INTO `sys_menu` VALUES (41, 7, '文章公告', 'wx/article', NULL, 1, 'config', 6);
+INSERT INTO `sys_menu` VALUES (41, 7, '文章管理', 'wx/article', NULL, 1, 'config', 6);
 INSERT INTO `sys_menu` VALUES (42, 41, '查看', NULL, 'wx:article:list,wx:article:info', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (43, 41, '新增', NULL, 'wx:article:save', 2, NULL, 6);
 INSERT INTO `sys_menu` VALUES (44, 41, '修改', NULL, 'wx:article:update', 2, NULL, 6);
