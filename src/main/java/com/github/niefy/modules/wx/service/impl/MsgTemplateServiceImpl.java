@@ -57,7 +57,10 @@ public class MsgTemplateServiceImpl extends ServiceImpl<MsgTemplateMapper, MsgTe
     public void syncWxTemplate(String appid) throws WxErrorException {
         List<WxMpTemplate> wxMpTemplateList= wxService.getTemplateMsgService().getAllPrivateTemplate();
         List<MsgTemplate> templates = wxMpTemplateList.stream().map(item->new MsgTemplate(item,appid)).collect(Collectors.toList());
-        this.saveBatch(templates);
+        if(templates.size()>0){
+            this.remove(new QueryWrapper<MsgTemplate>().eq("appid",appid));//删除旧数据
+            this.saveBatch(templates);
+        }
     }
 
 }
