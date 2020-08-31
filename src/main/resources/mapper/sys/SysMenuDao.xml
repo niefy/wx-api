@@ -15,9 +15,7 @@
         select m.* from sys_user_role ur
         LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id
         LEFT JOIN sys_menu m on rm.menu_id = m.menu_id
-        <if test="userId != null ">
-            where ur.user_id = #{userId}
-        </if>
+        where ur.user_id = #{userId}
     </select>
 
 </mapper>
