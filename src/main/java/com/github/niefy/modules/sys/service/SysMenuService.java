@@ -40,4 +40,11 @@ public interface SysMenuService extends IService<SysMenuEntity> {
      * 删除
      */
     void delete(Long menuId);
+
+    /**
+     * 获取用户所有的菜单
+     * @param userId 用户id
+     * @return
+     */
+    List<SysMenuEntity> queryUserAllMenu(Long userId);
 }
