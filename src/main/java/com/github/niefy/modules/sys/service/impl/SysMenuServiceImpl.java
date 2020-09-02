@@ -69,6 +69,11 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
         sysRoleMenuService.removeByMap(new MapUtils().put("menu_id", menuId));
     }
 
+    @Override
+    public List<SysMenuEntity> queryUserAllMenu(Long userId) {
+        return baseMapper.queryUserAllMenu(userId);
+    }
+
     /**
      * 获取所有菜单列表
      */

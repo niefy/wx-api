@@ -26,4 +26,10 @@ public interface SysMenuDao extends BaseMapper<SysMenuEntity> {
      */
     List<SysMenuEntity> queryNotButtonList();
 
+    /**
+     * 获取用户所有的菜单
+     * @param userId 用户id
+     * @return
+     */
+    List<SysMenuEntity> queryUserAllMenu(Long userId);
 }
