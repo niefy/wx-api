@@ -36,8 +36,8 @@ public class SwaggerConfig implements WebMvcConfigurer {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
             .title("微信公众号对接后台")
-            .description("wx-api文档")
-            .version("3.0.0")
+            .description("wx-api文档，管理后台相关接口需先登录后获取token使用，token获取步骤：1.获取验证码接口获取验证码图片 2.登录接口填写账号密码和刚刚的验证码信息")
+            .version("0.8.0")
             .build();
     }
 

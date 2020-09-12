@@ -1,5 +1,7 @@
 package com.github.niefy.modules.wx.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/wx/msg/{appid}")
+@Api(tags = {"微信消息 - 腾讯会调用"})
 public class WxMpPortalController {
     private final WxMpService wxService;
     private final WxMpMessageRouter messageRouter;
@@ -24,6 +27,7 @@ public class WxMpPortalController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping(produces = "text/plain;charset=utf-8")
+    @ApiOperation(value = "微信服务器的认证消息",notes = "公众号接入开发模式时腾讯调用此接口")
     public String authGet(@PathVariable String appid,
                           @RequestParam(name = "signature", required = false) String signature,
                           @RequestParam(name = "timestamp", required = false) String timestamp,
@@ -45,6 +49,7 @@ public class WxMpPortalController {
     }
 
     @PostMapping(produces = "application/xml; charset=UTF-8")
+    @ApiOperation(value = "微信各类消息",notes = "公众号接入开发模式后才有效")
     public String post(@PathVariable String appid,
                        @RequestBody String requestBody,
                        @RequestParam("signature") String signature,

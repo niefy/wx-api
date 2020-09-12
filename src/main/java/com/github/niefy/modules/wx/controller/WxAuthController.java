@@ -4,6 +4,8 @@ import com.github.niefy.common.utils.*;
 import com.github.niefy.modules.sys.service.SysLogService;
 import com.github.niefy.modules.wx.entity.WxUser;
 import com.github.niefy.modules.wx.form.WxH5OuthrizeForm;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -26,6 +28,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/wxAuth")
+@Api(tags = {"微信网页授权"})
 @RequiredArgsConstructor
 public class WxAuthController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -43,6 +46,7 @@ public class WxAuthController {
      */
     @PostMapping("/codeToOpenid")
     @CrossOrigin
+    @ApiOperation(value = "网页登录-code换取openid",notes = "scope为snsapi_base")
     public R codeToOpenid(HttpServletRequest request, HttpServletResponse response,
                           @CookieValue String appid, @RequestBody WxH5OuthrizeForm form) {
         try {
@@ -69,6 +73,7 @@ public class WxAuthController {
      */
     @PostMapping("/codeToUserInfo")
     @CrossOrigin
+    @ApiOperation(value = "网页登录-code换取用户信息",notes = "需scope为 snsapi_userinfo")
     public R codeToUserInfo(HttpServletRequest request, HttpServletResponse response,
                             @CookieValue String appid,  @RequestBody WxH5OuthrizeForm form) {
         try {
@@ -95,6 +100,7 @@ public class WxAuthController {
      * @return
      */
     @GetMapping("/getShareSignature")
+    @ApiOperation(value = "获取微信分享的签名配置",notes = "微信公众号添加了js安全域名的网站才能加载微信分享")
     public R getShareSignature(HttpServletRequest request, HttpServletResponse response,@CookieValue String appid) throws WxErrorException {
         this.wxMpService.switchoverTo(appid);
         // 1.拼接url（当前网页的URL，不包含#及其后面部分）
