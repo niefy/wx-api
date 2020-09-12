@@ -7,6 +7,7 @@
 - wx-api是一个轻量级的公众号开发种子项目，可快速接入微信公众号管理功能
 - 管理后台前端项目wx-manage：https://github.com/niefy/wx-manage
 - 移动端示例wx-client: https://github.com/niefy/wx-client
+- swagger文档（启动wx-api后查看）：http://localhost:8088/wx/swagger-ui.html
 
 ## [开发环境启动文档](https://www.yuque.com/nifury/wx/guobb7)
 ## [生产环境部署步骤](https://www.yuque.com/nifury/wx/ofehhv)

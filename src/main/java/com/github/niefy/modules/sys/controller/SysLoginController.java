@@ -6,6 +6,9 @@ import com.github.niefy.modules.sys.form.SysLoginForm;
 import com.github.niefy.modules.sys.service.SysCaptchaService;
 import com.github.niefy.modules.sys.service.SysUserService;
 import com.github.niefy.modules.sys.service.SysUserTokenService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +28,7 @@ import java.util.Map;
  * @author Mark sunlightcs@gmail.com
  */
 @RestController
+@Api(tags = {"系统登录-管理后台"})
 public class SysLoginController extends AbstractController {
     @Autowired
     private SysUserService sysUserService;
@@ -37,7 +41,8 @@ public class SysLoginController extends AbstractController {
      * 验证码
      */
     @GetMapping("captcha")
-    public void captcha(HttpServletResponse response, String uuid) throws IOException {
+    @ApiOperation(value = "获取验证码",notes = "返回验证码图片")
+    public void captcha(HttpServletResponse response, @ApiParam(value = "随意填，但每次不得重复", required = true)String uuid) throws IOException {
         response.setHeader("Cache-Control", "no-store, no-cache");
         response.setContentType("image/jpeg");
 
@@ -55,6 +60,7 @@ public class SysLoginController extends AbstractController {
      * 登录
      */
     @PostMapping("/sys/login")
+    @ApiOperation(value = "登录",notes = "需先获取验证码")
     public Map<String, Object> login(@RequestBody SysLoginForm form) {
         boolean captcha = sysCaptchaService.validate(form.getUuid(), form.getCaptcha());
         if (!captcha) {
@@ -83,6 +89,7 @@ public class SysLoginController extends AbstractController {
      * 退出
      */
     @PostMapping("/sys/logout")
+    @ApiOperation(value = "退出登录",notes = "")
     public R logout() {
         sysUserTokenService.logout(getUserId());
         return R.ok();

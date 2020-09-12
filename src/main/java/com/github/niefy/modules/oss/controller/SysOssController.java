@@ -15,6 +15,8 @@ import com.github.niefy.modules.oss.cloud.OSSFactory;
 import com.github.niefy.modules.oss.entity.SysOssEntity;
 import com.github.niefy.modules.oss.service.SysOssService;
 import com.github.niefy.modules.sys.service.SysConfigService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,7 @@ import java.util.Objects;
  */
 @RestController
 @RequestMapping("sys/oss")
+@Api(tags = {"对象存储/文件上传"})
 public class SysOssController {
     @Autowired
     private SysOssService sysOssService;
@@ -42,6 +45,7 @@ public class SysOssController {
     /**
      * 列表
      */
+    @ApiOperation(value = "文件列表",notes = "对象存储管理的文件")
     @GetMapping("/list")
     @RequiresPermissions("sys:oss:all")
     public R list(@RequestParam Map<String, Object> params) {
@@ -56,6 +60,7 @@ public class SysOssController {
      */
     @GetMapping("/config")
     @RequiresPermissions("sys:oss:all")
+    @ApiOperation(value = "云存储配置信息",notes = "首次使用前先管理后台新增配置")
     public R config() {
         CloudStorageConfig config = sysConfigService.getConfigObject(KEY, CloudStorageConfig.class);
 
@@ -68,6 +73,7 @@ public class SysOssController {
      */
     @PostMapping("/saveConfig")
     @RequiresPermissions("sys:oss:all")
+    @ApiOperation(value = "保存云存储配置信息")
     public R saveConfig(@RequestBody CloudStorageConfig config) {
         //校验类型
         ValidatorUtils.validateEntity(config);
@@ -94,6 +100,7 @@ public class SysOssController {
      */
     @PostMapping("/upload")
     @RequiresPermissions("sys:oss:all")
+    @ApiOperation(value = "上传文件到OSS")
     public R upload(@RequestParam("file") MultipartFile file) throws Exception {
         if (file.isEmpty()) {
             throw new RRException("上传文件不能为空");
@@ -118,6 +125,7 @@ public class SysOssController {
      */
     @PostMapping("/delete")
     @RequiresPermissions("sys:oss:all")
+    @ApiOperation(value = "删除文件",notes = "只删除记录，云端文件不会删除")
     public R delete(@RequestBody Long[] ids) {
         sysOssService.removeByIds(Arrays.asList(ids));
 

@@ -3,6 +3,8 @@ package com.github.niefy.modules.wx.manage;
 import com.github.niefy.common.utils.R;
 import com.github.niefy.modules.wx.form.MaterialFileDeleteForm;
 import com.github.niefy.modules.wx.service.WxAssetsService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.material.*;
@@ -23,6 +25,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/manage/wxAssets")
+@Api(tags = {"公众号素材-管理后台"})
 public class WxAssetsManageController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
@@ -37,6 +40,7 @@ public class WxAssetsManageController {
      * @throws WxErrorException
      */
     @GetMapping("/materialCount")
+    @ApiOperation(value = "文件素材总数")
     public R materialCount(@CookieValue String appid) throws WxErrorException {
         wxMpService.switchoverTo(appid);
         WxMpMaterialCountResult res = wxAssetsService.materialCount();
@@ -50,6 +54,7 @@ public class WxAssetsManageController {
      * @throws WxErrorException
      */
     @GetMapping("/materialNewsInfo")
+    @ApiOperation(value = "图文素材总数")
     public R materialNewsInfo(@CookieValue String appid,String mediaId) throws WxErrorException {
         wxMpService.switchoverTo(appid);
         WxMpMaterialNews res = wxAssetsService.materialNewsInfo(mediaId);
@@ -67,6 +72,7 @@ public class WxAssetsManageController {
      */
     @GetMapping("/materialFileBatchGet")
     @RequiresPermissions("wx:wxassets:list")
+    @ApiOperation(value = "根据类别分页获取非图文素材列表")
     public R materialFileBatchGet(@CookieValue String appid,@RequestParam(defaultValue = "image") String type,
                                   @RequestParam(defaultValue = "1") int page) throws WxErrorException {
         wxMpService.switchoverTo(appid);
@@ -83,6 +89,7 @@ public class WxAssetsManageController {
      */
     @GetMapping("/materialNewsBatchGet")
     @RequiresPermissions("wx:wxassets:list")
+    @ApiOperation(value = "分页获取图文素材列表")
     public R materialNewsBatchGet(@CookieValue String appid,@RequestParam(defaultValue = "1") int page) throws WxErrorException {
         wxMpService.switchoverTo(appid);
         WxMpMaterialNewsBatchGetResult res = wxAssetsService.materialNewsBatchGet(page);
@@ -98,6 +105,7 @@ public class WxAssetsManageController {
      */
     @PostMapping("/materialNewsUpload")
     @RequiresPermissions("wx:wxassets:save")
+    @ApiOperation(value = "添加图文永久素材")
     public R materialNewsUpload(@CookieValue String appid,@RequestBody List<WxMpNewsArticle> articles) throws WxErrorException {
         if(articles.isEmpty()) {
             return R.error("图文列表不得为空");
@@ -116,6 +124,7 @@ public class WxAssetsManageController {
      */
     @PostMapping("/materialArticleUpdate")
     @RequiresPermissions("wx:wxassets:save")
+    @ApiOperation(value = "修改图文素材文章")
     public R materialArticleUpdate(@CookieValue String appid,@RequestBody WxMpMaterialArticleUpdate form) throws WxErrorException {
         if(form.getArticles()==null) {
             return R.error("文章不得为空");
@@ -137,6 +146,7 @@ public class WxAssetsManageController {
      */
     @PostMapping("/materialFileUpload")
     @RequiresPermissions("wx:wxassets:save")
+    @ApiOperation(value = "添加多媒体永久素材")
     public R materialFileUpload(@CookieValue String appid,MultipartFile file, String fileName, String mediaType) throws WxErrorException, IOException {
         if (file == null) {
             return R.error("文件不得为空");
@@ -155,6 +165,7 @@ public class WxAssetsManageController {
      */
     @PostMapping("/materialDelete")
     @RequiresPermissions("wx:wxassets:delete")
+    @ApiOperation(value = "删除素材")
     public R materialDelete(@CookieValue String appid,@RequestBody MaterialFileDeleteForm form) throws WxErrorException {
         wxMpService.switchoverTo(appid);
         boolean res = wxAssetsService.materialDelete(form.getMediaId());
