@@ -7,9 +7,10 @@ import com.github.niefy.modules.wx.form.WxH5OuthrizeForm;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
+import me.chanjar.weixin.common.bean.oauth2.WxOAuth2AccessToken;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,7 @@ public class WxAuthController {
                           @CookieValue String appid, @RequestBody WxH5OuthrizeForm form) {
         try {
             this.wxMpService.switchoverTo(appid);
-            WxMpOAuth2AccessToken token = wxMpService.oauth2getAccessToken(form.getCode());
+            WxOAuth2AccessToken token = wxMpService.getOAuth2Service().getAccessToken(form.getCode());
             String openid = token.getOpenId();
             CookieUtil.setCookie(response, "openid", openid, 365 * 24 * 60 * 60);
             String openidToken = MD5Util.getMd5AndSalt(openid);
@@ -78,9 +79,9 @@ public class WxAuthController {
                             @CookieValue String appid,  @RequestBody WxH5OuthrizeForm form) {
         try {
             this.wxMpService.switchoverTo(appid);
-            WxMpOAuth2AccessToken token = wxMpService.oauth2getAccessToken(form.getCode());
-            WxMpUser userInfo = wxMpService.oauth2getUserInfo(token,"zh_CN");
-            String openid = userInfo.getOpenId();
+            WxOAuth2AccessToken token = wxMpService.getOAuth2Service().getAccessToken(form.getCode());
+            WxOAuth2UserInfo userInfo = wxMpService.getOAuth2Service().getUserInfo(token,"zh_CN");
+            String openid = userInfo.getOpenid();
             CookieUtil.setCookie(response, "openid", openid, 365 * 24 * 60 * 60);
             String openidToken = MD5Util.getMd5AndSalt(openid);
             CookieUtil.setCookie(response, "openidToken", openidToken, 365 * 24 * 60 * 60);
