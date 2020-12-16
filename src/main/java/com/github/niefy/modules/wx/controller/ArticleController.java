@@ -4,6 +4,8 @@ import com.github.niefy.common.utils.R;
 import com.github.niefy.modules.wx.entity.Article;
 import com.github.niefy.modules.wx.enums.ArticleTypeEnum;
 import com.github.niefy.modules.wx.service.ArticleService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/article")
+@Api(tags = {"CMS文章"})
 public class ArticleController {
     @Autowired
     ArticleService articleService;
@@ -29,6 +32,7 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/detail")
+    @ApiOperation(value = "文章详情",notes = "")
     public R getArticle(int articleId) {
         Article article = articleService.findById(articleId);
         return R.ok().put(article);
@@ -41,6 +45,7 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/category")
+    @ApiOperation(value = "目录信息",notes = "")
     public R getQuestions(String type, String category) {
         ArticleTypeEnum articleType = ArticleTypeEnum.of(type);
         if (articleType == null) {
@@ -58,6 +63,7 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/search")
+    @ApiOperation(value = "文章搜索",notes = "")
     public R getQuestions(String type,
                           @RequestParam(required = false) String category,
                           @RequestParam(required = false) String keywords) {

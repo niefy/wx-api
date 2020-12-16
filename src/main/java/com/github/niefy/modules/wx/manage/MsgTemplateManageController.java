@@ -6,6 +6,8 @@ import java.util.Map;
 import com.github.niefy.modules.wx.entity.MsgTemplate;
 import com.github.niefy.modules.wx.form.TemplateMsgBatchForm;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ import com.github.niefy.common.utils.R;
  */
 @RestController
 @RequestMapping("/manage/msgTemplate")
+@Api(tags = {"消息模板-管理后台","模板消息的模板"})
 public class MsgTemplateManageController {
     @Autowired
     private MsgTemplateService msgTemplateService;
@@ -41,6 +44,7 @@ public class MsgTemplateManageController {
      */
     @GetMapping("/list")
     @RequiresPermissions("wx:msgtemplate:list")
+    @ApiOperation(value = "列表")
     public R list(@CookieValue String appid,@RequestParam Map<String, Object> params) {
         params.put("appid",appid);
         PageUtils page = msgTemplateService.queryPage(params);
@@ -54,6 +58,7 @@ public class MsgTemplateManageController {
      */
     @GetMapping("/info/{id}")
     @RequiresPermissions("wx:msgtemplate:info")
+    @ApiOperation(value = "详情-通过ID")
     public R info(@PathVariable("id") Long id) {
         MsgTemplate msgTemplate = msgTemplateService.getById(id);
 
@@ -64,6 +69,7 @@ public class MsgTemplateManageController {
      */
     @GetMapping("/getByName")
     @RequiresPermissions("wx:msgtemplate:info")
+    @ApiOperation(value = "详情-通过名称")
     public R getByName( String name){
         MsgTemplate msgTemplate = msgTemplateService.selectByName(name);
 
@@ -75,6 +81,7 @@ public class MsgTemplateManageController {
      */
     @PostMapping("/save")
     @RequiresPermissions("wx:msgtemplate:save")
+    @ApiOperation(value = "保存")
     public R save(@RequestBody MsgTemplate msgTemplate) {
         msgTemplateService.save(msgTemplate);
 
@@ -86,6 +93,7 @@ public class MsgTemplateManageController {
      */
     @PostMapping("/update")
     @RequiresPermissions("wx:msgtemplate:update")
+    @ApiOperation(value = "修改")
     public R update(@RequestBody MsgTemplate msgTemplate) {
         msgTemplateService.updateById(msgTemplate);
 
@@ -97,6 +105,7 @@ public class MsgTemplateManageController {
      */
     @PostMapping("/delete")
     @RequiresPermissions("wx:msgtemplate:delete")
+    @ApiOperation(value = "删除")
     public R delete(@RequestBody String[] ids) {
         msgTemplateService.removeByIds(Arrays.asList(ids));
 
@@ -108,6 +117,7 @@ public class MsgTemplateManageController {
      */
     @PostMapping("/syncWxTemplate")
     @RequiresPermissions("wx:msgtemplate:save")
+    @ApiOperation(value = "同步公众号模板")
     public R syncWxTemplate(@CookieValue String appid) throws WxErrorException {
         this.wxMpService.switchoverTo(appid);
         msgTemplateService.syncWxTemplate(appid);
@@ -120,6 +130,7 @@ public class MsgTemplateManageController {
      */
     @PostMapping("/sendMsgBatch")
     @RequiresPermissions("wx:msgtemplate:save")
+    @ApiOperation(value = "批量向用户发送模板消息",notes = "将消息发送给数据库中所有符合筛选条件的用户")
     public R sendMsgBatch(@CookieValue String appid,@RequestBody TemplateMsgBatchForm form) {
         this.wxMpService.switchoverTo(appid);
         templateMsgService.sendMsgBatch(form, appid);

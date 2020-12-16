@@ -5,6 +5,8 @@ import com.github.niefy.modules.wx.service.WxQrCodeService;
 import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.common.utils.R;
 import com.github.niefy.modules.wx.entity.WxQrCode;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
@@ -23,6 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/manage/wxQrCode")
+@Api(tags = {"公众号带参二维码-管理后台"})
 public class WxQrCodeManageController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -36,6 +39,7 @@ public class WxQrCodeManageController {
      */
     @PostMapping("/createTicket")
     @RequiresPermissions("wx:wxqrcode:save")
+    @ApiOperation(value = "创建带参二维码ticket",notes = "ticket可以换取二维码图片")
     public R createTicket(@CookieValue String appid,@RequestBody WxQrCodeForm form) throws WxErrorException {
         wxMpService.switchoverTo(appid);
         WxMpQrCodeTicket ticket = wxQrCodeService.createQrCode(appid,form);
@@ -47,6 +51,7 @@ public class WxQrCodeManageController {
      */
     @GetMapping("/list")
     @RequiresPermissions("wx:wxqrcode:list")
+    @ApiOperation(value = "列表")
     public R list(@CookieValue String appid,@RequestParam Map<String, Object> params) {
         params.put("appid",appid);
         PageUtils page = wxQrCodeService.queryPage(params);
@@ -60,6 +65,7 @@ public class WxQrCodeManageController {
      */
     @GetMapping("/info/{id}")
     @RequiresPermissions("wx:wxqrcode:info")
+    @ApiOperation(value = "详情")
     public R info(@CookieValue String appid,@PathVariable("id") Long id) {
         WxQrCode wxQrCode = wxQrCodeService.getById(id);
 
@@ -71,6 +77,7 @@ public class WxQrCodeManageController {
      */
     @PostMapping("/delete")
     @RequiresPermissions("wx:wxqrcode:delete")
+    @ApiOperation(value = "删除")
     public R delete(@CookieValue String appid,@RequestBody Long[] ids) {
         wxQrCodeService.removeByIds(Arrays.asList(ids));
 

@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.github.niefy.modules.wx.entity.Article;
 import com.github.niefy.modules.wx.service.ArticleService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,7 @@ import com.github.niefy.common.utils.R;
  */
 @RestController
 @RequestMapping("/manage/article")
+@Api(tags = {"文章管理-管理后台"})
 public class ArticleManageController {
     @Autowired
     private ArticleService articleService;
@@ -31,6 +34,7 @@ public class ArticleManageController {
      */
     @GetMapping("/list")
     @RequiresPermissions("wx:article:list")
+    @ApiOperation(value = "列表")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = articleService.queryPage(params);
 
@@ -43,6 +47,7 @@ public class ArticleManageController {
      */
     @GetMapping("/info/{id}")
     @RequiresPermissions("wx:article:info")
+    @ApiOperation(value = "详情")
     public R info(@PathVariable("id") Integer id) {
         Article article = articleService.getById(id);
 
@@ -54,6 +59,7 @@ public class ArticleManageController {
      */
     @PostMapping("/save")
     @RequiresPermissions("wx:article:save")
+    @ApiOperation(value = "保存")
     public R save(@RequestBody Article article) {
         articleService.save(article);
 
@@ -65,6 +71,7 @@ public class ArticleManageController {
      */
     @PostMapping("/delete")
     @RequiresPermissions("wx:article:delete")
+    @ApiOperation(value = "删除")
     public R delete(@RequestBody Integer[] ids) {
         articleService.removeByIds(Arrays.asList(ids));
 

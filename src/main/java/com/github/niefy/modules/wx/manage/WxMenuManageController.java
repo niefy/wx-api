@@ -1,6 +1,8 @@
 package com.github.niefy.modules.wx.manage;
 
 import com.github.niefy.common.utils.R;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/manage/wxMenu")
 @RequiredArgsConstructor
+@Api(tags = {"公众号菜单-管理后台"})
 public class WxMenuManageController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
     private final WxMpService wxService;
@@ -30,6 +33,7 @@ public class WxMenuManageController {
      * 获取公众号菜单
      */
     @GetMapping("/getMenu")
+    @ApiOperation(value = "获取公众号菜单")
     public R getMenu(@CookieValue String appid) throws WxErrorException {
         wxMpService.switchoverTo(appid);
         WxMpMenu wxMpMenu = wxService.getMenuService().menuGet();
@@ -41,6 +45,7 @@ public class WxMenuManageController {
      */
     @PostMapping("/updateMenu")
     @RequiresPermissions("wx:menu:save")
+    @ApiOperation(value = "创建、更新菜单")
     public R updateMenu(@CookieValue String appid,@RequestBody WxMenu wxMenu) throws WxErrorException {
         wxMpService.switchoverTo(appid);
         wxService.getMenuService().menuCreate(wxMenu);

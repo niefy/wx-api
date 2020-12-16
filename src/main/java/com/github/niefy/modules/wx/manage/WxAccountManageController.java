@@ -3,6 +3,8 @@ package com.github.niefy.modules.wx.manage;
 import com.github.niefy.common.utils.R;
 import com.github.niefy.modules.wx.entity.WxAccount;
 import com.github.niefy.modules.wx.service.WxAccountService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/manage/wxAccount")
+@Api(tags = {"公众号账号-管理后台"})
 public class WxAccountManageController {
     @Autowired
     private WxAccountService wxAccountService;
@@ -29,6 +32,7 @@ public class WxAccountManageController {
      */
     @GetMapping("/list")
     @RequiresPermissions("wx:wxaccount:list")
+    @ApiOperation(value = "列表")
     public R list(){
         List<WxAccount> list = wxAccountService.list();
 
@@ -41,6 +45,7 @@ public class WxAccountManageController {
      */
     @GetMapping("/info/{appid}")
     @RequiresPermissions("wx:wxaccount:info")
+    @ApiOperation(value = "详情")
     public R info(@PathVariable("id") String appid){
 		WxAccount wxAccount = wxAccountService.getById(appid);
 
@@ -52,6 +57,7 @@ public class WxAccountManageController {
      */
     @PostMapping("/save")
     @RequiresPermissions("wx:wxaccount:save")
+    @ApiOperation(value = "保存")
     public R save(@RequestBody WxAccount wxAccount){
 		wxAccountService.save(wxAccount);
 
@@ -63,6 +69,7 @@ public class WxAccountManageController {
      */
     @PostMapping("/delete")
     @RequiresPermissions("wx:wxaccount:delete")
+    @ApiOperation(value = "删除")
     public R delete(@RequestBody String[] appids){
 		wxAccountService.removeByIds(Arrays.asList(appids));
 
