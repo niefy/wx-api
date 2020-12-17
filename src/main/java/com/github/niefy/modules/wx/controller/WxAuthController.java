@@ -79,8 +79,8 @@ public class WxAuthController {
         try {
             this.wxMpService.switchoverTo(appid);
             WxOAuth2AccessToken token = wxMpService.getOAuth2Service().getAccessToken(form.getCode());
-            WxMpUser userInfo = wxMpService.getUserService().userInfo(token.getOpenId(), "zh_CN");
-            String openid = userInfo.getOpenId();
+            WxOAuth2UserInfo userInfo = wxMpService.getOAuth2Service().getUserInfo(token, "zh_CN");
+            String openid = userInfo.getOpenid();
             CookieUtil.setCookie(response, "openid", openid, 365 * 24 * 60 * 60);
             String openidToken = MD5Util.getMd5AndSalt(openid);
             CookieUtil.setCookie(response, "openidToken", openidToken, 365 * 24 * 60 * 60);
