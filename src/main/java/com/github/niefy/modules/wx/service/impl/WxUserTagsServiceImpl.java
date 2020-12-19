@@ -26,7 +26,7 @@ public class WxUserTagsServiceImpl implements WxUserTagsService {
     public static final String CACHE_KEY="'WX_USER_TAGS'";
 
     @Override
-    @Cacheable(key = CACHE_KEY+"#appid")
+    @Cacheable(key = CACHE_KEY+"+ #appid")
     public List<WxUserTag> getWxTags(String appid) throws WxErrorException {
         log.info("拉取公众号用户标签");
         wxMpService.switchoverTo(appid);
@@ -34,21 +34,21 @@ public class WxUserTagsServiceImpl implements WxUserTagsService {
     }
 
     @Override
-    @CacheEvict(key = CACHE_KEY+"#appid")
+    @CacheEvict(key = CACHE_KEY+"+ #appid")
     public void creatTag(String appid, String name) throws WxErrorException {
         wxMpService.switchoverTo(appid);
         wxMpService.getUserTagService().tagCreate(name);
     }
 
     @Override
-    @CacheEvict(key = CACHE_KEY+"#appid")
+    @CacheEvict(key = CACHE_KEY+"+ #appid")
     public void updateTag(String appid, Long tagid, String name) throws WxErrorException {
         wxMpService.switchoverTo(appid);
         wxMpService.getUserTagService().tagUpdate(tagid,name);
     }
 
     @Override
-    @CacheEvict(key = CACHE_KEY+"#appid")
+    @CacheEvict(key = CACHE_KEY+"+ #appid")
     public void deleteTag(String appid, Long tagid) throws WxErrorException {
         wxMpService.switchoverTo(appid);
         wxMpService.getUserTagService().tagDelete(tagid);
