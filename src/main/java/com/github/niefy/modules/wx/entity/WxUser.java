@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.github.niefy.common.utils.Json;
 import lombok.Data;
+import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.springframework.util.StringUtils;
 
@@ -52,20 +53,34 @@ public class WxUser implements Serializable {
     public WxUser(WxMpUser wxMpUser,String appid) {
         this.openid = wxMpUser.getOpenId();
         this.appid = appid;
-		this.subscribe=wxMpUser.getSubscribe();
-		if(wxMpUser.getSubscribe()){
+        this.subscribe=wxMpUser.getSubscribe();
+        if(wxMpUser.getSubscribe()){
+            this.nickname = wxMpUser.getNickname();
+            this.sex = wxMpUser.getSex();
+            this.city = wxMpUser.getCity();
+            this.province = wxMpUser.getProvince();
+            this.headimgurl = wxMpUser.getHeadImgUrl();
+            this.subscribeTime = new Date(wxMpUser.getSubscribeTime()*1000);
+            this.unionid=wxMpUser.getUnionId();
+            this.remark=wxMpUser.getRemark();
+            this.tagidList=JSONArray.parseArray(JSONObject.toJSONString(wxMpUser.getTagIds()));
+            this.subscribeScene=wxMpUser.getSubscribeScene();
+            String qrScene =  wxMpUser.getQrScene();
+            this.qrSceneStr= StringUtils.isEmpty(qrScene) ? wxMpUser.getQrSceneStr() : qrScene;
+        }
+    }
+
+    public WxUser(WxOAuth2UserInfo wxMpUser, String appid) {
+        this.openid = wxMpUser.getOpenid();
+        this.appid = appid;
+		this.subscribe=wxMpUser.getNickname()!=null;
+		if(this.subscribe){
 			this.nickname = wxMpUser.getNickname();
 			this.sex = wxMpUser.getSex();
 			this.city = wxMpUser.getCity();
 			this.province = wxMpUser.getProvince();
 			this.headimgurl = wxMpUser.getHeadImgUrl();
-			this.subscribeTime = new Date(wxMpUser.getSubscribeTime()*1000);
 			this.unionid=wxMpUser.getUnionId();
-			this.remark=wxMpUser.getRemark();
-			this.tagidList=JSONArray.parseArray(JSONObject.toJSONString(wxMpUser.getTagIds()));
-			this.subscribeScene=wxMpUser.getSubscribeScene();
-			String qrScene =  wxMpUser.getQrScene();
-			this.qrSceneStr= StringUtils.isEmpty(qrScene) ? wxMpUser.getQrSceneStr() : qrScene;
 		}
     }
 

@@ -1,20 +1,18 @@
 package com.github.niefy.modules.wx.manage;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
+import com.github.niefy.common.utils.PageUtils;
+import com.github.niefy.common.utils.R;
+import com.github.niefy.modules.wx.entity.WxUser;
+import com.github.niefy.modules.wx.service.WxUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.github.niefy.modules.wx.entity.WxUser;
-import com.github.niefy.modules.wx.service.WxUserService;
-import com.github.niefy.common.utils.PageUtils;
-import com.github.niefy.common.utils.R;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -30,8 +28,6 @@ import com.github.niefy.common.utils.R;
 public class WxUserManageController {
     @Autowired
     private WxUserService userService;
-    @Autowired
-    private WxMpService wxMpService;
 
     /**
      * 列表
@@ -77,7 +73,6 @@ public class WxUserManageController {
     @RequiresPermissions("wx:wxuser:save")
     @ApiOperation(value = "同步用户列表到数据库")
     public R syncWxUsers(@CookieValue String appid) {
-        wxMpService.switchoverTo(appid);
         userService.syncWxUsers(appid);
 
         return R.ok("任务已建立");

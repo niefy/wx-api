@@ -1,22 +1,19 @@
 package com.github.niefy.modules.wx.manage;
 
-import java.util.Arrays;
-import java.util.Map;
-
+import com.github.niefy.common.utils.PageUtils;
+import com.github.niefy.common.utils.R;
+import com.github.niefy.modules.wx.entity.WxMsg;
 import com.github.niefy.modules.wx.form.WxMsgReplyForm;
 import com.github.niefy.modules.wx.service.MsgReplyService;
+import com.github.niefy.modules.wx.service.WxMsgService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.github.niefy.modules.wx.entity.WxMsg;
-import com.github.niefy.modules.wx.service.WxMsgService;
-import com.github.niefy.common.utils.PageUtils;
-import com.github.niefy.common.utils.R;
-
+import java.util.Arrays;
+import java.util.Map;
 
 
 /**
@@ -33,8 +30,6 @@ public class WxMsgManageController {
     private WxMsgService wxMsgService;
     @Autowired
     private MsgReplyService msgReplyService;
-    @Autowired
-    private WxMpService wxMpService;
 
     /**
      * 列表

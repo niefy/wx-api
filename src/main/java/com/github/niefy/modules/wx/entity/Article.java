@@ -16,7 +16,7 @@ import java.util.Date;
 public class Article implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableId(type = IdType.AUTO)
-    private int id;
+    private Long id;
     private int type;
     @TableField(insertStrategy = FieldStrategy.IGNORED)//title重复则不插入
     @NotEmpty(message = "标题不得为空")

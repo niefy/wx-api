@@ -6,7 +6,6 @@ import com.github.niefy.modules.wx.service.WxAssetsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.chanjar.weixin.common.error.WxErrorException;
-import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.material.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
@@ -30,8 +29,6 @@ public class WxAssetsManageController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     WxAssetsService wxAssetsService;
-    @Autowired
-    private WxMpService wxMpService;
 
     /**
      * 获取素材总数
@@ -42,8 +39,7 @@ public class WxAssetsManageController {
     @GetMapping("/materialCount")
     @ApiOperation(value = "文件素材总数")
     public R materialCount(@CookieValue String appid) throws WxErrorException {
-        wxMpService.switchoverTo(appid);
-        WxMpMaterialCountResult res = wxAssetsService.materialCount();
+        WxMpMaterialCountResult res = wxAssetsService.materialCount(appid);
         return R.ok().put(res);
     }
 
@@ -56,8 +52,7 @@ public class WxAssetsManageController {
     @GetMapping("/materialNewsInfo")
     @ApiOperation(value = "图文素材总数")
     public R materialNewsInfo(@CookieValue String appid,String mediaId) throws WxErrorException {
-        wxMpService.switchoverTo(appid);
-        WxMpMaterialNews res = wxAssetsService.materialNewsInfo(mediaId);
+        WxMpMaterialNews res = wxAssetsService.materialNewsInfo(appid,mediaId);
         return R.ok().put(res);
     }
 
@@ -75,8 +70,7 @@ public class WxAssetsManageController {
     @ApiOperation(value = "根据类别分页获取非图文素材列表")
     public R materialFileBatchGet(@CookieValue String appid,@RequestParam(defaultValue = "image") String type,
                                   @RequestParam(defaultValue = "1") int page) throws WxErrorException {
-        wxMpService.switchoverTo(appid);
-        WxMpMaterialFileBatchGetResult res = wxAssetsService.materialFileBatchGet(type,page);
+        WxMpMaterialFileBatchGetResult res = wxAssetsService.materialFileBatchGet(appid,type,page);
         return R.ok().put(res);
     }
 
@@ -91,8 +85,7 @@ public class WxAssetsManageController {
     @RequiresPermissions("wx:wxassets:list")
     @ApiOperation(value = "分页获取图文素材列表")
     public R materialNewsBatchGet(@CookieValue String appid,@RequestParam(defaultValue = "1") int page) throws WxErrorException {
-        wxMpService.switchoverTo(appid);
-        WxMpMaterialNewsBatchGetResult res = wxAssetsService.materialNewsBatchGet(page);
+        WxMpMaterialNewsBatchGetResult res = wxAssetsService.materialNewsBatchGet(appid,page);
         return R.ok().put(res);
     }
 
@@ -110,8 +103,7 @@ public class WxAssetsManageController {
         if(articles.isEmpty()) {
             return R.error("图文列表不得为空");
         }
-        wxMpService.switchoverTo(appid);
-        WxMpMaterialUploadResult res = wxAssetsService.materialNewsUpload(articles);
+        WxMpMaterialUploadResult res = wxAssetsService.materialNewsUpload(appid,articles);
         return R.ok().put(res);
     }
 
@@ -129,8 +121,7 @@ public class WxAssetsManageController {
         if(form.getArticles()==null) {
             return R.error("文章不得为空");
         }
-        wxMpService.switchoverTo(appid);
-        wxAssetsService.materialArticleUpdate(form);
+        wxAssetsService.materialArticleUpdate(appid,form);
         return R.ok();
     }
 
@@ -151,8 +142,8 @@ public class WxAssetsManageController {
         if (file == null) {
             return R.error("文件不得为空");
         }
-        wxMpService.switchoverTo(appid);
-        WxMpMaterialUploadResult res = wxAssetsService.materialFileUpload(mediaType,fileName,file);
+
+        WxMpMaterialUploadResult res = wxAssetsService.materialFileUpload(appid,mediaType,fileName,file);
         return R.ok().put(res);
     }
 
@@ -167,8 +158,7 @@ public class WxAssetsManageController {
     @RequiresPermissions("wx:wxassets:delete")
     @ApiOperation(value = "删除素材")
     public R materialDelete(@CookieValue String appid,@RequestBody MaterialFileDeleteForm form) throws WxErrorException {
-        wxMpService.switchoverTo(appid);
-        boolean res = wxAssetsService.materialDelete(form.getMediaId());
+        boolean res = wxAssetsService.materialDelete(appid,form.getMediaId());
         return R.ok().put(res);
     }
 

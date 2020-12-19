@@ -22,7 +22,7 @@ import java.util.Date;
 public class MsgReplyRule implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableId(type = IdType.AUTO)
-    private int ruleId;
+    private Long ruleId;
     private String appid;
     @NotEmpty(message = "规则名称不得为空")
     private String ruleName;
