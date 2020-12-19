@@ -8,7 +8,6 @@ import com.github.niefy.modules.wx.service.WxUserTagsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.chanjar.weixin.common.error.WxErrorException;
-import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.tag.WxUserTag;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +26,6 @@ public class WxUserTagsManageController {
     private WxUserService wxUserService;
     @Autowired
     private WxUserTagsService wxUserTagsService;
-    @Autowired
-    private WxMpService wxMpService;
 
     /**
      * 查询用户标签
@@ -37,8 +34,7 @@ public class WxUserTagsManageController {
     @RequiresPermissions("wx:wxuser:info")
     @ApiOperation(value = "列表")
     public R list(@CookieValue String appid) throws WxErrorException {
-        wxMpService.switchoverTo(appid);
-        List<WxUserTag> wxUserTags =  wxUserTagsService.getWxTags();
+        List<WxUserTag> wxUserTags =  wxUserTagsService.getWxTags(appid);
         return R.ok().put("list",wxUserTags);
     }
 
@@ -49,12 +45,11 @@ public class WxUserTagsManageController {
     @RequiresPermissions("wx:wxuser:save")
     @ApiOperation(value = "保存")
     public R save(@CookieValue String appid,@RequestBody WxUserTagForm form) throws WxErrorException{
-        wxMpService.switchoverTo(appid);
         Long tagid = form.getId();
         if(tagid==null || tagid<=0){
-            wxUserTagsService.creatTag(form.getName());
+            wxUserTagsService.creatTag(appid,form.getName());
         }else {
-            wxUserTagsService.updateTag(tagid,form.getName());
+            wxUserTagsService.updateTag(appid,tagid,form.getName());
         }
         return R.ok();
     }
@@ -69,8 +64,7 @@ public class WxUserTagsManageController {
         if(tagid==null || tagid<=0){
             return R.error("标签ID不得为空");
         }
-        wxMpService.switchoverTo(appid);
-        wxUserTagsService.deleteTag(tagid);
+        wxUserTagsService.deleteTag(appid,tagid);
         return R.ok();
     }
 
@@ -81,8 +75,8 @@ public class WxUserTagsManageController {
     @RequiresPermissions("wx:wxuser:save")
     @ApiOperation(value = "批量给用户打标签")
     public R batchTagging(@CookieValue String appid,@RequestBody WxUserBatchTaggingForm form) throws WxErrorException{
-        wxMpService.switchoverTo(appid);
-        wxUserTagsService.batchTagging(form.getTagid(),form.getOpenidList());
+
+        wxUserTagsService.batchTagging(appid,form.getTagid(),form.getOpenidList());
         return R.ok();
     }
     /**
@@ -92,8 +86,7 @@ public class WxUserTagsManageController {
     @RequiresPermissions("wx:wxuser:save")
     @ApiOperation(value = "批量移除用户标签")
     public R batchUnTagging(@CookieValue String appid,@RequestBody WxUserBatchTaggingForm form) throws WxErrorException{
-        wxMpService.switchoverTo(appid);
-        wxUserTagsService.batchUnTagging(form.getTagid(),form.getOpenidList());
+        wxUserTagsService.batchUnTagging(appid,form.getTagid(),form.getOpenidList());
         return R.ok();
     }
 }

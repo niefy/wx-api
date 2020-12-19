@@ -12,62 +12,76 @@ public interface WxAssetsService {
      *  获取素材总数
      * @return
      * @throws WxErrorException
+     * @param appid
      */
-    WxMpMaterialCountResult materialCount() throws WxErrorException;
+    WxMpMaterialCountResult materialCount(String appid) throws WxErrorException;
 
     /**
      * 获取图文素材详情
+     *
+     * @param appid
      * @param mediaId
      * @return
      * @throws WxErrorException
      */
-    WxMpMaterialNews materialNewsInfo(String mediaId) throws WxErrorException;
+    WxMpMaterialNews materialNewsInfo(String appid, String mediaId) throws WxErrorException;
     /**
      * 根据类别分页获取非图文素材列表
+     *
+     * @param appid
      * @param type
      * @param page
      * @return
      * @throws WxErrorException
      */
-    WxMpMaterialFileBatchGetResult materialFileBatchGet(String type, int page) throws WxErrorException;
+    WxMpMaterialFileBatchGetResult materialFileBatchGet(String appid, String type, int page) throws WxErrorException;
 
     /**
      * 分页获取图文素材列表
+     *
+     * @param appid
      * @param page
      * @return
      * @throws WxErrorException
      */
-    WxMpMaterialNewsBatchGetResult materialNewsBatchGet(int page) throws WxErrorException;
+    WxMpMaterialNewsBatchGetResult materialNewsBatchGet(String appid, int page) throws WxErrorException;
 
     /**
      * 添加图文永久素材
+     *
+     * @param appid
      * @param articles
      * @return
      * @throws WxErrorException
      */
-    WxMpMaterialUploadResult materialNewsUpload(List<WxMpNewsArticle> articles)throws WxErrorException;
+    WxMpMaterialUploadResult materialNewsUpload(String appid, List<WxMpNewsArticle> articles)throws WxErrorException;
 
     /**
      * 更新图文素材中的某篇文章
+     * @param appid
      * @param form
      */
-    void materialArticleUpdate(WxMpMaterialArticleUpdate form) throws WxErrorException;
+    void materialArticleUpdate(String appid, WxMpMaterialArticleUpdate form) throws WxErrorException;
 
     /**
      * 添加多媒体永久素材
+     *
+     * @param appid
      * @param mediaType
      * @param fileName
      * @param file
      * @return
      * @throws WxErrorException
      */
-    WxMpMaterialUploadResult materialFileUpload(String mediaType, String fileName, MultipartFile file) throws WxErrorException, IOException;
+    WxMpMaterialUploadResult materialFileUpload(String appid, String mediaType, String fileName, MultipartFile file) throws WxErrorException, IOException;
 
     /**
      * 删除素材
+     *
+     * @param appid
      * @param mediaId
      * @return
      * @throws WxErrorException
      */
-    boolean materialDelete(String mediaId)throws WxErrorException;
+    boolean materialDelete(String appid, String mediaId)throws WxErrorException;
 }

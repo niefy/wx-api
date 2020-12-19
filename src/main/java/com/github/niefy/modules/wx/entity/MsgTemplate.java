@@ -23,7 +23,7 @@ import java.util.Date;
 public class MsgTemplate implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableId(type = IdType.AUTO)
-    private long id;
+    private Long id;
     private String appid;
     private String templateId;
     @TableField(value = "`name`")

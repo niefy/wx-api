@@ -20,60 +20,64 @@ import java.util.List;
 @Slf4j
 public class WxUserTagsServiceImpl implements WxUserTagsService {
     @Autowired
-    private WxMpService wxService;
+    private WxMpService wxMpService;
     @Autowired
     private WxUserService wxUserService;
     public static final String CACHE_KEY="'WX_USER_TAGS'";
 
     @Override
-    @Cacheable(key = CACHE_KEY)
-    public List<WxUserTag> getWxTags() throws WxErrorException {
+    @Cacheable(key = CACHE_KEY+"#appid")
+    public List<WxUserTag> getWxTags(String appid) throws WxErrorException {
         log.info("拉取公众号用户标签");
-        return wxService.getUserTagService().tagGet();
+        wxMpService.switchoverTo(appid);
+        return wxMpService.getUserTagService().tagGet();
     }
 
     @Override
-    @CacheEvict(key = CACHE_KEY)
-    public void creatTag(String name) throws WxErrorException {
-        wxService.getUserTagService().tagCreate(name);
+    @CacheEvict(key = CACHE_KEY+"#appid")
+    public void creatTag(String appid, String name) throws WxErrorException {
+        wxMpService.switchoverTo(appid);
+        wxMpService.getUserTagService().tagCreate(name);
     }
 
     @Override
-    @CacheEvict(key = CACHE_KEY)
-    public void updateTag(Long tagid, String name) throws WxErrorException {
-        wxService.getUserTagService().tagUpdate(tagid,name);
+    @CacheEvict(key = CACHE_KEY+"#appid")
+    public void updateTag(String appid, Long tagid, String name) throws WxErrorException {
+        wxMpService.switchoverTo(appid);
+        wxMpService.getUserTagService().tagUpdate(tagid,name);
     }
 
     @Override
-    @CacheEvict(key = CACHE_KEY)
-    public void deleteTag(Long tagid) throws WxErrorException {
-        wxService.getUserTagService().tagDelete(tagid);
+    @CacheEvict(key = CACHE_KEY+"#appid")
+    public void deleteTag(String appid, Long tagid) throws WxErrorException {
+        wxMpService.switchoverTo(appid);
+        wxMpService.getUserTagService().tagDelete(tagid);
     }
 
     @Override
-    public void batchTagging(Long tagid, String[] openidList) throws WxErrorException {
-        wxService.getUserTagService().batchTagging(tagid,openidList);
-        String appid = WxMpConfigStorageHolder.get();
+    public void batchTagging(String appid, Long tagid, String[] openidList) throws WxErrorException {
+        wxMpService.switchoverTo(appid);
+        wxMpService.getUserTagService().batchTagging(tagid,openidList);
         wxUserService.refreshUserInfoAsync(openidList,appid);//标签更新后更新对应用户信息
     }
 
     @Override
-    public void batchUnTagging(Long tagid, String[] openidList) throws WxErrorException {
-        wxService.getUserTagService().batchUntagging(tagid,openidList);
-        String appid = WxMpConfigStorageHolder.get();
+    public void batchUnTagging(String appid, Long tagid, String[] openidList) throws WxErrorException {
+        wxMpService.switchoverTo(appid);
+        wxMpService.getUserTagService().batchUntagging(tagid,openidList);
         wxUserService.refreshUserInfoAsync(openidList,appid);//标签更新后更新对应用户信息
     }
 
     @Override
     public void tagging(Long tagid, String openid) throws WxErrorException {
-        wxService.getUserTagService().batchTagging(tagid,new String[]{openid});
+        wxMpService.getUserTagService().batchTagging(tagid,new String[]{openid});
         String appid = WxMpConfigStorageHolder.get();
         wxUserService.refreshUserInfo(openid,appid);
     }
 
     @Override
     public void untagging(Long tagid, String openid) throws WxErrorException {
-        wxService.getUserTagService().batchUntagging(tagid,new String[]{openid});
+        wxMpService.getUserTagService().batchUntagging(tagid,new String[]{openid});
         String appid = WxMpConfigStorageHolder.get();
         wxUserService.refreshUserInfo(openid,appid);
     }

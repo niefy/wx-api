@@ -24,7 +24,7 @@ public class TemplateMsgLog implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @TableId(type = IdType.AUTO)
-    private int logId;
+    private Long logId;
     private String appid;
     private String touser;
     private String templateId;

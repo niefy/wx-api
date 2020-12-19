@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -33,8 +34,8 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
     Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private WxUserMapper userMapper;
-    @Autowired
-    private WxMpService wxService;
+	@Autowired
+	private WxMpService wxMpService;
     private volatile static  boolean syncWxUserTaskRunning=false;
 
     @Override
@@ -66,8 +67,8 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
         try {
 			// 获取微信用户基本信息
 			logger.info("更新用户信息，openid={}",openid);
-			wxService.switchover(appid);
-			WxMpUser userWxInfo = wxService.getUserService().userInfo(openid, null);
+			wxMpService.switchover(appid);
+			WxMpUser userWxInfo = wxMpService.getUserService().userInfo(openid, null);
 			if (userWxInfo == null) {
 				logger.error("获取不到用户信息，无法更新,openid:{}",openid);
 				return null;
@@ -90,7 +91,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 	public void refreshUserInfoAsync(String[] openidList,String appid) {
 		logger.info("批量更新用户信息：任务开始");
 		for(String openid:openidList){
-			wxService.switchover(appid);
+			wxMpService.switchover(appid);
 			TaskExcutor.submit(()->this.refreshUserInfo(openid,appid));
 		}
 		logger.info("批量更新用户信息：任务全部添加到线程池");
@@ -120,15 +121,15 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
     @Override
 	@Async
     public void syncWxUsers(String appid) {
-    	if(syncWxUserTaskRunning) {
-            return;//同步较慢，防止个多线程重复执行同步任务
-        }
+		//同步较慢，防止个多线程重复执行同步任务
+		Assert.isTrue(!syncWxUserTaskRunning,"后台有同步任务正在进行中，请稍后重试");
+		wxMpService.switchoverTo(appid);
 		syncWxUserTaskRunning=true;
 		logger.info("同步公众号粉丝列表：任务开始");
-		wxService.switchover(appid);
+		wxMpService.switchover(appid);
 		boolean hasMore=true;
 		String nextOpenid=null;
-		WxMpUserService wxMpUserService = wxService.getUserService();
+		WxMpUserService wxMpUserService = wxMpService.getUserService();
 		try {
 			int page=1;
 			while (hasMore){
@@ -141,9 +142,10 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 			}
 		} catch (WxErrorException e) {
 			logger.error("同步公众号粉丝出错:",e);
+		}finally {
+			syncWxUserTaskRunning=false;
 		}
 		logger.info("同步公众号粉丝列表：完成");
-		syncWxUserTaskRunning=false;
 	}
 
 	/**
@@ -156,7 +158,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
             return;
         }
 		final String batch=openids.get(0).substring(20);//截取首个openid的一部分做批次号（打印日志时使用，无实际意义）
-		WxMpUserService wxMpUserService = wxService.getUserService();
+		WxMpUserService wxMpUserService = wxMpService.getUserService();
 		int start=0,batchSize=openids.size(),end=Math.min(100,batchSize);
 		logger.info("开始处理批次：{}，批次数量：{}",batch,batchSize);
 		while (start<end && end<=batchSize){//分批处理,每次最多拉取100个用户信息
@@ -164,7 +166,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 			final List<String> subOpenids=openids.subList(finalStart,finalEnd);
 			TaskExcutor.submit(()->{//使用线程池同步数据，否则大量粉丝数据需同步时会很慢
 				logger.info("同步批次:【{}--{}-{}】，数量：{}",batch, finalStart, finalEnd,subOpenids.size());
-				wxService.switchover(appid);
+				wxMpService.switchover(appid);
 				List<WxMpUser> wxMpUsers = null;//批量获取用户信息，每次最多100个
 				try {
 					wxMpUsers = wxMpUserService.userInfoList(subOpenids);
