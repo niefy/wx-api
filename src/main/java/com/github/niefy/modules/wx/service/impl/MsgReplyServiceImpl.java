@@ -174,7 +174,7 @@ public class MsgReplyServiceImpl implements MsgReplyService {
     @Override
     public void replyMsgMenu(String toUser, String msgMenusJson) throws WxErrorException {
         JSONObject json = JSON.parseObject(msgMenusJson);
-        List<WxMpKefuMessage.MsgMenu> msgMenus = json.getJSONArray("list").toJavaList(WxMpKefuMessage.MsgMenu.class);
+        List<WxMpKefuMessage.MsgMenu> msgMenus = JSON.parseArray(json.getString("list"),WxMpKefuMessage.MsgMenu.class);
         wxMpService.getKefuService().sendKefuMessage(
             WxMpKefuMessage.MSGMENU()
                 .toUser(toUser)
