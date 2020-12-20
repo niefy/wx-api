@@ -48,11 +48,11 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
         return this.page(
             new Query<WxUser>().getPage(params),
             new QueryWrapper<WxUser>()
-				.eq(!StringUtils.isEmpty(appid), "appid", appid)
-                .eq(!StringUtils.isEmpty(openid), "openid", openid)
-                .like(!StringUtils.isEmpty(nickname), "nickname", nickname)
-				.eq(!StringUtils.isEmpty(city), "city", city)
-				.eq(!StringUtils.isEmpty(qrSceneStr), "qrSceneStr", qrSceneStr)
+				.eq(StringUtils.hasText(appid), "appid", appid)
+                .eq(StringUtils.hasText(openid), "openid", openid)
+                .like(StringUtils.hasText(nickname), "nickname", nickname)
+				.eq(StringUtils.hasText(city), "city", city)
+				.eq(StringUtils.hasText(qrSceneStr), "qrSceneStr", qrSceneStr)
         );
     }
 
@@ -138,7 +138,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 				List<String> openids = wxMpUserList.getOpenids();
 				this.syncWxUsers(openids,appid);
 				nextOpenid=wxMpUserList.getNextOpenid();
-				hasMore=!StringUtils.isEmpty(nextOpenid) && wxMpUserList.getCount()>=10000;
+				hasMore=StringUtils.hasText(nextOpenid) && wxMpUserList.getCount()>=10000;
 			}
 		} catch (WxErrorException e) {
 			logger.error("同步公众号粉丝出错:",e);

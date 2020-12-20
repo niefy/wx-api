@@ -36,9 +36,9 @@ public class MsgTemplateServiceImpl extends ServiceImpl<MsgTemplateMapper, MsgTe
         IPage<MsgTemplate> page = this.page(
             new Query<MsgTemplate>().getPage(params),
             new QueryWrapper<MsgTemplate>()
-                .eq(!StringUtils.isEmpty(appid), "appid", appid)
-                .like(!StringUtils.isEmpty(title), "title", title)
-                .like(!StringUtils.isEmpty(name), "name", name)
+                .eq(StringUtils.hasText(appid), "appid", appid)
+                .like(StringUtils.hasText(title), "title", title)
+                .like(StringUtils.hasText(name), "name", name)
         );
 
         return new PageUtils(page);

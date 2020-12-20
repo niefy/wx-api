@@ -40,7 +40,7 @@ public class WxAccountServiceImpl extends ServiceImpl<WxAccountMapper, WxAccount
         IPage<WxAccount> page = this.page(
                 new Query<WxAccount>().getPage(params),
                 new QueryWrapper<WxAccount>()
-                        .like(!StringUtils.isEmpty(name), "name", name)
+                        .like(StringUtils.hasText(name), "name", name)
         );
 
         return new PageUtils(page);

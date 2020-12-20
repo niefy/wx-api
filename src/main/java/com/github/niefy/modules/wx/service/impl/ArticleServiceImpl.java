@@ -44,10 +44,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             new Query<Article>().getPage(params),
             new QueryWrapper<Article>()
                 .select(LIST_FILEDS)
-                .eq(!StringUtils.isEmpty(type), "type", type)
-                .like(!StringUtils.isEmpty(category), "category", category)
-                .like(!StringUtils.isEmpty(subCategory), "sub_category", subCategory)
-                .like(!StringUtils.isEmpty(title), "title", title)
+                .eq(StringUtils.hasText(type), "type", type)
+                .like(StringUtils.hasText(category), "category", category)
+                .like(StringUtils.hasText(subCategory), "sub_category", subCategory)
+                .like(StringUtils.hasText(title), "title", title)
         );
 
         return new PageUtils(page);
@@ -114,7 +114,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public IPage<Article> getArticles(String title, int page) {
         return this.page(new Page<Article>(page, PageSizeConstant.PAGE_SIZE_SMALL),
-            new QueryWrapper<Article>().like(!StringUtils.isEmpty("title"), "title", title)
+            new QueryWrapper<Article>().like(StringUtils.hasText("title"), "title", title)
                 .select(LIST_FILEDS)
                 .orderBy(true, false, "update_time"));
     }
@@ -147,7 +147,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return this.list(new QueryWrapper<Article>()
             .select(LIST_FILEDS)
             .eq("type", articleType.getValue())
-            .eq(!StringUtils.isEmpty(category), "category", category)
+            .eq(StringUtils.hasText(category), "category", category)
             .and(i -> i.like("summary", keywords).or().like("title", keywords)));
     }
 }
