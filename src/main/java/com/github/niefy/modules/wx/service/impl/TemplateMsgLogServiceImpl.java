@@ -23,7 +23,7 @@ public class TemplateMsgLogServiceImpl extends ServiceImpl<TemplateMsgLogMapper,
         IPage<TemplateMsgLog> page = this.page(
             new Query<TemplateMsgLog>().getPage(params),
             new QueryWrapper<TemplateMsgLog>()
-                    .eq(!StringUtils.isEmpty(appid), "appid", appid)
+                    .eq(StringUtils.hasText(appid), "appid", appid)
         );
 
         return new PageUtils(page);

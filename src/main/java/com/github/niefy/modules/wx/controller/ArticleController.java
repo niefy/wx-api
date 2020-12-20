@@ -71,7 +71,7 @@ public class ArticleController {
         if (articleType == null) {
             return R.error("文章类型有误");
         }
-        if (StringUtils.isEmpty(keywords)) {
+        if (!StringUtils.hasText(keywords)) {
             return R.error("关键词不得为空");
         }
         List<Article> articles = articleService.search(articleType, category, keywords);

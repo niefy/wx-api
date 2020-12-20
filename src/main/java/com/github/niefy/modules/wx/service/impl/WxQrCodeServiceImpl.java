@@ -33,8 +33,8 @@ public class WxQrCodeServiceImpl extends ServiceImpl<WxQrCodeMapper, WxQrCode> i
         IPage<WxQrCode> page = this.page(
             new Query<WxQrCode>().getPage(params),
             new QueryWrapper<WxQrCode>()
-                    .eq(!StringUtils.isEmpty(appid), "appid", appid)
-                    .like(!StringUtils.isEmpty(sceneStr), "scene_str", sceneStr)
+                    .eq(StringUtils.hasText(appid), "appid", appid)
+                    .like(StringUtils.hasText(sceneStr), "scene_str", sceneStr)
         );
 
         return new PageUtils(page);

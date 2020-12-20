@@ -8,9 +8,9 @@ import com.github.niefy.common.utils.Query;
 import com.github.niefy.modules.wx.dao.WxMsgMapper;
 import com.github.niefy.modules.wx.entity.WxMsg;
 import com.github.niefy.modules.wx.service.WxMsgService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -28,10 +28,10 @@ public class WxMsgServiceImpl extends ServiceImpl<WxMsgMapper, WxMsg> implements
         IPage<WxMsg> page = this.page(
                 new Query<WxMsg>().getPage(params),
                 new QueryWrapper<WxMsg>()
-                        .eq(!org.springframework.util.StringUtils.isEmpty(appid), "appid", appid)
-                        .in(StringUtils.isNotEmpty(msgTypes),"msg_type", Arrays.asList(msgTypes.split(",")))
-                        .eq(StringUtils.isNotEmpty(openid),"openid",openid)
-                        .ge(StringUtils.isNotEmpty(startTime),"create_time",startTime)
+                        .eq(StringUtils.hasText(appid), "appid", appid)
+                        .in(StringUtils.hasText(msgTypes),"msg_type", Arrays.asList(msgTypes.split(",")))
+                        .eq(StringUtils.hasText(openid),"openid",openid)
+                        .ge(StringUtils.hasText(startTime),"create_time",startTime)
         );
 
         return new PageUtils(page);
