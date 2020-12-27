@@ -27,7 +27,7 @@
 		<aliyun.oss.version>3.9.1</aliyun.oss.version>
 		<qcloud.cos.version>5.6.24</qcloud.cos.version>
 		<swagger.version>3.0.0</swagger.version>
-		<fastjson.version>1.2.9</fastjson.version>
+		<fastjson.version>1.2.75</fastjson.version>
 		<lombok.version>1.18.16</lombok.version>
 		<weixin-java.version>4.0.0</weixin-java.version>
 	</properties>
