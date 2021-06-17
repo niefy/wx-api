@@ -81,7 +81,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public boolean saveArticle(Article article) {
         article.setUpdateTime(new Date());
-        if (article.getId() != null && article.getId() > 0) {
+        if (null != article.getId() && article.getId() > 0) {
             articleMapper.updateById(article);
         } else {
             String title = article.getTitle();
