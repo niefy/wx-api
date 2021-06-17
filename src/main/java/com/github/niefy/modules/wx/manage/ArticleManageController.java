@@ -61,7 +61,7 @@ public class ArticleManageController {
     @RequiresPermissions("wx:article:save")
     @ApiOperation(value = "保存")
     public R save(@RequestBody Article article) {
-        articleService.save(article);
+        articleService.saveArticle(article);
 
         return R.ok();
     }
