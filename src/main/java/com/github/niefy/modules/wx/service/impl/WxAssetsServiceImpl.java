@@ -102,7 +102,7 @@ public class WxAssetsServiceImpl implements WxAssetsService {
         }
         WxMpMaterialUploadResult res = wxMpService.getMaterialService().materialFileUpload(mediaType,wxMaterial);
         tempFile.deleteOnExit();
-        return null;
+        return res;
     }
 
     @Override
