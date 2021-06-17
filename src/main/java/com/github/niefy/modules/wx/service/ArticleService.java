@@ -30,9 +30,7 @@ public interface ArticleService extends IService<Article> {
      *
      * @param article
      */
-
-    @Override
-    boolean save(Article article);
+    boolean saveArticle(Article article);
 
     /**
      * 按条件分页查询
