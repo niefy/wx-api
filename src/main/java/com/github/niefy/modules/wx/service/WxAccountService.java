@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.modules.wx.entity.WxAccount;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
@@ -26,6 +25,6 @@ public interface WxAccountService extends IService<WxAccount> {
     boolean save(WxAccount entity);
 
     @Override
-    boolean removeByIds(Collection<? extends Serializable> idList);
+    boolean removeByIds(Collection<?> idList);
 }
 

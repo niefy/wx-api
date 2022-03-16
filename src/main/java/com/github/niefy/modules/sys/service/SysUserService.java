@@ -27,11 +27,6 @@ public interface SysUserService extends IService<SysUserEntity> {
     List<String> queryAllPerms(Long userId);
 
     /**
-     * 查询用户的所有菜单ID
-     */
-    List<Long> queryAllMenuId(Long userId);
-
-    /**
      * 根据用户名，查询系统用户
      */
     SysUserEntity queryByUserName(String username);

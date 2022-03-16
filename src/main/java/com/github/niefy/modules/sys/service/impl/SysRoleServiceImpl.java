@@ -3,6 +3,7 @@ package com.github.niefy.modules.sys.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.niefy.common.exception.RRException;
 import com.github.niefy.common.utils.Constant;
 import com.github.niefy.common.utils.PageUtils;
 import com.github.niefy.common.utils.Query;
@@ -11,8 +12,6 @@ import com.github.niefy.modules.sys.entity.SysRoleEntity;
 import com.github.niefy.modules.sys.service.SysRoleMenuService;
 import com.github.niefy.modules.sys.service.SysRoleService;
 import com.github.niefy.modules.sys.service.SysUserRoleService;
-import com.github.niefy.modules.sys.service.SysUserService;
-import com.github.niefy.common.exception.RRException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,8 +30,6 @@ import java.util.Map;
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> implements SysRoleService {
     @Autowired
     private SysRoleMenuService sysRoleMenuService;
-    @Autowired
-    private SysUserService sysUserService;
     @Autowired
     private SysUserRoleService sysUserRoleService;
 
@@ -105,7 +102,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
         }
 
         //查询用户所拥有的菜单列表
-        List<Long> menuIdList = sysUserService.queryAllMenuId(role.getCreateUserId());
+        List<Long> menuIdList = sysRoleMenuService.queryAllMenuId(role.getCreateUserId());
 
         //判断是否越权
         if (!menuIdList.containsAll(role.getMenuIdList())) {

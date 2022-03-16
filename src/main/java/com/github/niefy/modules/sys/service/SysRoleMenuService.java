@@ -24,4 +24,9 @@ public interface SysRoleMenuService extends IService<SysRoleMenuEntity> {
      */
     int deleteBatch(Long[] roleIds);
 
+    /**
+     * 查询用户的所有菜单ID
+     */
+    List<Long> queryAllMenuId(Long userId);
+
 }

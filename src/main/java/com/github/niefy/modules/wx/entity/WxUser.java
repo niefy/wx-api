@@ -56,9 +56,6 @@ public class WxUser implements Serializable {
         this.subscribe=wxMpUser.getSubscribe();
         if(wxMpUser.getSubscribe()){
             this.nickname = wxMpUser.getNickname();
-            this.sex = wxMpUser.getSex();
-            this.city = wxMpUser.getCity();
-            this.province = wxMpUser.getProvince();
             this.headimgurl = wxMpUser.getHeadImgUrl();
             this.subscribeTime = new Date(wxMpUser.getSubscribeTime()*1000);
             this.unionid=wxMpUser.getUnionId();
@@ -76,9 +73,6 @@ public class WxUser implements Serializable {
 		this.subscribe=wxMpUser.getNickname()!=null;
 		if(this.subscribe){
 			this.nickname = wxMpUser.getNickname();
-			this.sex = wxMpUser.getSex();
-			this.city = wxMpUser.getCity();
-			this.province = wxMpUser.getProvince();
 			this.headimgurl = wxMpUser.getHeadImgUrl();
 			this.unionid=wxMpUser.getUnionId();
 		}
