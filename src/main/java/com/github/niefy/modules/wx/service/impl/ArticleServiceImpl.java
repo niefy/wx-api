@@ -85,7 +85,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             articleMapper.updateById(article);
         } else {
             String title = article.getTitle();
-            int count = articleMapper.selectCount(
+            long count = articleMapper.selectCount(
                 new QueryWrapper<Article>().eq("title", title)
                     .eq("category", article.getCategory())
                     .eq("sub_category", article.getSubCategory())

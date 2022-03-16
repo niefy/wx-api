@@ -20,7 +20,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -79,7 +78,7 @@ public class WxAccountServiceImpl extends ServiceImpl<WxAccountMapper, WxAccount
     }
 
     @Override
-    public boolean removeByIds(Collection<? extends Serializable> idList) {
+    public boolean removeByIds(Collection<?> idList) {
         Assert.notEmpty(idList,"WxAccount不得为空");
 
         // 更新wxMpService配置
