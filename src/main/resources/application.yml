@@ -25,6 +25,8 @@ spring:
             enabled: true
     mvc:
         throw-exception-if-no-handler-found: true
+        pathmatch:
+            matching-strategy: ant_path_matcher #解决springboot2.6与swagger兼容性问题
     task:
         scheduling:
             pool:
