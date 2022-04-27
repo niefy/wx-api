@@ -1,20 +1,14 @@
-# 指定基础镜像，这是分阶段构建的前期阶段
-FROM openjdk:8u212-jdk-stretch as builder
-# 执行工作目录
-WORKDIR application
-# 配置参数
-ARG JAR_FILE=target/*.jar
-# 将编译构建得到的jar文件复制到镜像空间中
-COPY ${JAR_FILE} application.jar
-# 通过工具spring-boot-jarmode-layertools从application.jar中提取拆分后的构建结果
-RUN java -Djarmode=layertools -jar application.jar extract
-
-# 正式构建镜像
-FROM openjdk:8u212-jdk-stretch
-WORKDIR application
-# 前一阶段从jar中提取除了多个文件，这里分别执行COPY命令复制到镜像空间中，每次COPY都是一个layer
-COPY --from=builder application/dependencies/ ./
-COPY --from=builder application/spring-boot-loader/ ./
-COPY --from=builder application/snapshot-dependencies/ ./
-COPY --from=builder application/application/ ./
-ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+#设置镜像使用的基础镜像
+FROM openjdk:8u322-jre-buster
+# 作者
+MAINTAINER niefy <niefy@qq.com>
+#设置镜像暴露的端口 这里要与application.properties中的server.port保持一致
+EXPOSE 80
+#设置容器的挂载卷
+VOLUME /tmp
+#编译镜像时将springboot生成的jar文件复制到镜像中
+ADD target/wx-api.jar  /wx-api.jar
+#编译镜像时运行脚本
+RUN bash -c 'touch /wx-api.jar'
+#容器的入口程序，这里注意如果要指定外部配置文件需要使用-spring.config.location指定配置文件存放目录
+ENTRYPOINT ["java","-jar","/wx-api.jar"]

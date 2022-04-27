@@ -128,23 +128,6 @@
 			<version>${lombok.version}</version>
 		</dependency>
 	</dependencies>
-	<profiles>
-		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<profile.active>dev</profile.active>
-			</properties>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<properties>
-				<profile.active>prod</profile.active>
-			</properties>
-		</profile>
-	</profiles>
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
@@ -166,6 +149,11 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources/</directory>
+			</resource>
+		</resources>
 	</build>
 
 	<repositories>

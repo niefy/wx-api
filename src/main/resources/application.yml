@@ -4,7 +4,7 @@ server:
         uri-encoding: UTF-8
         max-threads: 1000
         min-spare-threads: 30
-    port: 8088
+    port: ${SERVER_PORT:8088}
     connection-timeout: 5000ms
     servlet:
         context-path: /wx
@@ -13,7 +13,7 @@ debug: false
 
 spring:
     profiles:
-        active: @profile.active@ #此处由maven的环境选择决定，参考：https://www.jianshu.com/p/b7c75b0c364c
+        active: ${PROFILE_ACTIVE:dev} #此处由maven的环境选择决定，参考：https://www.jianshu.com/p/b7c75b0c364c
     # jackson时间格式化
     jackson:
         time-zone: GMT+8
