@@ -1,7 +1,7 @@
 # wx-api
 微信公众号管理系统，支持多公众号接入。提供公众号菜单、自动回复、公众号素材、模板消息、CMS等管理功能
 
-### [📖使用文档](https://www.yuque.com/nifury/wx) | [📊功能投票](https://wj.qq.com/s2/5896407/a381) | [🕓版本更新记录](https://www.yuque.com/nifury/wx/gd11wb) | [Github仓库](https://github.com/niefy/wx-api) | [码云仓库](https://gitee.com/niefy/wx-api)
+### [📖使用文档](https://www.yuque.com/nifury/wx)  | [Github仓库](https://github.com/niefy/wx-api) | [码云仓库](https://gitee.com/niefy/wx-api)
 
 ## 项目说明
 - wx-api是一个轻量级的公众号开发种子项目，可快速接入微信公众号管理功能
@@ -9,6 +9,7 @@
 - 移动端示例wx-client: https://github.com/niefy/wx-client
 - swagger文档（启动wx-api后查看）：http://localhost:8088/wx/swagger-ui/index.html
 
+## [docker方式启动文档](https://www.yuque.com/nifury/wx/nf1rvm)
 ## [开发环境启动文档](https://www.yuque.com/nifury/wx/guobb7)
 ## [生产环境部署步骤](https://www.yuque.com/nifury/wx/ofehhv)
 
