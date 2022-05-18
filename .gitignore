@@ -3,6 +3,7 @@
 *.iml
 .idea/
 target/
+src/main/resources/static/
 .settings/
 .vscode/
 .classpath
