@@ -44,6 +44,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
         String nickname = (String) params.get("nickname");
 		String appid = (String) params.get("appid");
 		String city = (String) params.get("city");
+		String tagId = (String) params.get("tagid");
 		String qrSceneStr = (String) params.get("qrSceneStr");
         return this.page(
             new Query<WxUser>().getPage(params),
@@ -53,6 +54,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
                 .like(StringUtils.hasText(nickname), "nickname", nickname)
 				.eq(StringUtils.hasText(city), "city", city)
 				.eq(StringUtils.hasText(qrSceneStr), "qrSceneStr", qrSceneStr)
+				.apply(StringUtils.hasText(tagId),"JSON_CONTAINS(tagid_list,{0})",tagId)
         );
     }
 
