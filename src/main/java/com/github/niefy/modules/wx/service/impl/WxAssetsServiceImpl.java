@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.draft.*;
 import me.chanjar.weixin.mp.bean.material.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -65,13 +66,17 @@ public class WxAssetsServiceImpl implements WxAssetsService {
 
     @Override
     @CacheEvict(allEntries = true)
-    public WxMpMaterialUploadResult materialNewsUpload(String appid, List<WxMpNewsArticle> articles) throws WxErrorException {
+    public WxMpMaterialUploadResult materialNewsUpload(String appid, List<WxMpDraftArticles> articles) throws WxErrorException {
         Assert.notEmpty(articles,"图文列表不得为空");
         log.info("上传图文素材...");
         wxMpService.switchoverTo(appid);
-        WxMpMaterialNews news = new WxMpMaterialNews();
+	WxMpAddDraft news = new WxMpAddDraft();
         news.setArticles(articles);
-        return wxMpService.getMaterialService().materialNewsUpload(news);
+        String draftMediaId = wxMpService.getDraftService().addDraft(news);
+        WxMpMaterialUploadResult result = new WxMpMaterialUploadResult();
+        result.setMediaId(draftMediaId);
+        result.setErrCode(0);
+	return result;
     }
 
     /**
@@ -81,10 +86,10 @@ public class WxAssetsServiceImpl implements WxAssetsService {
      */
     @Override
     @CacheEvict(allEntries = true)
-    public void materialArticleUpdate(String appid, WxMpMaterialArticleUpdate form)  throws WxErrorException{
+    public void materialArticleUpdate(String appid, WxMpUpdateDraft form)  throws WxErrorException{
         log.info("更新图文素材...");
         wxMpService.switchoverTo(appid);
-        wxMpService.getMaterialService().materialNewsUpdate(form);
+        wxMpService.getDraftService().updateDraft(form);
     }
     @Override
     @CacheEvict(allEntries = true)
