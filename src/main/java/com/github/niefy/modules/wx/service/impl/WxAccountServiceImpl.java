@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +44,7 @@ public class WxAccountServiceImpl extends ServiceImpl<WxAccountMapper, WxAccount
         return new PageUtils(page);
     }
 
-    @PostConstruct
+    @Override
     public void loadWxMpConfigStorages(){
         logger.info("加载公众号配置...");
         List<WxAccount> accountList = this.list();
