@@ -44,19 +44,17 @@ public class TemplateMsgServiceImpl implements TemplateMsgService {
     @Override
     @Async
     public void sendTemplateMsg(WxMpTemplateMessage msg,String appid) {
-        TaskExcutor.submit(() -> {
-            String result;
-            try {
-                wxService.switchover(appid);
-                result = wxService.getTemplateMsgService().sendTemplateMsg(msg);
-            } catch (WxErrorException e) {
-                result = e.getMessage();
-            }
+        String result;
+        try {
+            wxService.switchover(appid);
+            result = wxService.getTemplateMsgService().sendTemplateMsg(msg);
+        } catch (WxErrorException e) {
+            result = e.getMessage();
+        }
 
-            //保存发送日志
-            TemplateMsgLog log = new TemplateMsgLog(msg,appid, result);
-            templateMsgLogService.addLog(log);
-        });
+        //保存发送日志
+        TemplateMsgLog log = new TemplateMsgLog(msg,appid, result);
+        templateMsgLogService.addLog(log);
     }
 
     @Override
