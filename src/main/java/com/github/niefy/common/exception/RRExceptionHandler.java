@@ -6,6 +6,7 @@ import org.apache.shiro.authz.AuthorizationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.web.bind.MissingRequestCookieException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -46,6 +47,12 @@ public class RRExceptionHandler {
     public R handleAuthorizationException(AuthorizationException e) {
         logger.error(e.getMessage(), e);
         return R.error("没有权限，请联系管理员授权");
+    }
+
+    @ExceptionHandler(MissingRequestCookieException.class)
+    public R handleMissingRequestCookieException(MissingRequestCookieException e) {
+        logger.error(e.getMessage(), e);
+        return R.error("请先添加公众号");
     }
 
     @ExceptionHandler({WxErrorException.class})
