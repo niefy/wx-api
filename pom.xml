@@ -72,6 +72,11 @@
 			<version>${mysql.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-core</artifactId>
 			<version>${shiro.version}</version>
@@ -128,6 +133,23 @@
 			<version>${lombok.version}</version>
 		</dependency>
 	</dependencies>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<profile.active>dev</profile.active>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<profile.active>prod</profile.active>
+			</properties>
+		</profile>
+	</profiles>
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
