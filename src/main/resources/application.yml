@@ -1,69 +1,74 @@
 # Tomcat
 server:
-    tomcat:
-        uri-encoding: UTF-8
-        max-threads: 1000
-        min-spare-threads: 30
-    port: ${SERVER_PORT:8088}
-    connection-timeout: 5000ms
-    servlet:
-        context-path: /wx
+  tomcat:
+    uri-encoding: UTF-8
+    connection-timeout: 5000
+    threads:
+        max: 1000
+        min-spare: 30
+  port: ${SERVER_PORT:8088}
+  servlet:
+    context-path: /wx
 
 debug: false
 
 spring:
-    profiles:
-        active: ${PROFILE_ACTIVE:dev} #此处由maven的环境选择决定，参考：https://www.jianshu.com/p/b7c75b0c364c
-    # jackson时间格式化
-    jackson:
-        time-zone: GMT+8
-        date-format: yyyy-MM-dd HH:mm
-    servlet:
-        multipart:
-            max-file-size: 100MB
-            max-request-size: 100MB
-            enabled: true
-    mvc:
-        throw-exception-if-no-handler-found: true
-        pathmatch:
-            matching-strategy: ant_path_matcher #解决springboot2.6与swagger兼容性问题
-    task:
-        scheduling:
-            pool:
-                size: 5
+  profiles:
+    active: ${PROFILE_ACTIVE:dev} #此处由maven的环境选择决定，参考：https://www.jianshu.com/p/b7c75b0c364c
+  # jackson时间格式化
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      enabled: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+    pathmatch:
+      matching-strategy: ant_path_matcher #解决springboot2.6与swagger兼容性问题
+  task:
+    scheduling:
+      pool:
+        size: 5
 
 
 #mybatis
 mybatis-plus:
-    mapper-locations: classpath*:/mapper/**/*.xml
-    #实体扫描，多个package用逗号或者分号分隔
-    type-aliases-package: com.github.niefy.modules.*.entity
-    type-handlers-package: com.github.niefy.common.handler
-    global-config:
-        #数据库相关配置
-        db-config:
-            #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID", ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
-            id-type: AUTO
-            logic-delete-value: -1
-            logic-not-delete-value: 0
-        banner: false
-    #原生配置
-    configuration:
-        map-underscore-to-camel-case: true
-        cache-enabled: true
-        call-setters-on-nulls: true
-        jdbc-type-for-null: 'null'
+  mapper-locations: classpath*:/mapper/**/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  type-aliases-package: com.github.niefy.modules.*.entity
+  type-handlers-package: com.github.niefy.common.handler
+  global-config:
+    #数据库相关配置
+    db-config:
+      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID", ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: AUTO
+      logic-delete-value: -1
+      logic-not-delete-value: 0
+    banner: false
+  #原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    call-setters-on-nulls: true
+    jdbc-type-for-null: 'null'
 
 renren:
-    # APP模块，是通过jwt认证的，如果要使用APP模块，则需要修改【加密秘钥】
-    jwt:
-        # 加密秘钥
-        secret: kF3`eF0|bD0!eA1#gE0!eE3_hD0@kJ0#[niefy@qq.com]
-        # token有效时长，7天，单位秒
-        expire: 604800
-        header: token
-
+  # APP模块，是通过jwt认证的，如果要使用APP模块，则需要修改【加密秘钥】
+  jwt:
+    # 加密秘钥
+    secret: kF3`eF0|bD0!eA1#gE0!eE3_hD0@kJ0#[niefy@qq.com]
+    # token有效时长，7天，单位秒
+    expire: 604800
+    header: token
 wx:
-    mp:
-        # 自动回复消息发送间隔（毫秒），适当增加间隔可提升用户体验
-        autoReplyInterval: 1000
+  mp:
+    # 自动回复消息发送间隔（毫秒），适当增加间隔可提升用户体验
+    autoReplyInterval: 1000
+logging:
+  level:
+    me:
+      chanjar: debug
+
