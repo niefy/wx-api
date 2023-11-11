@@ -36,6 +36,13 @@ spring:
     host: 127.0.0.1
     database: 1
     port: 6379
+    lettuce:
+      pool:
+        enabled: true
+        max-idle: 60
+        min-idle: 6
+        max-wait: 500
+        time-between-eviction-runs: 6000
 
 
 #mybatis
