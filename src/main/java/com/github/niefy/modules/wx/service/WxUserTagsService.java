@@ -1,5 +1,6 @@
 package com.github.niefy.modules.wx.service;
 
+import com.github.niefy.modules.sys.entity.SysUserEntity;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.bean.tag.WxUserTag;
 
@@ -73,4 +74,8 @@ public interface WxUserTagsService {
      * @throws WxErrorException
      */
     void untagging(Long tagid, String openid) throws WxErrorException;
+
+    void refreshTagCache(String appid, SysUserEntity user);
+
+
 }
