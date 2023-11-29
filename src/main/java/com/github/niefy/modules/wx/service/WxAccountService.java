@@ -23,8 +23,7 @@ public interface WxAccountService extends IService<WxAccount> {
 
     void loadWxMpConfigStorages();
 
-    @Override
-    boolean save(WxAccount entity);
+    boolean saveOrUpdateWxAccount(WxAccount entity);
 
     @Override
     boolean removeByIds(Collection<?> idList);

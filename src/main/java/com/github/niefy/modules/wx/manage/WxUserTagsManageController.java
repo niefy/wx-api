@@ -1,9 +1,9 @@
 package com.github.niefy.modules.wx.manage;
 
 import com.github.niefy.common.utils.R;
+import com.github.niefy.modules.sys.controller.AbstractController;
 import com.github.niefy.modules.wx.form.WxUserBatchTaggingForm;
 import com.github.niefy.modules.wx.form.WxUserTagForm;
-import com.github.niefy.modules.wx.service.WxUserService;
 import com.github.niefy.modules.wx.service.WxUserTagsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,9 +21,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/manage/wxUserTags")
 @Api(tags = {"公众号用户标签-管理后台"})
-public class WxUserTagsManageController {
-    @Autowired
-    private WxUserService wxUserService;
+public class WxUserTagsManageController extends AbstractController {
+
     @Autowired
     private WxUserTagsService wxUserTagsService;
 
@@ -89,4 +88,15 @@ public class WxUserTagsManageController {
         wxUserTagsService.batchUnTagging(appid,form.getTagid(),form.getOpenidList());
         return R.ok();
     }
+
+    @DeleteMapping("/refresh")
+    @RequiresPermissions("wx:wxuser:info")
+    @ApiOperation(value = "刷新Tag【在本系统外更新了tag时使用】")
+    public R refreshTagCache(@CookieValue String appid) throws WxErrorException {
+        wxUserTagsService.refreshTagCache(appid, getUser());
+        List<WxUserTag> wxUserTags = wxUserTagsService.getWxTags(appid);
+        return R.ok().put("list", wxUserTags);
+    }
+
+
 }

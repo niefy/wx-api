@@ -30,7 +30,7 @@ CREATE TABLE `cms_article`  (
   `image` varchar(255) CHARACTER SET utf8 NULL DEFAULT NULL COMMENT '文章首图',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_title`(`title`) USING BTREE COMMENT '标题不得重复'
-) ENGINE = InnoDB AUTO_INCREMENT = 337 CHARACTER SET = utf8 COMMENT = 'CMS文章中心' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COMMENT = 'CMS文章中心' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sys_captcha
@@ -55,7 +55,7 @@ CREATE TABLE `sys_config`  (
   `remark` varchar(500) CHARACTER SET utf8mb4 NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `param_key`(`param_key`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COMMENT = '系统配置信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = '系统配置信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_config
@@ -76,7 +76,7 @@ CREATE TABLE `sys_log`  (
   `ip` varchar(64) CHARACTER SET utf8mb4 NULL DEFAULT NULL COMMENT 'IP地址',
   `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 324 CHARACTER SET = utf8mb4 COMMENT = '系统日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = '系统日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -92,7 +92,7 @@ CREATE TABLE `sys_menu`  (
   `icon` varchar(50) CHARACTER SET utf8mb4 NULL DEFAULT NULL COMMENT '菜单图标',
   `order_num` int(11) NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 123 CHARACTER SET = utf8mb4 COMMENT = '菜单管理' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = '菜单管理' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -170,7 +170,7 @@ CREATE TABLE `sys_oss`  (
   `url` varchar(200) CHARACTER SET utf8mb4 NULL DEFAULT NULL COMMENT 'URL地址',
   `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COMMENT = '文件上传' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = '文件上传' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -212,7 +212,7 @@ CREATE TABLE `sys_user`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COMMENT = '系统用户' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = '系统用户' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
@@ -272,7 +272,7 @@ CREATE TABLE `wx_msg`  (
   `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_appid`(`appid`) USING BTREE COMMENT 'appid'
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COMMENT = '微信消息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = '微信消息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for wx_msg_reply_rule
@@ -295,7 +295,7 @@ CREATE TABLE `wx_msg_reply_rule`  (
   `update_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间',
   PRIMARY KEY (`rule_id`) USING BTREE,
   INDEX `idx_appid`(`appid`) USING BTREE COMMENT 'appid'
-) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8 COMMENT = '自动回复规则' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COMMENT = '自动回复规则' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of wx_msg_reply_rule
@@ -323,7 +323,7 @@ CREATE TABLE `wx_msg_template`  (
   UNIQUE INDEX `idx_name`(`name`) USING BTREE COMMENT '模板名称',
   INDEX `idx_status`(`status`) USING BTREE COMMENT '模板状态',
   INDEX `idx_appid`(`appid`) USING BTREE COMMENT 'appid'
-) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = utf8 COMMENT = '消息模板' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COMMENT = '消息模板' ROW_FORMAT = Dynamic;
 
 
 -- ----------------------------
@@ -341,7 +341,7 @@ CREATE TABLE `wx_qr_code`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '该二维码创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_appid`(`appid`) USING BTREE COMMENT 'appid'
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COMMENT = '公众号带参二维码' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = '公众号带参二维码' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for wx_template_msg_log
@@ -360,7 +360,7 @@ CREATE TABLE `wx_template_msg_log`  (
   `send_result` varchar(255) CHARACTER SET utf8 NULL DEFAULT NULL COMMENT '发送结果',
   PRIMARY KEY (`log_id`) USING BTREE,
   INDEX `idx_appid`(`appid`) USING BTREE COMMENT 'appid'
-) ENGINE = InnoDB AUTO_INCREMENT = 116250 CHARACTER SET = utf8 COMMENT = '微信模版消息发送记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COMMENT = '微信模版消息发送记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for wx_user

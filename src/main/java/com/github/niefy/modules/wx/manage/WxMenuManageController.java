@@ -8,6 +8,7 @@ import me.chanjar.weixin.common.bean.menu.WxMenu;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.menu.WxMpMenu;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,9 +47,18 @@ public class WxMenuManageController {
     @PostMapping("/updateMenu")
     @RequiresPermissions("wx:menu:save")
     @ApiOperation(value = "创建、更新菜单")
-    public R updateMenu(@CookieValue String appid,@RequestBody WxMenu wxMenu) throws WxErrorException {
+    public R updateMenu(@CookieValue String appid, @RequestBody WxMenu wxMenu) throws WxErrorException {
         wxMpService.switchoverTo(appid);
-        wxService.getMenuService().menuCreate(wxMenu);
+        if (CollectionUtils.isNotEmpty(wxMenu.getButtons())) {
+            wxService.getMenuService().menuCreate(wxMenu);
+        } else {
+            wxService.getMenuService().menuDelete();
+        }
         return R.ok();
     }
+
+
+
+
+
 }

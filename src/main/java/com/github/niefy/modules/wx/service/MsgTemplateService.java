@@ -6,7 +6,9 @@ import com.github.niefy.modules.wx.entity.MsgTemplate;
 import me.chanjar.weixin.common.error.WxErrorException;
 
 import com.github.niefy.common.utils.PageUtils;
+import me.chanjar.weixin.mp.bean.template.WxMpTemplate;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +38,6 @@ public interface MsgTemplateService extends IService<MsgTemplate> {
      * 同步公众号已添加的消息模板
      * @throws WxErrorException
      */
-    void syncWxTemplate(String appid) throws WxErrorException;
+    void syncWxTemplate(String appid, List<WxMpTemplate> allPrivateTemplateList) throws WxErrorException;
 }
 

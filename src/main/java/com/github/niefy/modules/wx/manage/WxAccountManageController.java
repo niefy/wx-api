@@ -1,12 +1,14 @@
 package com.github.niefy.modules.wx.manage;
 
 import com.github.niefy.common.utils.R;
+import com.github.niefy.modules.wx.config.EventMessageListenerContainerConfig;
 import com.github.niefy.modules.wx.entity.WxAccount;
 import com.github.niefy.modules.wx.service.WxAccountService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -24,8 +26,12 @@ import java.util.List;
 @RequestMapping("/manage/wxAccount")
 @Api(tags = {"公众号账号-管理后台"})
 public class WxAccountManageController {
+
     @Autowired
     private WxAccountService wxAccountService;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 列表
@@ -46,9 +52,8 @@ public class WxAccountManageController {
     @GetMapping("/info/{appid}")
     @RequiresPermissions("wx:wxaccount:info")
     @ApiOperation(value = "详情")
-    public R info(@PathVariable("id") String appid){
+    public R info(@PathVariable("appid") String appid){
 		WxAccount wxAccount = wxAccountService.getById(appid);
-
         return R.ok().put("wxAccount", wxAccount);
     }
 
@@ -59,8 +64,8 @@ public class WxAccountManageController {
     @RequiresPermissions("wx:wxaccount:save")
     @ApiOperation(value = "保存")
     public R save(@RequestBody WxAccount wxAccount){
-		wxAccountService.save(wxAccount);
-
+		wxAccountService.saveOrUpdateWxAccount(wxAccount);
+        redisTemplate.convertAndSend(EventMessageListenerContainerConfig.WX_ACCOUNT_UPDATE, wxAccount.getAppid());
         return R.ok();
     }
 
