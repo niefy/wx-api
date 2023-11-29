@@ -4,6 +4,11 @@ spring:
         url: jdbc:mysql://${MYSQL_IP:localhost}:${MYSQL_PORT:3306}/wx?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
         username: ${MYSQL_USERNAME:root}
         password: ${MYSQL_PASSWORD:123456}
+    redis:
+        host: ${REDIS_IP:localhost}
+        database: ${REDIS_DATABASE:1}
+        port: ${REDIS_PORT:3306}
+        password: ${REDIS_PASSWORD:''}
 
 springfox:
     documentation:
