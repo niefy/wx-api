@@ -120,7 +120,7 @@ public class MsgTemplateManageController {
     @ApiOperation(value = "同步公众号模板")
     public R syncWxTemplate(@CookieValue String appid) throws WxErrorException {
         this.wxMpService.switchoverTo(appid);
-        msgTemplateService.syncWxTemplate(appid);
+        msgTemplateService.syncWxTemplate(appid, wxMpService.getTemplateMsgService().getAllPrivateTemplate());
         return R.ok();
     }
 

@@ -1,5 +1,7 @@
 package com.github.niefy.modules.wx.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.github.niefy.modules.sys.entity.SysUserEntity;
 import com.github.niefy.modules.wx.service.WxUserService;
 import com.github.niefy.modules.wx.service.WxUserTagsService;
 import lombok.extern.slf4j.Slf4j;
@@ -81,5 +83,12 @@ public class WxUserTagsServiceImpl implements WxUserTagsService {
         String appid = WxMpConfigStorageHolder.get();
         wxUserService.refreshUserInfo(openid,appid);
     }
+
+    @CacheEvict(key = CACHE_KEY + "+ #appid")
+    @Override
+    public void refreshTagCache(String appid, SysUserEntity sysUserEntity) {
+        log.info("refreshTagCache appid {} sysUserEntity {} ", appid, JSON.toJSONString(sysUserEntity));
+    }
+
 
 }

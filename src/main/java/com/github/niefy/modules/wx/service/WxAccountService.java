@@ -21,8 +21,9 @@ public interface WxAccountService extends IService<WxAccount> {
      */
     PageUtils queryPage(Map<String, Object> params);
 
-    @Override
-    boolean save(WxAccount entity);
+    void loadWxMpConfigStorages();
+
+    boolean saveOrUpdateWxAccount(WxAccount entity);
 
     @Override
     boolean removeByIds(Collection<?> idList);

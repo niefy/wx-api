@@ -6,6 +6,7 @@ import com.github.niefy.modules.wx.service.WxAssetsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.chanjar.weixin.common.error.WxErrorException;
+import me.chanjar.weixin.mp.bean.draft.*;
 import me.chanjar.weixin.mp.bean.material.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
@@ -99,7 +100,7 @@ public class WxAssetsManageController {
     @PostMapping("/materialNewsUpload")
     @RequiresPermissions("wx:wxassets:save")
     @ApiOperation(value = "添加图文永久素材")
-    public R materialNewsUpload(@CookieValue String appid,@RequestBody List<WxMpNewsArticle> articles) throws WxErrorException {
+    public R materialNewsUpload(@CookieValue String appid,@RequestBody List<WxMpDraftArticles> articles) throws WxErrorException {
         if(articles.isEmpty()) {
             return R.error("图文列表不得为空");
         }
@@ -117,7 +118,7 @@ public class WxAssetsManageController {
     @PostMapping("/materialArticleUpdate")
     @RequiresPermissions("wx:wxassets:save")
     @ApiOperation(value = "修改图文素材文章")
-    public R materialArticleUpdate(@CookieValue String appid,@RequestBody WxMpMaterialArticleUpdate form) throws WxErrorException {
+    public R materialArticleUpdate(@CookieValue String appid,@RequestBody WxMpUpdateDraft form) throws WxErrorException {
         if(form.getArticles()==null) {
             return R.error("文章不得为空");
         }

@@ -1,6 +1,7 @@
 package com.github.niefy.modules.wx.service;
 
 import me.chanjar.weixin.common.error.WxErrorException;
+import me.chanjar.weixin.mp.bean.draft.*;
 import me.chanjar.weixin.mp.bean.material.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -54,14 +55,14 @@ public interface WxAssetsService {
      * @return
      * @throws WxErrorException
      */
-    WxMpMaterialUploadResult materialNewsUpload(String appid, List<WxMpNewsArticle> articles)throws WxErrorException;
+    WxMpMaterialUploadResult materialNewsUpload(String appid, List<WxMpDraftArticles> articles)throws WxErrorException;
 
     /**
      * 更新图文素材中的某篇文章
      * @param appid
      * @param form
      */
-    void materialArticleUpdate(String appid, WxMpMaterialArticleUpdate form) throws WxErrorException;
+    void materialArticleUpdate(String appid, WxMpUpdateDraft form) throws WxErrorException;
 
     /**
      * 添加多媒体永久素材
