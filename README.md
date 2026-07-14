@@ -39,5 +39,3 @@
 ## [项目开发进度](https://www.yuque.com/nifury/wx/kens6d)
 ## [代码贡献指南](https://www.yuque.com/nifury/wx/ykqswi)
 
-## 开发交流
-QQ群：1023785886（已满）、993128490 技术交流群严禁广告，发广告立即踢出+拉黑+举报，加群密码：wx 
